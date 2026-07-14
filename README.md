@@ -4,6 +4,10 @@
 
 > **Restore your Galaxy S24 battery life** — disable bloatware, stop known drain bugs, and optimize system settings, **no root required**.
 
+<p align="center">
+  <img src="current_android_screenshot.png" alt="S24 Battery Optimizer in Action" width="300" />
+</p>
+
 ---
 
 ## 📋 Compatibility

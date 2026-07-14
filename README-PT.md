@@ -4,6 +4,10 @@
 
 > **Restaure a duração da bateria do seu Galaxy S24** — desative bloatware, interrompa erros conhecidos de consumo de bateria e otimize as configurações do sistema, **sem necessidade de root**.
 
+<p align="center">
+  <img src="current_android_screenshot.png" alt="S24 Battery Optimizer em Ação" width="300" />
+</p>
+
 ---
 
 ## 📋 Compatibilidade

@@ -4,6 +4,10 @@
 
 > **Ripristina l'autonomia del tuo Galaxy S24** — disabilita bloatware, ferma i drain noti e ottimizza le impostazioni di sistema, **senza root**.
 
+<p align="center">
+  <img src="current_android_screenshot.png" alt="S24 Battery Optimizer in Azione" width="300" />
+</p>
+
 ## 📋 Compatibilità
 
 | Modello | One UI / Android |
