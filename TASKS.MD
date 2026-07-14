@@ -13,6 +13,7 @@
 - [x] [DEVOPS] Update base S24 compatibility notes in all language README files (Exynos/Snapdragon testing status)
 - [x] [DEVOPS] Track current_android_screenshot.png and embed it at the top of all language README files
 - [x] [DEVOPS] Mark other models (S24+, S24 Ultra, and S23/S22/S21 series) as untested in all language README files
+- [x] [DEVOPS] Document Shizuku v13.6.0+ setup and startup instructions for Android 16/One UI 7 in all language README files
 - [ ] [BACKEND] Parse captured system properties or UI xml files to verify settings status.
 - [ ] [FRONTEND] Design mockups/UI features for the companion Android App (`android-app`).
 - [ ] [DEVOPS] Test `s24-battery-optimize.ps1` script changes on the device.

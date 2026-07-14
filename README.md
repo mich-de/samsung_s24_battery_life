@@ -329,6 +329,18 @@ The project includes a native Android application in Kotlin located in [android-
 - Monitor and manage optimization status directly from your phone.
 - Execute local ADB shell commands without connecting your device to a PC, leveraging the **Shizuku** application API.
 
+### How to Setup Shizuku (Android 16 / One UI 7)
+
+To run the companion Android app, you must configure the latest version of Shizuku:
+
+1. **Download Shizuku**: 
+   Download and install the latest release (**v13.6.0** or newer) directly from the official [Shizuku GitHub Releases](https://github.com/RikkaApps/Shizuku/releases) to ensure compatibility with Android 16 QPR1 framework changes.
+2. **Start Shizuku**:
+   - If starting via PC, use the new native binary execution path recommended inside the Shizuku app (e.g. `adb shell /data/app/.../lib/arm64/libshizuku.so`).
+   - If starting via **Wireless Debugging**, use the "Start" button in the Shizuku app after pairing.
+3. **Authorize the App**:
+   Open the Shizuku app, go to **Authorized applications**, and enable the switch for **S24 Battery Optimizer**.
+
 ---
 
 ## ❓ FAQ
