@@ -287,13 +287,13 @@ REM pm clear com.google.android.gms
 
 ```
 s24-battery-optimizer/
-├── s24-optimize.bat            ← Script Windows Batch (principale)
-├── s24-restore.bat             ← Ripristino default per Windows
-├── s24-optimize.sh             ← Script Unix/Linux Shell (principale)
-├── s24-restore.sh              ← Ripristino default per Unix/Linux
-├── s24-battery-optimize.ps1    ← Script avanzato PowerShell
-├── s24-battery-revert.ps1      ← Ripristino avanzato PowerShell
-├── android-app/                ← App compagna Android nativa (Kotlin)
+├── releases/                   ← Cartella contenente tutti i file eseguibili
+│   ├── s24-optimize.bat        ← Script Windows Batch (principale)
+│   ├── s24-restore.bat         ← Ripristino default per Windows
+│   ├── s24-optimize.sh         ← Script Unix/Linux Shell (principale)
+│   ├── s24-restore.sh          ← Ripristino default per Unix/Linux
+│   └── s24-battery-optimizer.apk ← App compagna Android nativa (Kotlin)
+├── android-app/                ← Sorgenti dell'app compagna (Kotlin)
 │   └── ...                     (Utilizza Shizuku per comandi ADB locali)
 └── README.md
 ```

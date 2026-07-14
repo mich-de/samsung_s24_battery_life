@@ -32,3 +32,10 @@
   - Renamed the Kotlin app's `app-debug.apk` to `s24-battery-optimizer.apk` and copied it along with all four batch/shell scripts to the `releases` folder.
   - Committed and pushed changes to GitHub.
 
+## 2026-07-14 15:40 (Scripts Cleanup)
+- **Goal**: Delete duplicate script versions from the root of the workspace.
+- **Actions Taken**:
+  - Removed duplicate previous versions of `s24-optimize.bat`, `s24-restore.bat`, `s24-optimize.sh`, and `s24-restore.sh` from the root workspace directory.
+  - Updated [README.MD](file:///C:/Users/mdeangelis/Downloads/s24app/README.MD) file structure overview and pushed the cleanup changes to GitHub.
+
+
