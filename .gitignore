@@ -1,0 +1,19 @@
+# Gradle and Android build outputs
+.gradle/
+.idea/
+.kotlin/
+build/
+app/build/
+*.class
+*.apk
+*.aar
+
+# System specific files
+.DS_Store
+Thumbs.db
+
+# Screenshots and logs
+current_android_screenshot.png
+/scratch/
+*~
+*.log
