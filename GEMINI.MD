@@ -24,3 +24,11 @@
   - Refactored [README.MD](file:///C:/Users/mdeangelis/Downloads/s24app/README.MD) structure section and added details about the companion Kotlin app running local ADB commands via Shizuku.
   - Initialized a git repository, set user identity (`user.name "mich-de"`, `user.email "mic.deangelis@gmail.com"`), added remote origin, and pushed the codebase.
 
+## 2026-07-14 15:39 (Release Packaging)
+- **Goal**: Make script paths generic, rename compiled APK, and package them inside a `releases` directory.
+- **Actions Taken**:
+  - Replaced hardcoded ADB paths containing local usernames in `s24-optimize.bat` and `s24-restore.bat` with environment variables (`%LOCALAPPDATA%`, `%USERPROFILE%`).
+  - Created a root-level `releases` directory in the repository.
+  - Renamed the Kotlin app's `app-debug.apk` to `s24-battery-optimizer.apk` and copied it along with all four batch/shell scripts to the `releases` folder.
+  - Committed and pushed changes to GitHub.
+
