@@ -13,9 +13,9 @@
 | Modello | One UI / Android |
 |---------|------------------|
 | SM-S921B (S24 base) | One UI 7 / Android 16 (testato su Exynos, non testato su Snapdragon) |
-| SM-S926B (S24+) | One UI 7 / Android 16 |
-| SM-S928B (S24 Ultra) | One UI 7 / Android 16 |
-| Serie S23, S22, S21 | One UI 5+ / Android 13+ (testare) |
+| SM-S926B (S24+) | One UI 7 / Android 16 (non testato) |
+| SM-S928B (S24 Ultra) | One UI 7 / Android 16 (non testato) |
+| Serie S23, S22, S21 | One UI 5+ / Android 13+ (non testato) |
 
 ## 🔧 Cosa fa
 
