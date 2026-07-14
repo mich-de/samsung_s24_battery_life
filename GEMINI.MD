@@ -45,5 +45,13 @@
   - Synchronized and updated the file structure details inside [README-EN.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-EN.md).
   - Pushed all updates to GitHub.
 
+## 2026-07-14 15:43 (Default Language Swap)
+- **Goal**: Make English the default language for the repository README.
+- **Actions Taken**:
+  - Renamed [README.md](file:///C:/Users/mdeangelis/Downloads/s24app/README.md) (Italian) to [README-IT.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-IT.md) and [README-EN.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-EN.md) (English) to [README.md](file:///C:/Users/mdeangelis/Downloads/s24app/README.md).
+  - Updated language switcher links in both README files to point to each other.
+  - Pushed the renamed and updated documentation to GitHub.
+
+
 
 

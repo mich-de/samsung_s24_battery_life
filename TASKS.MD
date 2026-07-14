@@ -7,6 +7,7 @@
 - [x] [DEVOPS] Make script paths generic and package them with renamed APK inside `releases/` folder
 - [x] [DEVOPS] Delete duplicate previous versions of scripts from the root directory to clean up the workspace
 - [x] [DEVOPS] Make README bilingual (Italian & English) with a language switcher at the top
+- [x] [DEVOPS] Swap README files so English is the default `README.md` and Italian is `README-IT.md`
 - [ ] [BACKEND] Parse captured system properties or UI xml files to verify settings status.
 - [ ] [FRONTEND] Design mockups/UI features for the companion Android App (`android-app`).
 - [ ] [DEVOPS] Test `s24-battery-optimize.ps1` script changes on the device.

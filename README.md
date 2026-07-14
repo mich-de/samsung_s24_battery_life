@@ -1,58 +1,62 @@
 # S24 Battery Optimizer
 
-🌐 **Italiano | [English](README-EN.md)**
+🌐 **English | [Italiano](README-IT.md)**
 
-> **Ripristina l'autonomia del tuo Galaxy S24** — disabilita bloatware, ferma i drain noti e ottimizza le impostazioni di sistema, **senza root**.
+> **Restore your Galaxy S24 battery life** — disable bloatware, stop known drain bugs, and optimize system settings, **no root required**.
 
-## 📋 Compatibilità
+---
 
-| Modello | One UI / Android |
-|---------|------------------|
+## 📋 Compatibility
+
+| Model | One UI / Android |
+|-------|------------------|
 | SM-S921B (S24 base) | One UI 7 / Android 16 |
 | SM-S926B (S24+) | One UI 7 / Android 16 |
 | SM-S928B (S24 Ultra) | One UI 7 / Android 16 |
-| Serie S23, S22, S21 | One UI 5+ / Android 13+ (testare) |
+| S23, S22, S21 series | One UI 5+ / Android 13+ (untested) |
 
-## 🔧 Cosa fa
+---
 
-### Bloatware disabilitato (24 pacchetti)
+## 🔧 What it does
 
-| App | Pacchetto | Perché |
-|-----|-----------|--------|
-| **Bixby Voice** | `bixby.agent` | Assistente in ascolto continuo |
-| **Bixby Wakeup** | `bixby.wakeup` | "Hi Bixby" sempre attivo |
-| **Bixby Vision** | `bixbyvision.framework` | Riconoscimento AI camera |
-| **Vision Intelligence** | `visionintelligence` | Analisi scene AI |
-| **Game Tools** | `game.gametools` | Pannello overlay giochi |
-| **Game Optimizing** | `game.gos` | Limitatore CPU/GPU |
-| **Smart Suggestions** | `smartsuggestions` | Suggerimenti contestuali |
-| **Aware Service** | `aware.service` | Rilevamento attività |
-| **BBC Agent** | `bbc.bbcagent` | Push bloatware |
-| **Reminder** | `app.reminder` | Promemoria Samsung |
-| **Routines** | `app.routines` | Automazioni Bixby |
-| **Routine Plus** | `app.routineplus` | Wakelock Doze (drain confermato) |
-| **Live Effect** | `liveeffectservice` | Effetti videochiamate |
+### Disabled bloatware (24 packages)
+
+| App | Package | Reason |
+|-----|---------|--------|
+| **Bixby Voice** | `bixby.agent` | Always-listening assistant |
+| **Bixby Wakeup** | `bixby.wakeup` | "Hi Bixby" hotword |
+| **Bixby Vision** | `bixbyvision.framework` | Camera AI recognition |
+| **Vision Intelligence** | `visionintelligence` | Scene analysis AI |
+| **Game Tools** | `game.gametools` | Game overlay panel |
+| **Game Optimizing** | `game.gos` | CPU/GPU throttling |
+| **Smart Suggestions** | `smartsuggestions` | Contextual suggestions |
+| **Aware Service** | `aware.service` | Activity detection |
+| **BBC Agent** | `bbc.bbcagent` | Bloatware push updates |
+| **Reminder** | `app.reminder` | Samsung reminders |
+| **Routines** | `app.routines` | Bixby automations |
+| **Routine Plus** | `app.routineplus` | Doze wakelock (confirmed drain) |
+| **Live Effect** | `liveeffectservice` | Video call effects |
 | **OneConnect** | `oneconnect` | SmartThings Find |
-| **STPlatform** | `service.stplatform` | Knox invisibile |
-| **Forest** | `forest` | Benessere digitale |
-| **Buds Manager** | `accessory.budsunitemgr` | Plugin Galaxy Buds |
-| **Rubin App** | `rubin.app` | Customization Service (causa loop Play Services) |
+| **STPlatform** | `service.stplatform` | Knox background service |
+| **Forest** | `forest` | Digital wellbeing |
+| **Buds Manager** | `accessory.budsunitemgr` | Galaxy Buds plugin |
+| **Rubin App** | `rubin.app` | Customization Service (Play Services loop) |
 | **Facebook** | `facebook.katana` | Social battery drain |
-| **Messenger** | `facebook.orca` | Chat wakelock |
-| **Edge** | `microsoft.emmx` | Browser alternativo |
+| **Messenger** | `facebook.orca` | Chat wakelocks |
+| **Edge** | `microsoft.emmx` | Alternative browser |
 | **Excel** | `office.excel` | Office sync |
 | **Word** | `office.word` | Office sync |
 | **Remote Desktop** | `rdc.androidx` | RDP client |
 
-### 🔄 Knox Matrix Reset (5 pacchetti)
+### 🔄 Knox Matrix Reset (5 packages)
 
-Resetta i servizi Knox che in **Aprile 2026** hanno causato un bug di drain continuo (loop di attestazione CPU). `kpecore`, `attestation`, `pushmanager`, `containercore`, `analytics.uploader`.
+Resets Knox services affected by the **April 2026 attestation loop bug** (continuous CPU drain). `kpecore`, `attestation`, `pushmanager`, `containercore`, `analytics.uploader`.
 
-### ⚙️ Impostazioni sistema (23)
+### ⚙️ System settings (23)
 
-| Categoria | Impostazione | Valore |
-|-----------|-------------|--------|
-| **Batteria** | Adaptive Battery | ON |
+| Category | Setting | Value |
+|----------|---------|-------|
+| **Battery** | Adaptive Battery | ON |
 | | App Auto Restriction | ON |
 | | Battery Saver | ON |
 | | Enhanced CPU Resp. | OFF |
@@ -62,271 +66,289 @@ Resetta i servizi Knox che in **Aprile 2026** hanno causato un bug di drain cont
 | | WiFi Power Save | ON |
 | | WiFi Wakeup | OFF |
 | | MCF Quick Share | OFF |
-| **Schermo** | AOD / Always On | OFF |
+| **Display** | AOD / Always On | OFF |
 | | Screen Timeout | 30s |
 | | Lift to Wake | OFF |
 | | Smart Stay | OFF |
 | | Doze | ON |
-| **Performance** | Animazioni | 0.5x |
+| **Performance** | Animations | 0.5x |
 | | RAM Plus | 2 GB |
-| **Protezione** | Carica massima | 80% |
+| **Protection** | Max charge | 80% |
 
-### 🚫 Background bloccato (3 app)
+### 🚫 Background restricted (3 apps)
 
-`appops set RUN_ANY_IN_BACKGROUND deny` su:
-- **Instagram** — wakelock continui, sync background
-- **WhatsApp** — 499 mAh in 8h nel nostro test (16% del totale)
-- **Tandem** (modifica il nome pacchetto se necessario)
+`appops set RUN_ANY_IN_BACKGROUND deny` on:
+- **Instagram** — continuous wakelocks, background sync
+- **WhatsApp** — 499 mAh in 8h in our test (16% of total)
+- **Tandem** (edit package name if needed)
 
-## 📊 Risultati attesi
+---
 
-### Test di scarica — Prima dell'ottimizzazione
+## 📊 Expected results
+
+### Discharge test — Before optimization
 
 ```
-Durata:      8h 42m (da 80% a 19% = 61% utilizzato)
-Capacità:    3.114 mAh consumati
-Media:       358 mA/h
-Vita stimata: ~10.9h (uso misto)
+Duration:    8h 42m (80% → 19% = 61% used)
+Capacity:    3,114 mAh drained
+Average:     358 mA/h
+Est. life:   ~10.9h (mixed usage)
 
-Top consumatori (mAh):
-  CPU                    1.252 (40%)
-  Schermo                 542 (17%)
+Top consumers (mAh):
+  CPU                    1,252 (40%)
+  Display                 542 (17%)
   Radio 5G                440 (14%)
   WhatsApp                499 (16%)
-  Sistema                 386 (12%)
+  System                  386 (12%)
   Instagram               314 (10%)
   Google Play Services    288 (9%)
   Kernel                  186 (6%)
 ```
 
-### Dopo l'ottimizzazione (dati in raccolta)
+### After optimization (data being collected)
 
-I resoconti degli utenti della community riportano:
-- **15-25%** di riduzione drain in standby
-- **+2-4 ore** di autonomia in uso misto
-- WhatsApp e Instagram non consumano più in background
+Community reports indicate:
+- **15-25%** reduction in standby drain
+- **+2-4 hours** extra in mixed usage
+- WhatsApp and Instagram no longer drain in background
 
-## 🚀 Come usare
+---
 
-### Requisiti
-- Windows con ADB configurato (`platform-tools`)
-- USB Debugging attivo sul telefono
-- Telefono collegato al PC
+## 🚀 How to use
 
-### Installazione
+### Requirements
+- Windows with ADB configured (`platform-tools`)
+- USB Debugging enabled on phone
+- Phone connected to PC
+
+### Installation
 
 ```powershell
-# Clona o scarica
 git clone https://github.com/tuouser/s24-battery-optimizer
 cd s24-battery-optimizer
 ```
 
-### Personalizza il percorso ADB
+### Customize ADB path
 
-Modifica in `s24-optimize.bat` (riga 22):
+Edit `s24-optimize.bat` (line 22):
 
 ```batch
-set ADB="C:\tuo-percorso\platform-tools\adb.exe"
+set ADB="C:\your-path\platform-tools\adb.exe"
 ```
 
-### Esegui
+### Run
 
 ```powershell
 .\s24-optimize.bat
 ```
 
-Il telefono mostrerà i permessi di debug — **conferma sempre**.
+The phone will show a debugging prompt — **always confirm**.
 
-### Per annullare tutto
+### Undo everything
 
 ```powershell
 .\s24-restore.bat
 ```
 
-## 👆 Impostazioni manuali (S24 Exynos 2400 · One UI 7)
+---
 
-Queste impostazioni NON sono automatizzabili via ADB. I percorsi sono quelli **esatti** di One UI 7 su S24 (Exynos 2400, Android 16).
+## 👆 Manual settings (S24 Exynos 2400 · One UI 7)
 
-### ⚡ Exynos 2400 — Modem 5G e CPU
+These settings **cannot** be automated via ADB. Paths are **exact** for One UI 7 on S24 (Exynos 2400, Android 16).
 
-Il modem Exynos 5300 (integrato nel 2400) ha un consumo a riposo più alto quando agganciato in **5G SA** (Standalone) con segnale debole. Su One UI 7:
+### ⚡ Exynos 2400 — 5G Modem & CPU
 
-| Impostazione | Percorso esatto (One UI 7) | Consiglio |
-|-------------|---------------------------|-----------|
-| **Preferenza rete 5G** | Impostazioni > Connessioni > Reti mobili > Modalità rete | "5G/LTE/3G/2G (connessione automatica)", MA se sei in zona con 5G debole passa a "LTE/3G/2G (connessione automatica)" — il modem Exynos 5300 consuma 2-3x in più quando cerca 5G instabile |
-| **Rete 5G autonoma** | Impostazioni > Connessioni > Reti mobili | Se vedi "5G SA", impostalo su OFF. La modalità NSA (Non-Standalone) consuma meno perché si appoggia alla rete 4G per il controllo |
-| **Ottimizza connessione** | Impostazioni > Connessioni > WiFi > ⋯ > Intelligente > "Passa a dati mobili" | OFF — evita il ping-pong WiFi/5G che il modem Exynos gestisce male |
-| **Avanzate WiFi** | Stessa sezione > "Passa a rete migliore" | OFF — impedisce scansioni periodiche |
+The Exynos 5300 modem (integrated in the 2400) has higher idle drain on **5G SA** (Standalone) with weak signal. On One UI 7:
 
-Lo scheduler CPU/GPU Exynos 2400 (G788):
-| Impostazione | Percorso esatto (One UI 7) | Consiglio |
-|-------------|---------------------------|-----------|
-| **Velocità di elaborazione** | Impostazioni > Assistenza dispositivo > Batteria > Altre impostazioni batteria > Velocità di elaborazione | **"Ottimizzato"** (NON "Alta" o "Massima" — forza i core X4 a frequenze più alte inutilmente) |
-| **Luminosità automatica** | Impostaggi > Schermo | ON — il display M13 OLED dell'S24 consuma molto meno con luminosità < 50%. Tenerlo fisso al 70% raddoppia il drain |
-| **Risoluzione** | Impostazioni > Schermo > Risoluzione schermo | **FHD+** (2340×1080). Su schermo 6.2" la differenza con QHD+ è invisibile, ma il rendering GPU costa caro all'Exynos Xclipse 940 |
-| **Refresh rate** | Impostazioni > Schermo > Frequenza di aggiornamento | **"Adattivo"** (LTPO 1→24→120Hz). NON "Standard" (60Hz) e NON "120Hz fisso" — LTPO scende a 1Hz su sfondo Home, 24Hz su video |
+| Setting | Exact path (One UI 7) | Recommendation |
+|---------|----------------------|----------------|
+| **5G Network preference** | Settings > Connections > Mobile networks > Network mode | "5G/LTE/3G/2G (auto connect)" — BUT switch to "LTE/3G/2G (auto connect)" if you're in a weak 5G area. The Exynos 5300 consumes 2-3x more when hunting for unstable 5G |
+| **Standalone 5G** | Settings > Connections > Mobile networks | If you see "5G SA", set it OFF. NSA mode draws less because it uses 4G for control signaling |
+| **Optimize connection** | Settings > Connections > WiFi > ⋯ > Intelligent > "Switch to mobile data" | OFF — prevents the WiFi/5G ping-pong that the Exynos modem handles poorly |
+| **Advanced WiFi** | Same section > "Switch to better network" | OFF — stops periodic scanning |
 
-### 🧠 Good Guardians (app gratuite Galaxy Store)
+Exynos 2400 CPU/GPU scheduler (G788):
 
-Samsung fornisce moduli ufficiali per l'S24. Installa **"Good Guardians"** dal Galaxy Store (cerca "Good Guardians Samsung").
+| Setting | Exact path (One UI 7) | Recommendation |
+|---------|----------------------|----------------|
+| **Processing speed** | Settings > Device care > Battery > More battery settings > Processing speed | **"Optimized"** (NOT "High" or "Maximum" — those force the X4 cores to higher clocks unnecessarily) |
+| **Auto brightness** | Settings > Display | ON — the S24's M13 OLED panel consumes significantly less below 50% brightness. Locking it at 70% doubles drain |
+| **Resolution** | Settings > Display > Screen resolution | **FHD+** (2340×1080). On a 6.2" screen the difference from QHD+ is invisible, but GPU rendering costs the Exynos Xclipse 940 heavily |
+| **Refresh rate** | Settings > Display > Motion smoothness | **"Adaptive"** (LTPO 1→24→120Hz). NOT "Standard" (60Hz) and NOT fixed 120Hz — LTPO drops to 1Hz on Home screen, 24Hz on video |
 
-| Modulo | Si installa da | Cosa fa |
-|--------|---------------|---------|
-| **Battery Guardian** | Galaxy Store > cerca "Battery Guardian" | Blocca le app che tengono sveglia la CPU quando lo schermo è spento (funzione "App che impediscono il sonno") |
-| **Thermal Guardian** | Galaxy Store > cerca "Thermal Guardian" | Abbassa la soglia termica dell'Exynos 2400 di 1-2°C — evita che il chip scaldi e consumi di più per raffreddarsi. Imposta "Soglia di raffreddamento" a -1°C o -2°C |
-| **Memory Guardian** | Galaxy Store > cerca "Memory Guardian" | Libera RAM più aggressivamente. L'S24 ha 8GB, tenerli puliti evita swap su flash (consuma batteria) |
-| **App Booster** | Galaxy Store > cerca "App Booster" | Ottimizza le app compilate con l'Exynos NPU. Eseguilo dopo ogni aggiornamento mensile |
+### 🧠 Good Guardians (free Galaxy Store apps)
 
-### 🔋 Good Lock — Camera Assistant e NavStar
+Samsung provides official modules for the S24. Install **"Good Guardians"** from Galaxy Store (search "Good Guardians Samsung").
 
-Disponibili da **Galaxy Store > Good Lock** (o NiceLock se bloccato in Italia).
+| Module | Install from | What it does |
+|--------|-------------|--------------|
+| **Battery Guardian** | Galaxy Store > search "Battery Guardian" | Blocks apps that keep CPU awake with screen off ("Apps preventing sleep" feature) |
+| **Thermal Guardian** | Galaxy Store > search "Thermal Guardian" | Lowers Exynos 2400 thermal threshold by 1-2°C — prevents the chip from heating up and consuming more to cool down. Set "Cooling threshold" to -1°C or -2°C |
+| **Memory Guardian** | Galaxy Store > search "Memory Guardian" | Frees RAM more aggressively. S24 has 8GB; keeping them clean avoids flash swap (battery drain) |
+| **App Booster** | Galaxy Store > search "App Booster" | Optimizes apps compiled with the Exynos NPU. Run after every monthly update |
 
-| Modulo | Impostazione | Consiglio |
-|--------|-------------|-----------|
-| **Camera Assistant** | "Automatic lens switching" | OFF — il passaggio continuo tra lenti grandangolo/tele consuma l'ISP dell'Exynos |
-| **Camera Assistant** | "Video HDR10+" | OFF se non registri video HDR (la codifica Exynos MFC pesa) |
-| **Riduci animazioni** | Impostazioni > Opzioni sviluppatore (attiva da Info software > Numero build 7 tap) > "Riduci animazioni" | ON — complementare allo script ADB (0.5x già impostato). Se non vedi Opzioni sviluppatore, lo script ADB ha già impostato 0.5x |
+### 🔋 Good Lock — Camera Assistant & NavStar
 
-### ☁️ Servizi cloud e sync
+Available from **Galaxy Store > Good Lock** (or NiceLock if restricted in your region).
 
-| Impostazione | Percorso esatto (One UI 7) | Consiglio |
-|-------------|---------------------------|-----------|
-| **Sync account Samsung** | Impostazioni > Account e backup > Gestisci account > Samsung Cloud > Sincronizza | Disattiva **tutto** tranne Contatti (se ti servono). Galleria, Note, Calendario Samsung fanno polling periodico |
-| **Auto-aggiornamento Galaxy Store** | Galaxy Store > Menu (⋮) > Impostazioni > Aggiornamento automatico app | "Solo con WiFi" o "Mai" |
-| **Auto-aggiornamento Play Store** | Play Store > Icona profilo > Impostazioni > Preferenze rete > Aggiorna automaticamente app | "Solo in WiFi" |
-| **Backup Google Foto** | Google Foto > Icona profilo > Impost. Foto > Backup | "Solo in WiFi" o OFF se sincronizzi manualmente |
-| **Samsung Cloud backup** | Impostazioni > Account e backup > Samsung Cloud | OFF se non paghi l'abbonamento (i 5GB gratis finiscono subito) |
+| Module | Setting | Recommendation |
+|--------|---------|----------------|
+| **Camera Assistant** | "Automatic lens switching" | OFF — constant switching between wide/tele lenses drains the Exynos ISP |
+| **Camera Assistant** | "Video HDR10+" | OFF unless you record HDR video (Exynos MFC encoding is heavy) |
+| **Reduce animations** | Settings > Developer options (enable via About phone > Software info > Tap Build number 7×) > "Reduce animations" | ON — complements ADB script (0.5x already set). If Developer options aren't visible, ADB 0.5x covers this |
 
-### 📡 Connettività nascosta (S24 specifica)
+### ☁️ Cloud services & sync
 
-| Impostazione | Percorso esatto (One UI 7) | Consiglio |
-|-------------|---------------------------|-----------|
-| **Trova il mio dispositivo** | Impostazioni > Sicurezza e privacy > Trova dispositivo mobile > "Consenti ricerche" | OFF — fa scanning periodico della rete. L'accensione remota non ti serve |
-| **Smart View** | Pannello rapido → scorciatoia Smart View | Tieni spento se non usi screen mirroring |
-| **NFC** | Pannello rapido → scorciatoia NFC | Tieni OFF se non usi Samsung/Google Pay frequente. L'NFC dell'Exynos fa polling ogni 3-5s |
-| **UWB** | Impostazioni > Connessioni > Ultra-wideband | OFF se non usi SmartThings Find con tag UWB |
-| **Stampa** | Impostazioni > Funzioni avanzate > Stampa | OFF se non hai stampanti collegate |
+| Setting | Exact path (One UI 7) | Recommendation |
+|---------|----------------------|----------------|
+| **Samsung account sync** | Settings > Accounts and backup > Manage accounts > Samsung Cloud > Sync | Disable **everything** except Contacts (if needed). Gallery, Notes, Samsung Calendar do periodic polling |
+| **Galaxy Store auto-update** | Galaxy Store > Menu (⋮) > Settings > Auto update apps | "Over WiFi only" or "Never" |
+| **Play Store auto-update** | Play Store > Profile icon > Settings > Network preferences > Auto-update apps | "Over WiFi only" |
+| **Google Photos backup** | Google Photos > Profile icon > Photos settings > Backup | "Over WiFi only" or OFF if you sync manually |
+| **Samsung Cloud backup** | Settings > Accounts and backup > Samsung Cloud | OFF unless you pay for the subscription (free 5GB ends quickly) |
+
+### 📡 Hidden connectivity (S24 specific)
+
+| Setting | Exact path (One UI 7) | Recommendation |
+|---------|----------------------|----------------|
+| **Find My Mobile** | Settings > Security and privacy > Find My Mobile > "Allow searching" | OFF — does periodic network scanning. You don't need remote wake |
+| **Smart View** | Quick panel > Smart View toggle | Keep OFF if you don't use screen mirroring |
+| **NFC** | Quick panel > NFC toggle | Keep OFF if you don't use Samsung/Google Pay often. Exynos NFC polls every 3-5s |
+| **UWB** | Settings > Connections > Ultra-wideband | OFF if you don't use SmartThings Find with UWB tags |
+| **Printing** | Settings > Advanced features > Printing | OFF if no printer connected |
 
 
-### 🔳 Schermo e One UI 7
+### 🔳 Display & One UI 7
 
-S24 con display M13 OLED 6.2" 2340×1080 (Dynamic AMOLED 2X):
+S24 M13 OLED 6.2" 2340×1080 (Dynamic AMOLED 2X):
 
-| Impostazione | Percorso esatto (One UI 7) | Consiglio |
-|-------------|---------------------------|-----------|
-| **Pannelli Edge** | Impostazioni > Schermo > Pannelli Edge | OFF se non li usi (il processore edge tiene caldo il sensore) |
-| **Pop-up intelligente** | Impostazioni > Funzioni avanzate > Pop-up intelligente | OFF |
-| **Icona app notifica** | Impostazioni > Schermo > Icona app notifica (Badge) | "Senza numeri" o OFF — ogni badge richiede polling dell'icona |
-| **Barra di navigazione** | Impostazioni > Schermo > Barra di navigazione | "Gesture a schermo intero" (i pulsanti software tengono il display controller più attivo) |
-| **Modalità scura** | Impostazioni > Schermo > Modalità scura | ON permanente. Su OLED è il singolo intervento più efficace: pixel neri = pixel spenti |
+| Setting | Exact path (One UI 7) | Recommendation |
+|---------|----------------------|----------------|
+| **Edge panels** | Settings > Display > Edge panels | OFF if unused (the edge processor keeps the touch sensor warm) |
+| **Smart pop-up view** | Settings > Advanced features > Smart pop-up view | OFF |
+| **App notification badges** | Settings > Display > App notification badges | "Without numbers" or OFF — each badge requires icon polling |
+| **Navigation bar** | Settings > Display > Navigation bar | "Full screen gestures" (software buttons keep the display controller more active) |
+| **Dark mode** | Settings > Display > Dark mode | ON permanently. On OLED it's the single most effective setting: black pixels = off pixels |
 
-### 🎯 App specifiche — S24 Exynos
+### 🎯 Specific apps — S24 Exynos
 
-| App | Azione raccomandata (S24) |
-|-----|---------------------------|
-| **Google Foto** (preinstallato) | Backup solo WiFi. Il NPU Exynos durante backup foto fa analisi AI (riconoscimento volti) — consuma |
-| **TikTok** | Blocca background con `adb shell appops set com.zhiliaoapp.musically RUN_ANY_IN_BACKGROUND deny` |
-| **Facebook** (se riattivato) | `adb shell appops set com.facebook.katana RUN_ANY_IN_BACKGROUND deny` |
-| **LinkedIn** | `adb shell appops set com.linkedin.android RUN_ANY_IN_BACKGROUND deny` — sync contatti frequente |
-| **Samsung Health** | Se non usi sensori fitness, disabilita: `adb shell pm disable-user --user 0 com.sec.android.app.shealth`. L'Exynos 2400 tiene l'ISP attivo per il sensore HR |
-| **Samsung Members** | Diagnostica. Disabilita: `adb shell pm disable-user --user 0 com.samsung.android.mobileservice` (se non ricevi SMS) |
-| **Mappe** (offline) | Scarica mappe offline per la tua zona. L'N9 GPS dell'Exynos consuma molto con mappe in streaming |
+| App | Recommended action (S24) |
+|-----|-------------------------|
+| **Google Photos** (preinstalled) | Backup WiFi only. The Exynos NPU does AI analysis (face recognition) during photo backup — battery drain |
+| **TikTok** | Block background: `adb shell appops set com.zhiliaoapp.musically RUN_ANY_IN_BACKGROUND deny` |
+| **Facebook** (if re-enabled) | `adb shell appops set com.facebook.katana RUN_ANY_IN_BACKGROUND deny` |
+| **LinkedIn** | `adb shell appops set com.linkedin.android RUN_ANY_IN_BACKGROUND deny` — frequent contact sync |
+| **Samsung Health** | If you don't use fitness sensors, disable: `adb shell pm disable-user --user 0 com.sec.android.app.shealth`. The Exynos 2400 keeps the ISP active for the HR sensor |
+| **Samsung Members** | Diagnostics. Disable: `adb shell pm disable-user --user 0 com.samsung.android.mobileservice` |
+| **Maps** (offline) | Download offline maps for your area. The Exynos N9 GPS is heavy with streaming maps |
 
-### 🧹 Manutenzione periodica Exynos
+### 🧹 Exynos periodic maintenance
 
-L'Exynos 2400 accumula cache nelle app Samsung più di altri chip. Una volta al mese:
+The Exynos 2400 accumulates cache in Samsung apps more than other chips. Once a month:
 
-**Pulizia cache partizione (non perde dati):**
-1. Spegni il telefono
-2. Tieni premuto **Volume SU + Power** (sul S24 entrano in recovery)
-3. Con i tasti volume naviga a "Wipe cache partition"
-4. Premi Power per selezionare
+**Wipe cache partition (no data loss):**
+1. Power off the phone
+2. Hold **Volume UP + Power** (S24 boots to recovery)
+3. Use volume keys to navigate to "Wipe cache partition"
+4. Press Power to select
 5. "Yes" → "Reboot system now"
 
-**App Booster** (da Good Guardians o Assistenza dispositivo):
-1. Apri **Assistenza dispositivo**
-2. Tocca "Avvia il controllo" o l'icona diottrie
-3. Scorri in fondo → "App Booster" → "Esegui"
+**App Booster** (from Good Guardians or Device Care):
+1. Open **Device Care**
+2. Tap "Start check" or the eye icon
+3. Scroll to bottom → "App Booster" → "Run"
 
-**Svuota cache app specifiche** (se un'app consuma anomalo):
-1. Impostazioni > Applicazioni > [app incriminata] > Archiviazione > Svuota cache
-2. NON toccare "Svuota dati" (perderesti login/preferenze)
+**Clear specific app cache** (if an app is draining):
+1. Settings > Apps > [offending app] > Storage > Clear cache
+2. Do NOT touch "Clear data" (you'd lose login/preferences)
 
-## 🔍 Note tecniche
+---
 
-### 120Hz e 5G rimangono attivi
-L'ottimizzazione *non* disabilita:
-- Refresh rate 120Hz (solo Battery Saver su "Massimo" lo limiterebbe)
-- Rete 5G (NESSUN comando modifica preferenze di rete)
-- Google Maps, Gmail, Google Assistant / Gemini, navigatore
+## 🔍 Technical notes
 
-### Rubin.app — il fix Google Play Services
-`Samsung Customization Service` (`com.samsung.android.rubin.app`) è noto per creare un loop con Google Play Services: richiede continuamente aggiornamenti di posizione/attività, impedendo a Play Services di andare in sospensione. Lo disabilitiamo + revochiamo `ACTIVITY_RECOGNITION`.
+### 120Hz and 5G remain active
+The optimization does *not* disable:
+- 120Hz refresh rate (only Battery Saver set to "Maximum" would limit it)
+- 5G network (NO commands modify network preferences)
+- Google Maps, Gmail, Google Assistant / Gemini, navigation
+
+### Rubin.app — the Google Play Services fix
+`Samsung Customization Service` (`com.samsung.android.rubin.app`) is known to create a loop with Google Play Services: it continuously requests location/activity updates, preventing Play Services from sleeping. We disable it + revoke `ACTIVITY_RECOGNITION`.
 
 ### Knox April 2026 Drain Bug
-A partire dalla patch di Aprile 2026, alcuni servizi Knox (in particolare `kpecore` e `attestation`) entrano in un ciclo di attestazione continua. Il `pm clear` forza un reset pulito.
+Starting with the April 2026 security patch, some Knox services (especially `kpecore` and `attestation`) enter a continuous attestation loop. `pm clear` forces a clean reset.
 
 ### Routine Plus Wakelock
-Abbiamo scoperto che `com.samsung.android.app.routineplus` (servizio separato da Routines normali) acquisisce periodicamente wakelock `Doze (draw)` anche quando Routines è disabilitato. Era assente dalla maggior parte delle guide.
+We discovered that `com.samsung.android.app.routineplus` (a separate service from Routines) periodically acquires `Doze (draw)` wakelocks even when Routines is disabled. This was missing from most guides.
 
-### Animazioni 0.5x
-Raddoppia la velocità delle transizioni UI. L'effetto è una UI più scattante e meno GPU time. 120Hz rimane attivo.
+### 0.5x Animations
+Doubles UI transition speed — snappier feel and less GPU time. 120Hz stays active.
 
 ### RAM Plus 2GB
-Valori alti (4/6/8GB) consumano batteria per I/O continuo su storage flash. 2GB è il valore ottimale.
+High values (4/6/8GB) consume battery due to continuous flash I/O on the UFS 4.0 storage. 2GB is the optimal balance.
 
 ### Google Play Services
-Se dopo l'ottimizzazione noti ancora drain anomalo da Play Services (verifica in Impostazioni > Batteria), decommenta le righe nel script:
+If you still notice abnormal Play Services drain after optimization (check Settings > Battery), uncomment these lines in the script:
 
 ```batch
 REM am force-stop com.google.android.gms
 REM pm clear com.google.android.gms
 ```
 
-⚠️ `pm clear` su GMS cancella i pagamenti Google Wallet, quindi è l'ultima risorsa.
+⚠️ `pm clear` on GMS resets Google Wallet payment cards — last resort only.
 
-## 📂 Struttura file
+---
+
+## 📂 File structure
 
 ```
 s24-battery-optimizer/
-├── releases/                   ← Cartella contenente tutti i file eseguibili
-│   ├── s24-optimize.bat        ← Script Windows Batch (principale)
-│   ├── s24-restore.bat         ← Ripristino default per Windows
-│   ├── s24-optimize.sh         ← Script Unix/Linux Shell (principale)
-│   ├── s24-restore.sh          ← Ripristino default per Unix/Linux
-│   └── s24-battery-optimizer.apk ← App compagna Android nativa (Kotlin)
-├── android-app/                ← Sorgenti dell'app compagna (Kotlin)
-│   └── ...                     (Utilizza Shizuku per comandi ADB locali)
-└── README.md
+├── releases/                   ← Folder containing all executable files
+│   ├── s24-optimize.bat        ← Windows Batch script (main)
+│   ├── s24-restore.bat         ← Restore defaults for Windows
+│   ├── s24-optimize.sh         ← Unix/Linux Shell script (main)
+│   ├── s24-restore.sh          ← Restore defaults for Unix/Linux
+│   └── s24-battery-optimizer.apk ← Native Android companion app (Kotlin)
+├── android-app/                ← Source code for the companion app (Kotlin)
+│   └── ...                     (Uses Shizuku for local ADB commands)
+├── README.md                   ← English documentation
+└── README-IT.md                ← Italian documentation
 ```
+
+---
 
 ## 📱 Android App (Shizuku)
 
-Il progetto include anche un'applicazione nativa Android in Kotlin situata nella directory [android-app](file:///C:/Users/mdeangelis/Downloads/s24app/android-app). Questa applicazione consente di:
-- Gestire e monitorare lo stato di ottimizzazione direttamente dal dispositivo.
-- Eseguire i comandi ADB locali senza necessità di connettere il telefono a un PC, sfruttando l'API fornita dall'applicazione **Shizuku**.
+The project includes a native Android application in Kotlin located in [android-app](file:///C:/Users/mdeangelis/Downloads/s24app/android-app). This app allows you to:
+- Monitor and manage optimization status directly from your phone.
+- Execute local ADB shell commands without connecting your device to a PC, leveraging the **Shizuku** application API.
+
+---
 
 ## ❓ FAQ
 
-**Perdo i dati?** No. `pm disable-user` solo nasconde le app. Con `s24-restore.bat` o `./s24-restore.sh` tornano come prima.
+**Will I lose data?** No. `pm disable-user` only hides apps. Run `s24-restore.bat` or `./s24-restore.sh` to get them back.
 
-**Google Pay / Wallet funziona?** Sì, a meno che non esegui `pm clear` su GMS.
+**Does Google Pay / Wallet work?** Yes, unless you run `pm clear` on GMS.
 
-**Samsung Pay?** Lo script non tocca `spayfw`. Se lo disabiliti manualmente, Samsung Wallet non funzionerà.
+**Samsung Pay?** The script does NOT touch `spayfw`. If you disable it manually, Samsung Wallet won't work.
 
-**Bixby non funziona più?** Corretto. Se ti serve Bixby, modifica lo script togliendo i pacchetti Bixby.
+**Bixby doesn't work anymore?** Correct. If you need Bixby, remove the Bixby packages from the script.
 
-**Hey Google / Gemini funziona?** Sì, preservato. L'unico assistente vocale disabilitato è Bixby.
+**Hey Google / Gemini works?** Yes, preserved. The only disabled voice assistant is Bixby.
 
-**Dopo il riavvio la batteria sembra peggiore?** Normale. Android sta ricalibrando le statistiche. Dai 1-2 cicli completi di carica/scarica.
+**Battery seems worse after reboot?** Normal. Android is recalibrating statistics. Give it 1-2 full charge cycles.
 
-## 🤝 Contribuire
+---
 
-PR benvenute. Idee:
-- Aggiungere modelli (S23, S22, S21, S20, Pixel)
-- Migliorare l'interfaccia dell'app Android Shizuku
+## 🤝 Contribute
 
-## 📜 Licenza
+PRs welcome. Ideas:
+- Add models (S23, S22, S21, S20, Pixel)
+- Improve the Shizuku Android app user interface
 
-MIT — usa, modifica, condividi.
+---
 
+## 📜 License
+
+MIT — use, modify, share.
