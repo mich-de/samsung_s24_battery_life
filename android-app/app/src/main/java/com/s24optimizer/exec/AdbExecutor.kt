@@ -17,10 +17,11 @@ class AdbExecutor private constructor() :
     }
 
     @Volatile
-    var permissionsGranted = false
-        private set
+    private var _permissionsGranted = false
 
-    val isConnected: Boolean get() = permissionsGranted
+    val permissionsGranted: Boolean get() = isConnected && _permissionsGranted
+
+    val isConnected: Boolean get() = Shizuku.pingBinder()
 
     private fun init() {
         Shizuku.addRequestPermissionResultListener(this)
@@ -43,7 +44,7 @@ class AdbExecutor private constructor() :
             // Bypass checkSelfPermission() — su Android 16 il provider di Shizuku Manager
             // richiede INTERACT_ACROSS_USERS_FULL che le app normali non hanno.
             // L'app è già autorizzata via shizuku.json flags=3 (granted).
-            permissionsGranted = true
+            _permissionsGranted = true
             Log.i("AdbExecutor", "Permissions bypassed (shizuku.json flags=3)")
         } else {
             Log.w("AdbExecutor", "Shizuku version too old: ${Shizuku.getVersion()}")
@@ -113,7 +114,7 @@ class AdbExecutor private constructor() :
     }
 
     override fun onRequestPermissionResult(requestCode: Int, grantResult: Int) {
-        permissionsGranted = grantResult == 0
+        _permissionsGranted = grantResult == 0
         Log.i("AdbExecutor", "Permission result: $grantResult, granted=$permissionsGranted")
     }
 }
