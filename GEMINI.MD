@@ -52,6 +52,14 @@
   - Updated language switcher links in both README files to point to each other.
   - Pushed the renamed and updated documentation to GitHub.
 
+## 2026-07-14 15:44 (Multilingual Expansion)
+- **Goal**: Expand documentation coverage to Spanish and Portuguese speakers.
+- **Actions Taken**:
+  - Translated the English README into Spanish ([README-ES.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-ES.md)) and Portuguese ([README-PT.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-PT.md)).
+  - Updated the language switcher menu at the top of all four README files to allow quick navigation between English, Spanish, Italian, and Portuguese.
+  - Synchronized file structures across all readmes and pushed to GitHub.
+
+
 
 
 

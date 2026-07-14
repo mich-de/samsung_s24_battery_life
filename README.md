@@ -1,6 +1,6 @@
 # S24 Battery Optimizer
 
-🌐 **English | [Italiano](README-IT.md)**
+🌐 **English | [Español](README-ES.md) | [Italiano](README-IT.md) | [Português](README-PT.md)**
 
 > **Restore your Galaxy S24 battery life** — disable bloatware, stop known drain bugs, and optimize system settings, **no root required**.
 
@@ -311,8 +311,10 @@ s24-battery-optimizer/
 │   └── s24-battery-optimizer.apk ← Native Android companion app (Kotlin)
 ├── android-app/                ← Source code for the companion app (Kotlin)
 │   └── ...                     (Uses Shizuku for local ADB commands)
-├── README.md                   ← English documentation
-└── README-IT.md                ← Italian documentation
+├── README.md                   ← English documentation (Default)
+├── README-ES.md                ← Spanish documentation
+├── README-IT.md                ← Italian documentation
+└── README-PT.md                ← Portuguese documentation
 ```
 
 ---
