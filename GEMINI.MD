@@ -38,4 +38,12 @@
   - Removed duplicate previous versions of `s24-optimize.bat`, `s24-restore.bat`, `s24-optimize.sh`, and `s24-restore.sh` from the root workspace directory.
   - Updated [README.MD](file:///C:/Users/mdeangelis/Downloads/s24app/README.MD) file structure overview and pushed the cleanup changes to GitHub.
 
+## 2026-07-14 15:41 (Bilingual README Setup)
+- **Goal**: Implement bilingual documentation (IT/EN) with a quick switch and update releases.
+- **Actions Taken**:
+  - Added a language switcher switch (`🌐 Italiano | English`) at the top of [README.md](file:///C:/Users/mdeangelis/Downloads/s24app/README.md) and [README-EN.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-EN.md).
+  - Synchronized and updated the file structure details inside [README-EN.md](file:///C:/Users/mdeangelis/Downloads/s24app/README-EN.md).
+  - Pushed all updates to GitHub.
+
+
 

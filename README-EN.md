@@ -1,5 +1,7 @@
 # S24 Battery Optimizer
 
+🌐 **[Italiano](README.md) | English**
+
 > **Restore your Galaxy S24 battery life** — disable bloatware, stop known drain bugs, and optimize system settings, **no root required**.
 
 ---
@@ -301,17 +303,31 @@ REM pm clear com.google.android.gms
 
 ```
 s24-battery-optimizer/
-├── s24-optimize.bat    ← Main script (RUN THIS)
-├── s24-restore.bat     ← Restore defaults
-├── README.md           ← Italian documentation
-├── README-EN.md        ← English documentation
+├── releases/                   ← Folder containing all executable files
+│   ├── s24-optimize.bat        ← Windows Batch script (main)
+│   ├── s24-restore.bat         ← Restore defaults for Windows
+│   ├── s24-optimize.sh         ← Unix/Linux Shell script (main)
+│   ├── s24-restore.sh          ← Restore defaults for Unix/Linux
+│   └── s24-battery-optimizer.apk ← Native Android companion app (Kotlin)
+├── android-app/                ← Source code for the companion app (Kotlin)
+│   └── ...                     (Uses Shizuku for local ADB commands)
+├── README.md                   ← Italian documentation
+└── README-EN.md                ← English documentation
 ```
+
+---
+
+## 📱 Android App (Shizuku)
+
+The project includes a native Android application in Kotlin located in [android-app](file:///C:/Users/mdeangelis/Downloads/s24app/android-app). This app allows you to:
+- Monitor and manage optimization status directly from your phone.
+- Execute local ADB shell commands without connecting your device to a PC, leveraging the **Shizuku** application API.
 
 ---
 
 ## ❓ FAQ
 
-**Will I lose data?** No. `pm disable-user` only hides apps. Run `s24-restore.bat` to get them back.
+**Will I lose data?** No. `pm disable-user` only hides apps. Run `s24-restore.bat` or `./s24-restore.sh` to get them back.
 
 **Does Google Pay / Wallet work?** Yes, unless you run `pm clear` on GMS.
 
@@ -329,8 +345,7 @@ s24-battery-optimizer/
 
 PRs welcome. Ideas:
 - Add models (S23, S22, S21, S20, Pixel)
-- Mac/Linux version (shell script)
-- Shizuku-based UI to run without PC
+- Improve the Shizuku Android app user interface
 
 ---
 
