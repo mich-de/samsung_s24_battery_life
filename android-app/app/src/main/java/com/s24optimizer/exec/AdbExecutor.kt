@@ -1,5 +1,6 @@
 package com.s24optimizer.exec
 
+import android.content.pm.PackageManager
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import moe.shizuku.server.IShizukuService
@@ -40,15 +41,19 @@ class AdbExecutor private constructor() :
 
     override fun onBinderReceived() {
         Log.i("AdbExecutor", "Shizuku binder received, version=${Shizuku.getVersion()}")
-        if (Shizuku.getVersion() >= 13) {
-            // Bypass checkSelfPermission() — su Android 16 il provider di Shizuku Manager
-            // richiede INTERACT_ACROSS_USERS_FULL che le app normali non hanno.
-            // L'app è già autorizzata via shizuku.json flags=3 (granted).
-            _permissionsGranted = true
-            Log.i("AdbExecutor", "Permissions bypassed (shizuku.json flags=3)")
-        } else {
-            Log.w("AdbExecutor", "Shizuku version too old: ${Shizuku.getVersion()}")
+        try {
+            if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
+                _permissionsGranted = true
+                Log.i("AdbExecutor", "Permission already granted")
+                return
+            }
+        } catch (e: SecurityException) {
+            // Android 16: checkSelfPermission() requires INTERACT_ACROSS_USERS_FULL
+            // shizuku.json flags=3 should auto-grant, requestPermission() triggers it
+            Log.i("AdbExecutor", "checkSelfPermission blocked (Android 16), requesting...")
         }
+        Shizuku.requestPermission(0)
+        Log.i("AdbExecutor", "Permission requested (id=0)")
     }
 
     data class ExecutionResult(

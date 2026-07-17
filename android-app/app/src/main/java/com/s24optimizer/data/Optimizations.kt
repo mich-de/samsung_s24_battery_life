@@ -32,11 +32,33 @@ object Optimizations {
             "Bixby Offline Language Models", "Modelli Linguistici Offline Bixby",
             "13 language packs (~300MB total). Only needed if you use Bixby Voice offline.",
             "13 pacchetti lingua (~300MB). Servono solo se usi Bixby Voice offline.",
-            (listOf("it","ar","es","pt","de","en","ru","ro","tr","zh","sv","pl")
-                .joinToString("; ") { "pm disable-user --user 0 com.samsung.android.bixby.ondevice.${it}it" }),
-            (listOf("it","ar","es","pt","de","en","ru","ro","tr","zh","sv","pl")
-                .joinToString("; ") { "pm enable com.samsung.android.bixby.ondevice.${it}it" }),
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.bixby.ondevice.iteit""""),
+            "pm disable-user --user 0 com.samsung.android.bixby.ondevice.arae; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.dede; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.enus; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.eses; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.esmx; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.itit; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.plpl; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.ptbr; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.roro; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.ruxx; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.svse; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.trtr; "
+                + "pm disable-user --user 0 com.samsung.android.bixby.ondevice.zhhk",
+            "pm enable com.samsung.android.bixby.ondevice.arae; "
+                + "pm enable com.samsung.android.bixby.ondevice.dede; "
+                + "pm enable com.samsung.android.bixby.ondevice.enus; "
+                + "pm enable com.samsung.android.bixby.ondevice.eses; "
+                + "pm enable com.samsung.android.bixby.ondevice.esmx; "
+                + "pm enable com.samsung.android.bixby.ondevice.itit; "
+                + "pm enable com.samsung.android.bixby.ondevice.plpl; "
+                + "pm enable com.samsung.android.bixby.ondevice.ptbr; "
+                + "pm enable com.samsung.android.bixby.ondevice.roro; "
+                + "pm enable com.samsung.android.bixby.ondevice.ruxx; "
+                + "pm enable com.samsung.android.bixby.ondevice.svse; "
+                + "pm enable com.samsung.android.bixby.ondevice.trtr; "
+                + "pm enable com.samsung.android.bixby.ondevice.zhhk",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.bixby.ondevice.itit""""),
 
         opt("vision_intel", Optimization.Category.BLOAT_SAMSUNG,
             "Vision Intelligence", "Intelligenza Visiva",
@@ -56,32 +78,32 @@ object Optimizations {
 
         opt("gos", Optimization.Category.BLOAT_SAMSUNG,
             "Game Optimizing Service (GOS)", "Game Optimizing Service (GOS)",
-            "Throttles CPU/GPU during gaming. May cause unnecessary background activity.",
-            "Limita CPU/GPU nei giochi. Può causare attività inutile in background.",
+            "Limits gaming performance to prevent overheating. Safe to disable: games may run faster but with higher battery/heat. No app or system features break.",
+            "Limita le prestazioni nei giochi per evitare surriscaldamento. Disabilitabile: i giochi girano più fluidi ma scaldano e consumano di più. Nessuna app o funzione si rompe.",
             "pm disable-user --user 0 com.samsung.android.game.gos",
             "pm enable com.samsung.android.game.gos",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.game.gos""""),
 
         opt("sam_daily", Optimization.Category.BLOAT_SAMSUNG,
             "Samsung Daily / Members", "Samsung Daily / Members",
-            "Side panel with news, offers, Samsung content. Also Samsung Customization Service — keeps Google Play Services awake on movement (Reddit 2026 fix).",
-            "Pannello laterale notizie, offerte, contenuti. Anche Samsung Customization Service — tiene sveglio Google Play Services in movimento (fix Reddit 2026).",
+            "Removes Samsung side panel (news/offers) AND Samsung Customization Service which keeps Play Services awake on movement. Loss: side panel, Samsung Members benefits. Gain: less standby drain.",
+            "Rimuove pannello laterale Samsung (notizie/offerte) E Customization Service che tiene sveglio Play Services in movimento. Perdi: pannello laterale, vantaggi Samsung Members. Guadagni: meno drain in standby.",
             "pm disable-user --user 0 com.samsung.android.rubin.app; pm revoke com.samsung.android.rubin.app android.permission.ACTIVITY_RECOGNITION",
             "pm enable com.samsung.android.rubin.app; pm grant com.samsung.android.rubin.app android.permission.ACTIVITY_RECOGNITION",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.rubin.app""""),
 
         opt("smart_suggest", Optimization.Category.BLOAT_SAMSUNG,
             "Smart Suggestions", "Suggerimenti Intelligenti",
-            "Contextual suggestions in keyboard and notification bar.",
-            "Suggerimenti contestuali in tastiera e barra notifiche.",
+            "Predictive app/text suggestions in keyboard, share sheet, and notification bar. Loss: app suggestions, smart copy-paste. Keyboard predictions unaffected.",
+            "Suggerimenti predittivi di app/testo in tastiera, menu condividi e barra notifiche. Perdi: suggerimenti app, copia-incolla intelligente. Predizioni tastiera non toccate.",
             "pm disable-user --user 0 com.samsung.android.smartsuggestions",
             "pm enable com.samsung.android.smartsuggestions",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.smartsuggestions""""),
 
         opt("aware", Optimization.Category.BLOAT_SAMSUNG,
             "Contextual Awareness", "Consapevolezza Contestuale",
-            "Detects driving/walking and suggests actions. Uses sensors in background.",
-            "Rileva guida/camminata e suggerisce azioni. Usa sensori in background.",
+            "Detects driving/walking using sensors (not GPS). Powers driving mode, walking focus. Loss: automatic driving/walking detection. Modes & Routines triggers for activity may stop.",
+            "Rileva guida/camminata usando sensori (non GPS). Alimenta modalità guida, focus camminata. Perdi: rilevamento automatico guida/camminata. Attivatori attività in Modalità e Routine potrebbero non funzionare.",
             "pm disable-user --user 0 com.samsung.android.aware.service",
             "pm enable com.samsung.android.aware.service",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.aware.service""""),
@@ -110,14 +132,6 @@ object Optimizations {
             "pm enable com.samsung.android.app.routines",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.app.routines""""),
 
-        opt("bixby_routine", Optimization.Category.BLOAT_SAMSUNG,
-            "Bixby Routines (old)", "Routine Bixby (vecchie)",
-            "Legacy Bixby Routines. Superseded by Modes & Routines.",
-            "Routine Bixby legacy. Sostituite da Modalità e Routine.",
-            "pm disable-user --user 0 com.samsung.android.app.settings.bixby",
-            "pm enable com.samsung.android.app.settings.bixby",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.app.settings.bixby""""),
-
         opt("live_effect", Optimization.Category.BLOAT_SAMSUNG,
             "Live Effect Service", "Servizio Effetti Live",
             "AR filters and beautification effects for photos/videos.",
@@ -128,16 +142,16 @@ object Optimizations {
 
         opt("one_connect", Optimization.Category.BLOAT_SAMSUNG,
             "Samsung One Connect", "Samsung One Connect",
-            "SmartThings / Samsung TV device management.",
-            "Gestione dispositivi SmartThings / TV Samsung.",
+            "SmartThings remote control for Samsung TVs, appliances, IoT devices. Loss: you cannot control smart home/TV from your phone. Use physical remotes instead.",
+            "Controllo remoto SmartThings per TV Samsung, elettrodomestici, IoT. Perdi: non puoi controllare smart home/TV dal telefono. Usa telecomandi fisici.",
             "pm disable-user --user 0 com.samsung.android.oneconnect",
             "pm enable com.samsung.android.oneconnect",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.oneconnect""""),
 
         opt("st_platform", Optimization.Category.BLOAT_SAMSUNG,
             "Samsung Pass / Security Platform", "Samsung Pass / Piattaforma Sicurezza",
-            "Samsung biometric authentication and credential manager.",
-            "Autenticazione biometrica e gestione credenziali Samsung.",
+            "Samsung Pass: biometric login to apps/sites, autofill passwords. Loss: Samsung Pass, biometric login to Samsung apps. Keep if you use Samsung Pass instead of Google Password Manager.",
+            "Samsung Pass: login biometrico a app/siti, autocompilazione password. Perdi: Samsung Pass, login biometrico app Samsung. Tienilo se usi Samsung Pass invece di Google Password Manager.",
             "pm disable-user --user 0 com.samsung.android.service.stplatform",
             "pm enable com.samsung.android.service.stplatform",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.service.stplatform""""),
@@ -160,8 +174,8 @@ object Optimizations {
 
         opt("buds_mgr", Optimization.Category.BLOAT_SAMSUNG,
             "Galaxy Buds/Watch Manager", "Gestore Galaxy Buds/Watch",
-            "Manages pairing, firmware, battery for Galaxy accessories.",
-            "Gestisce pairing, firmware, batteria per accessori Galaxy.",
+            "Manages Galaxy Buds, Watch, and accessories. WARNING: disabling breaks Galaxy Wearable app — no firmware updates, no battery readout, no Buds/Watch settings.",
+            "Gestisce Galaxy Buds, Watch e accessori. ATTENZIONE: disabilitarlo rompe l'app Galaxy Wearable — niente aggiornamenti firmware, niente lettura batteria, niente impostazioni Buds/Watch.",
             "pm disable-user --user 0 com.samsung.accessory.budsunitemgr",
             "pm enable com.samsung.accessory.budsunitemgr",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.accessory.budsunitemgr""""),
@@ -213,6 +227,37 @@ object Optimizations {
             "pm disable-user --user 0 com.samsung.android.knox.zt.framework",
             "pm enable com.samsung.android.knox.zt.framework",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.zt.framework""""),
+
+        opt("knox_matrix", Optimization.Category.BLOAT_SAMSUNG,
+            "Knox Matrix (battery fix)", "Knox Matrix (fix batteria)",
+            "Knox Matrix security suite — main battery drain after April 2026 update. Disables: knnr, kpecore, attestation, analytics.",
+            "Suite sicurezza Knox Matrix — principale causa drain batteria dopo aggiornamento Aprile 2026. Disabilita: knnr, kpecore, attestation, analytics.",
+            "pm disable-user --user 0 com.samsung.android.knox.knnr; "
+                + "appops set com.samsung.android.knox.knnr RUN_IN_BACKGROUND deny; "
+                + "appops set com.samsung.android.knox.knnr RUN_ANY_IN_BACKGROUND deny; "
+                + "appops set com.samsung.android.knox.knnr WAKE_LOCK deny; "
+                + "appops set com.samsung.android.knox.knnr START_FOREGROUND deny; "
+                + "am force-stop com.samsung.android.knox.knnr; "
+                + "pm disable-user --user 0 com.samsung.android.knox.kpecore; "
+                + "pm disable-user --user 0 com.samsung.android.knox.attestation; "
+                + "pm disable-user --user 0 com.samsung.android.knox.analytics.uploader",
+            "pm enable com.samsung.android.knox.knnr; "
+                + "appops set com.samsung.android.knox.knnr RUN_IN_BACKGROUND allow; "
+                + "appops set com.samsung.android.knox.knnr RUN_ANY_IN_BACKGROUND allow; "
+                + "appops set com.samsung.android.knox.knnr WAKE_LOCK allow; "
+                + "appops set com.samsung.android.knox.knnr START_FOREGROUND allow; "
+                + "pm enable com.samsung.android.knox.kpecore; "
+                + "pm enable com.samsung.android.knox.attestation; "
+                + "pm enable com.samsung.android.knox.analytics.uploader",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.knnr""""),
+
+        opt("samsung_pay", Optimization.Category.BLOAT_SAMSUNG,
+            "Samsung Pay", "Samsung Pay",
+            "Samsung's payment service. Uses Knox for NFC transactions. Safe to disable if you use Google Wallet or nothing.",
+            "Servizio pagamenti Samsung. Usa Knox per transazioni NFC. Disabilitabile se usi Google Wallet o niente.",
+            "pm disable-user --user 0 com.samsung.android.spayfw",
+            "pm enable com.samsung.android.spayfw",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.spayfw""""),
 
         // ── GOOGLE ──
         opt("g_photos", Optimization.Category.BLOAT_GOOGLE,
@@ -413,8 +458,8 @@ object Optimizations {
 
         opt("nearby_scan", Optimization.Category.SYSTEM,
             "Nearby Device Scanning", "Scansione Dispositivi Vicini",
-            "Samsung/Google device discovery (Chromecast, nearby devices).",
-            "Scoperta dispositivi Samsung/Google (Chromecast, dispositivi vicini).",
+            "Discovers Chromecast, nearby devices, and quick-pair accessories. Loss: automatic Chromecast discovery, Nearby Share may not find devices. Manual pairing still works.",
+            "Scopre Chromecast, dispositivi vicini e accessori quick-pair. Perdi: scoperta automatica Chromecast, Nearby Share potrebbe non trovare dispositivi. Pairing manuale funziona.",
             "settings put system nearby_scanning_enabled 0; settings put system nearby_scanning_permission_allowed 0",
             "settings put system nearby_scanning_enabled 1; settings put system nearby_scanning_permission_allowed 1",
             """settings get system nearby_scanning_enabled | grep -cFx "0""""),
@@ -475,13 +520,45 @@ object Optimizations {
             "settings put global window_animation_scale 1; settings put global transition_animation_scale 1; settings put global animator_duration_scale 1",
             """settings get global window_animation_scale | grep -cFx "0.5""""),
 
-        opt("ram_plus", Optimization.Category.SYSTEM,
+        opt("ram_plus_off", Optimization.Category.SYSTEM,
+            "RAM Plus Off", "RAM Plus Spento",
+            "Disables ZRAM swap entirely. Maximum battery saving but less multitasking.",
+            "Disabilita swap ZRAM completamente. Massimo risparmio batteria ma meno multitasking.",
+            "settings put global ram_expand_size 0",
+            "settings put global ram_expand_size 8192",
+            """settings get global ram_expand_size | grep -cFx "0""""),
+
+        opt("ram_plus_2gb", Optimization.Category.SYSTEM,
             "RAM Plus 2GB", "RAM Plus 2GB",
-            "Reduces ZRAM swap from 8GB to 2GB. Less I/O = less battery drain.",
-            "Riduce swap ZRAM da 8GB a 2GB. Meno I/O = meno batteria.",
+            "Sets ZRAM swap to 2GB. Good balance for light users.",
+            "Imposta swap ZRAM a 2GB. Buon bilanciamento per uso leggero.",
             "settings put global ram_expand_size 2048",
             "settings put global ram_expand_size 8192",
             """settings get global ram_expand_size | grep -cFx "2048""""),
+
+        opt("ram_plus_4gb", Optimization.Category.SYSTEM,
+            "RAM Plus 4GB", "RAM Plus 4GB",
+            "Sets ZRAM swap to 4GB. Balance between battery and multitasking.",
+            "Imposta swap ZRAM a 4GB. Bilanciamento tra batteria e multitasking.",
+            "settings put global ram_expand_size 4096",
+            "settings put global ram_expand_size 8192",
+            """settings get global ram_expand_size | grep -cFx "4096""""),
+
+        opt("ram_plus_6gb", Optimization.Category.SYSTEM,
+            "RAM Plus 6GB", "RAM Plus 6GB",
+            "Sets ZRAM swap to 6GB. Good for moderate multitasking.",
+            "Imposta swap ZRAM a 6GB. Buono per multitasking moderato.",
+            "settings put global ram_expand_size 6144",
+            "settings put global ram_expand_size 8192",
+            """settings get global ram_expand_size | grep -cFx "6144""""),
+
+        opt("ram_plus_8gb", Optimization.Category.SYSTEM,
+            "RAM Plus 8GB", "RAM Plus 8GB",
+            "Resets ZRAM swap to default 8GB. Maximum multitasking.",
+            "Ripristina swap ZRAM a 8GB default. Massimo multitasking.",
+            "settings put global ram_expand_size 8192",
+            "settings put global ram_expand_size 8192",
+            """settings get global ram_expand_size | grep -cFx "8192""""),
 
         opt("batt_protect", Optimization.Category.SYSTEM,
             "Battery Protection 80%", "Protezione Batteria 80%",
@@ -506,6 +583,148 @@ object Optimizations {
             "settings put secure refresh_rate_mode 1; settings put global pms_settings_refresh_rate_enabled 1",
             "settings put secure refresh_rate_mode 0; settings put global pms_settings_refresh_rate_enabled 0",
             """settings get secure refresh_rate_mode | grep -cFx "1""""),
+
+        // ── NEW: Display & UX ──
+        opt("fast_charge", Optimization.Category.SYSTEM,
+            "Adaptive Fast Charging", "Ricarica Rapida Adattiva",
+            "Enables faster wired charging when screen is off. Disabling may extend battery lifespan overnight.",
+            "Abilita ricarica più veloce via cavo a schermo spento. Disattivare può allungare la vita della batteria di notte.",
+            "settings put system adaptive_fast_charging 0",
+            "settings put system adaptive_fast_charging 1",
+            """settings get system adaptive_fast_charging | grep -cFx "0""""),
+
+        opt("extra_brightness", Optimization.Category.SYSTEM,
+            "Extra Brightness", "Luminosità Extra",
+            "Allows brightness above normal max. Consumes more battery. OFF saves power.",
+            "Permette luminosità oltre il massimo normale. Consuma più batteria. OFF risparmia energia.",
+            "settings put secure screen_extra_brightness 0",
+            "settings put secure screen_extra_brightness 1",
+            """settings get secure screen_extra_brightness | grep -cFx "0""""),
+
+        opt("auto_brightness_off", Optimization.Category.SYSTEM,
+            "Auto Brightness OFF", "Luminosità Automatica OFF",
+            "Disables auto brightness. Manual control saves sensor power but requires manual adjustment.",
+            "Disattiva luminosità automatica. Controllo manuale risparmia sensore ma richiede regolazione manuale.",
+            "settings put system auto_brightness 0",
+            "settings put system auto_brightness 1",
+            """settings get system auto_brightness | grep -cFx "0""""),
+
+        opt("battery_percent", Optimization.Category.SYSTEM,
+            "Show Battery Percentage", "Mostra Percentuale Batteria",
+            "Shows battery percentage inside the status bar icon.",
+            "Mostra percentuale batteria dentro l'icona della barra di stato.",
+            "settings put system display_battery_percentage 1",
+            "settings put system display_battery_percentage 0",
+            """settings get system display_battery_percentage | grep -cFx "1""""),
+
+        opt("dark_mode", Optimization.Category.SYSTEM,
+            "Dark Mode (permanent)", "Modalità Scura (permanente)",
+            "Forces dark mode at all times. AMOLED black pixels save battery on the display.",
+            "Forza modalità scura sempre. I pixel neri AMOLED risparmiano batteria sul display.",
+            "settings put secure ui_night_mode 1",
+            "settings put secure ui_night_mode 2",
+            """settings get secure ui_night_mode | grep -cFx "1""""),
+
+        opt("double_tap_wake", Optimization.Category.SYSTEM,
+            "Double Tap to Wake", "Doppio Tocco per Accendere",
+            "Wake screen by double-tapping. Convenient but uses touch digitizer standby power.",
+            "Accende schermo con doppio tocco. Comodo ma usa standby del digitizer.",
+            "settings put secure double_tap_to_wake 0",
+            "settings put secure double_tap_to_wake 1",
+            """settings get secure double_tap_to_wake | grep -cFx "0""""),
+
+        // ── NEW: Audio & Calls ──
+        opt("call_extra_vol", Optimization.Category.SYSTEM,
+            "Call Extra Volume OFF", "Volume Chiamata Extra OFF",
+            "Disables the extra loud call volume option. Slight speaker protection benefit.",
+            "Disattiva l'opzione volume extra in chiamata. Leggera protezione altoparlante.",
+            "settings put system call_extra_volume 0",
+            "settings put system call_extra_volume 1",
+            """settings get system call_extra_volume | grep -cFx "0""""),
+
+        opt("call_noise_off", Optimization.Category.SYSTEM,
+            "Call Noise Reduction OFF", "Riduzione Rumore OFF",
+            "Disables microphone noise suppression during calls. May improve battery during long calls.",
+            "Disattiva soppressione rumore microfono in chiamata. Può migliorare batteria in chiamate lunghe.",
+            "settings put system call_noise_reduction 0",
+            "settings put system call_noise_reduction 1",
+            """settings get system call_noise_reduction | grep -cFx "0""""),
+
+        opt("call_vib_off", Optimization.Category.SYSTEM,
+            "Call Connect/Vibrate OFF", "Vibrazione Chiamata OFF",
+            "Disables vibration on call connect and end. Saves a tiny amount of battery per call.",
+            "Disattiva vibrazione all'inizio e fine chiamata. Risparmio minimo per chiamata.",
+            "settings put system call_answer_vib 0; settings put system call_end_vib 0",
+            "settings put system call_answer_vib 1; settings put system call_end_vib 1",
+            """settings get system call_answer_vib | grep -cFx "0""""),
+
+        // ── NEW: Gestures & Navigation ──
+        opt("double_tap_sleep", Optimization.Category.SYSTEM,
+            "Double Tap to Sleep", "Doppio Tocco per Spegnere",
+            "Double-tap on home screen or lock screen to turn screen off.",
+            "Doppio tocco sulla schermata home o blocco per spegnere schermo.",
+            "settings put secure double_tap_to_sleep 1",
+            "settings put secure double_tap_to_sleep 0",
+            """settings get secure double_tap_to_sleep | grep -cFx "1""""),
+
+        opt("lift_wake_off", Optimization.Category.SYSTEM,
+            "Lift to Wake OFF", "Solleva per Accendere OFF",
+            "Disables screen-on when picking up the phone. Saves accelerometer-based battery drain.",
+            "Disattiva accensione schermo quando si solleva il telefono. Risparmia batteria dell'accelerometro.",
+            "settings put system lift_to_wake 0",
+            "settings put system lift_to_wake 1",
+            """settings get system lift_to_wake | grep -cFx "0""""),
+
+        opt("smart_stay_off", Optimization.Category.SYSTEM,
+            "Smart Stay (Eye Tracking) OFF", "Smart Stay (Tracciamento Occhi) OFF",
+            "Disables front camera eye tracking that keeps screen on while you look at it. Saves ~5% battery/day.",
+            "Disattiva tracciamento occhi fotocamera frontale. Risparmia ~5% batteria/giorno.",
+            "settings put system intelligent_sleep_mode 0",
+            "settings put system intelligent_sleep_mode 1",
+            """settings get system intelligent_sleep_mode | grep -cFx "0""""),
+
+        opt("one_handed_off", Optimization.Category.SYSTEM,
+            "One-Handed Mode OFF", "Modalità Una Mano OFF",
+            "Disables one-handed mode shortcut. Reduces accidental triggers and background service.",
+            "Disattiva scorciatoia modalità una mano. Riduce attivazioni accidentali e servizio in background.",
+            "settings put secure one_handed_mode_enabled 0",
+            "settings put secure one_handed_mode_enabled 1",
+            """settings get secure one_handed_mode_enabled | grep -cFx "0""""),
+
+        // ── NEW: Connectivity ──
+        opt("wifi_scan_throttle", Optimization.Category.SYSTEM,
+            "WiFi Scan Throttle", "Limite Scansione WiFi",
+            "Limits WiFi scan frequency. Reduces battery drain from constant network scanning.",
+            "Limita frequenza scansione WiFi. Riduce consumo batteria da scansione rete costante.",
+            "settings put global wifi_scan_throttle_enabled 1",
+            "settings put global wifi_scan_throttle_enabled 0",
+            """settings get global wifi_scan_throttle_enabled | grep -cFx "1""""),
+
+        opt("wifi_switch_off", Optimization.Category.SYSTEM,
+            "Auto WiFi Switch OFF", "Commuta WiFi Auto OFF",
+            "Disables automatic switching to better WiFi networks. Reduces background scanning.",
+            "Disattiva commutazione automatica a reti WiFi migliori. Riduce scansione in background.",
+            "settings put global wifi_switch_to_better_wifi_enabled 0; settings put global wifi_switch_to_mobile_data_ins 0",
+            "settings put global wifi_switch_to_better_wifi_enabled 1; settings put global wifi_switch_to_mobile_data_ins 1",
+            """settings get global wifi_switch_to_better_wifi_enabled | grep -cFx "0""""),
+
+        // ── NEW: Touch ──
+        opt("touch_sensitivity", Optimization.Category.SYSTEM,
+            "Touch Sensitivity (Low)", "Sensibilità Tocco (Bassa)",
+            "Reduces touch sensitivity. May prevent accidental touches. Slight digitizer power saving.",
+            "Riduce sensibilità tocco. Previene tocchi accidentali. Leggero risparmio digitizer.",
+            "settings put system auto_adjust_touch 0",
+            "settings put system auto_adjust_touch 1",
+            """settings get system auto_adjust_touch | grep -cFx "0""""),
+
+        // ── NEW: System ──
+        opt("auto_sync_off", Optimization.Category.SYSTEM,
+            "Auto Sync OFF", "Sincronizzazione Auto OFF",
+            "Disables automatic account sync. Saves significant battery. Apps won't refresh in background.",
+            "Disattiva sincronizzazione automatica account. Notevole risparmio batteria. App non si aggiornano in bg.",
+            "settings put global auto_sync 0",
+            "settings put global auto_sync 1",
+            """settings get global auto_sync | grep -cFx "0""""),
     )
 
     private fun opt(
