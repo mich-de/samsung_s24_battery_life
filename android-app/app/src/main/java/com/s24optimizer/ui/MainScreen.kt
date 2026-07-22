@@ -29,11 +29,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import android.content.Intent
 import com.s24optimizer.data.Optimization
 import com.s24optimizer.data.Optimizations
 import com.s24optimizer.data.Profile
 import com.s24optimizer.data.ProfileManager
 import com.s24optimizer.exec.AdbExecutor
+import com.s24optimizer.service.ScreenOffService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -146,28 +148,60 @@ fun MainScreen() {
             Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             // Build tab list: Quick Settings, categories, Logs
             val tabs = buildList {
-                add(t("Quick Settings", "Impostazioni Rapide"))
+                add(t("Quick", "Rapide"))
                 optimizations.keys.forEach { add(if (italian) it.labelIt else it.labelEn) }
                 add(t("Logs", "Log"))
             }
 
-            ScrollableTabRow(
-                selectedTabIndex = selectedTabIndex,
-                edgePadding = 0.dp,
-            ) {
-                tabs.forEachIndexed { index, label ->
-                    Tab(
-                        selected = selectedTabIndex == index,
-                        onClick = { selectedTabIndex = index },
-                        text = {
-                            Text(
-                                label,
-                                maxLines = 1,
-                                fontWeight = if (selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal,
-                            )
-                        },
-                    )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(
+                    onClick = { if (selectedTabIndex > 0) selectedTabIndex-- },
+                    modifier = Modifier.size(28.dp),
+                    enabled = selectedTabIndex > 0,
+                ) {
+                    Icon(Icons.Default.ChevronLeft, null, Modifier.size(18.dp), tint = if (selectedTabIndex > 0) ElectricBlue else OutlineDim)
                 }
+                Box(modifier = Modifier.weight(1f)) {
+                    PrimaryScrollableTabRow(
+                        selectedTabIndex = selectedTabIndex,
+                        edgePadding = 0.dp,
+                        divider = {},
+                    ) {
+                        tabs.forEachIndexed { index, label ->
+                            Tab(
+                                selected = selectedTabIndex == index,
+                                onClick = { selectedTabIndex = index },
+                                text = {
+                                    Text(
+                                        label,
+                                        maxLines = 1,
+                                        style = if (selectedTabIndex == index) MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold)
+                                            else MaterialTheme.typography.labelSmall,
+                                    )
+                                },
+                            )
+                        }
+                    }
+                }
+                IconButton(
+                    onClick = { if (selectedTabIndex < tabs.size - 1) selectedTabIndex++ },
+                    modifier = Modifier.size(28.dp),
+                    enabled = selectedTabIndex < tabs.size - 1,
+                ) {
+                    Icon(Icons.Default.ChevronRight, null, Modifier.size(18.dp), tint = if (selectedTabIndex < tabs.size - 1) ElectricBlue else OutlineDim)
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    "${selectedTabIndex + 1}/${tabs.size}",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = TextSecondary.copy(alpha = 0.5f),
+                )
             }
 
             val categoriesCount = optimizations.keys.size
@@ -194,6 +228,16 @@ fun MainScreen() {
                         title.contains(searchQuery, ignoreCase = true)
                     }
 
+                    if (cat == Optimization.Category.PER_APP_RR) {
+                        PerAppRRTab(
+                            italian = italian,
+                            executor = executor,
+                            appliedStates = appliedStates,
+                            onAppliedStatesChanged = { updated -> appliedStates = appliedStates + updated },
+                            onLog = { msg -> log += "$msg\n" },
+                            context = context,
+                        )
+                    } else {
                     // Category header
                     Box(
                         modifier = Modifier
@@ -224,44 +268,44 @@ fun MainScreen() {
                             HorizontalDivider(color = OutlineDim.copy(alpha = 0.4f))
                             Spacer(Modifier.height(12.dp))
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column {
-                                    Text(
-                                        (if (italian) "Selezionate: " else "Selected: ") +
-                                            "${selectedIds.size}/${opts.size}",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        fontWeight = FontWeight.Medium,
-                                        fontFamily = FontFamily.Monospace,
-                                    )
-                                    if (appliedCount > 0) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
                                         Text(
-                                            (if (italian) "Applicate: " else "Applied: ") + "$appliedCount",
-                                            style = MaterialTheme.typography.labelSmall,
+                                            (if (italian) "Selezionate: " else "Selected: ") +
+                                                "${selectedIds.size}/${opts.size}",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            fontWeight = FontWeight.Medium,
                                             fontFamily = FontFamily.Monospace,
-                                            color = NeonCyan,
                                         )
+                                        if (appliedCount > 0) {
+                                            Text(
+                                                (if (italian) "Applicate: " else "Applied: ") + "$appliedCount",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontFamily = FontFamily.Monospace,
+                                                color = NeonCyan,
+                                            )
+                                        }
+                                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        Button(
+                                            onClick = { selectedIds = opts.map { it.id }.toSet() },
+                                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                            colors = ButtonDefaults.buttonColors(containerColor = ElectricBlue.copy(alpha = 0.2f), contentColor = ElectricBlue),
+                                            shape = RoundedCornerShape(10.dp),
+                                        ) { Text(t("Select All", "Seleziona Tutte"), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace) }
+                                        OutlinedButton(
+                                            onClick = { selectedIds = emptySet() },
+                                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                            colors = ButtonDefaults.outlinedButtonColors(contentColor = TextSecondary),
+                                            border = BorderStroke(1.dp, OutlineDim.copy(alpha = 0.5f)),
+                                            shape = RoundedCornerShape(10.dp),
+                                        ) { Text(t("Clear", "Deseleziona"), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace) }
                                     }
                                 }
-                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Button(
-                                        onClick = { selectedIds = opts.map { it.id }.toSet() },
-                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                                        colors = ButtonDefaults.buttonColors(containerColor = ElectricBlue.copy(alpha = 0.2f), contentColor = ElectricBlue),
-                                        shape = RoundedCornerShape(10.dp),
-                                    ) { Text(t("Select All", "Seleziona Tutte"), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace) }
-                                    OutlinedButton(
-                                        onClick = { selectedIds = emptySet() },
-                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                                        colors = ButtonDefaults.outlinedButtonColors(contentColor = TextSecondary),
-                                        border = BorderStroke(1.dp, OutlineDim.copy(alpha = 0.5f)),
-                                        shape = RoundedCornerShape(10.dp),
-                                    ) { Text(t("Clear", "Deseleziona"), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace) }
-                                }
-                            }
 
                             Spacer(Modifier.height(8.dp))
 
@@ -283,6 +327,15 @@ fun MainScreen() {
                                                 if (!result.isSuccess) allOk = false
                                             }
                                             appliedStates = appliedStates + (opt.id to allOk)
+                                        }
+                                        val svcIds = setOf("screen_off_low_hz", "screen_off_psm", "screen_off_sync")
+                                        if (selectedIds.any { it in svcIds }) {
+                                            val svcIntent = Intent(context, ScreenOffService::class.java)
+                                            withContext(Dispatchers.Main) {
+                                                if (android.os.Build.VERSION.SDK_INT >= 26) context.startForegroundService(svcIntent)
+                                                else context.startService(svcIntent)
+                                                log += "\n[Screen-Off service started]\n"
+                                            }
                                         }
                                         withContext(Dispatchers.Main) { log += t("Done!", "Fatto!"); isRunning = false }
                                     }
@@ -321,6 +374,14 @@ fun MainScreen() {
                                             }
                                             appliedStates = appliedStates + (opt.id to false)
                                         }
+                                        val svcIds = setOf("screen_off_low_hz", "screen_off_psm", "screen_off_sync")
+                                        if (selectedIds.any { it in svcIds }) {
+                                            val remaining = ScreenOffService.getActiveFeatures(context)
+                                            if (remaining.isEmpty()) {
+                                                context.stopService(Intent(context, ScreenOffService::class.java))
+                                                withContext(Dispatchers.Main) { log += "\n[Screen-Off service stopped]\n" }
+                                            }
+                                        }
                                         withContext(Dispatchers.Main) { log += t("Done!", "Fatto!"); isRunning = false }
                                     }
                                 },
@@ -352,20 +413,55 @@ fun MainScreen() {
                     ),
                 )
 
-                // Optimization list
+                // Optimization list with sub-group headers
                 LazyColumn(modifier = Modifier.weight(1f).padding(top = 4.dp)) {
-                    items(filteredOpts) { opt ->
-                        OptimizationRow(
-                            opt = opt,
-                            selected = opt.id in selectedIds,
-                            applied = appliedStates[opt.id] ?: false,
-                            italian = italian,
-                            onToggle = {
-                                selectedIds = if (opt.id in selectedIds) selectedIds - opt.id else selectedIds + opt.id
-                            },
-                        )
+                    val boundaries = when (cat) {
+                        Optimization.Category.BLOAT -> listOf(0 to t("Samsung", "Samsung"), 27 to t("Google", "Google"), 35 to "Meta", 37 to t("Microsoft", "Microsoft"))
+                        Optimization.Category.MAINTENANCE -> listOf(0 to t("Resets", "Reset"), 2 to t("Background", "Background"), 4 to t("WhatsApp", "WhatsApp"))
+                        else -> emptyList()
+                    }
+                    val displayList = buildList {
+                        var lastGroup = ""
+                        for (item in filteredOpts) {
+                            val idx = opts.indexOf(item)
+                            val group = boundaries.lastOrNull { it.first <= idx }?.second ?: ""
+                            if (group != lastGroup && group.isNotEmpty()) {
+                                add(group)
+                                lastGroup = group
+                            }
+                            add(item)
+                        }
+                    }
+                    items(displayList) { entry ->
+                        when (entry) {
+                            is String -> Box(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(horizontal = 12.dp)
+                                    .padding(top = if (displayList.first() == entry) 4.dp else 12.dp, bottom = 2.dp)
+                            ) {
+                                Text(
+                                    entry,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = FontFamily.Monospace,
+                                    color = ElectricBlue.copy(alpha = 0.7f),
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                HorizontalDivider(color = OutlineDim.copy(alpha = 0.3f))
+                            }
+                            is Optimization -> OptimizationRow(
+                                opt = entry,
+                                selected = entry.id in selectedIds,
+                                applied = appliedStates[entry.id] ?: false,
+                                italian = italian,
+                                onToggle = {
+                                    selectedIds = if (entry.id in selectedIds) selectedIds - entry.id else selectedIds + entry.id
+                                },
+                            )
+                        }
                     }
                 }
+            }
             }
             }
 
@@ -467,6 +563,7 @@ fun MainScreen() {
                 italian = italian
             )
         }
+
     }
 }
 
@@ -544,6 +641,7 @@ fun OptimizationRow(
     italian: Boolean,
     onToggle: () -> Unit,
 ) {
+    var expanded by remember { mutableStateOf(false) }
     val rowBg = when {
         applied && selected -> ElectricBlue.copy(alpha = 0.1f)
         applied -> SurfaceElevated.copy(alpha = 0.8f)
@@ -568,9 +666,17 @@ fun OptimizationRow(
             .clickable(onClick = onToggle)
     ) {
         Row(
-            modifier = Modifier.padding(start = 16.dp, end = 4.dp, top = 12.dp, bottom = 12.dp),
+            modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 12.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val entryIcon = opt.icon ?: opt.category.icon()
+            Icon(
+                entryIcon,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = ElectricBlue,
+            )
+            Spacer(Modifier.width(10.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = if (italian) opt.titleIt else opt.titleEn,
@@ -583,8 +689,25 @@ fun OptimizationRow(
                     text = if (italian) opt.descIt else opt.descEn,
                     style = MaterialTheme.typography.bodySmall,
                     color = TextSecondary,
-                    maxLines = 2
+                    maxLines = if (expanded) Int.MAX_VALUE else 2
                 )
+                Spacer(Modifier.height(2.dp))
+                Row(modifier = Modifier.clickable { expanded = !expanded }) {
+                    Icon(
+                        if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = ElectricBlue.copy(alpha = 0.6f),
+                    )
+                    Spacer(Modifier.width(2.dp))
+                    Text(
+                        if (expanded) (if (italian) "Mostra meno" else "Show less")
+                        else (if (italian) "Mostra tutto" else "Show more"),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = ElectricBlue.copy(alpha = 0.6f),
+                        fontFamily = FontFamily.Monospace,
+                    )
+                }
             }
             Spacer(Modifier.width(4.dp))
             if (applied && opt.checkCommands.isNotEmpty()) {
