@@ -1,0 +1,291 @@
+{
+  "baseline": "12-agosto-2026 (prima scarica completa dopo i fix dell'11 agosto)",
+  "metodo": "adb 37.0.1 — dumpsys battery/batterystats (Statistics since last charge)/audio/deviceidle/netpolicy",
+  "dispositivo": {
+    "modello": "SM-S921B",
+    "serial": "<device-serial-redacted>",
+    "soc": "s5e9945 (Exynos 2400)",
+    "android": "16 (SDK 36)",
+    "one_ui": "8.5",
+    "primo_uso": "2024-03-27",
+    "eta_giorni_llb": 126
+  },
+  "salute_batteria": {
+    "asoc": 94,
+    "capacita_appresa_mah": 3900,
+    "capacita_rated_mah": 3880,
+    "battery_usage_cumulativo": 84669,
+    "full_status_duration": 108564,
+    "temp_max_storica_C": 58.1,
+    "verdetto": "invariata rispetto all'11 agosto — la cella non e' la causa",
+    "nota_protezione": "RISOLTO il 12 agosto: il telefono era in modalita' Base, non Massima. Vedi 'protezione_batteria'."
+  },
+  "protezione_batteria": {
+    "diagnosi": "Per settimane la protezione risultava 'impostata ma non applicata' perche' mProtectBatteryMode=3 era stato letto come 'Massima/80%'. E' sbagliato: 3 = Base.",
+    "mappatura_protect_battery_verificata_via_UI": {
+      "0": "Protezione disattivata",
+      "1": "Massima — la ricarica si arresta al livello impostato (slider 80/85/90/95%)",
+      "2": "rende la stessa schermata di 1 (Massima)",
+      "3": "Base — carica fino al 100%, non ricarica finche' non scende al 95%"
+    },
+    "metodo_verifica": "settings put global protect_battery <v> + screenshot di com.samsung.android.sm.ACTION_BATTERY_PROTECTION per leggere quale radio button risulta selezionato",
+    "prova_enforcement_modalita_1": "con protect_battery=1 a livello 99%: dumpsys battery -> status:4 (NOT_CHARGING), current now:-2, icona status bar da fulmine a scudo. La ricarica si ferma davvero.",
+    "nota_mFullCapacityEnable": "resta false anche con la protezione attiva e funzionante: e' il nodo sysfs batt_full_capacity, che Samsung arma solo quando il SOC e' <= soglia. NON e' un indicatore affidabile di 'protezione attiva'. Usare status/current.",
+    "chiavi_correlate": {
+      "battery_protection_threshold": 80,
+      "battery_protection_recharge_level": 95,
+      "battery_protection_default_value": 3
+    },
+    "protezione_durante_il_sonno": {
+      "descrizione_UI": "Interrompe la ricarica all'80% mentre dormite e completa la ricarica fino al 100% poco prima che vi svegliate.",
+      "visibile_solo_in": "modalita' Base (protect_battery=3)",
+      "stato": "NON attivabile — richiede il consenso al Servizio di personalizzazione (Samsung Rubin) per stimare la durata del sonno",
+      "blocco": "com.samsung.android.rubin.app e' installato ed enabled=1, ma user_setup_personalization_state=0 (consenso mai dato)",
+      "limite": "l'orario di ricarica non e' configurabile: Samsung stima 'poco prima del risveglio'",
+      "decisione_utente_12_agosto": "rifiutato Rubin, scelta la strada delle Routine Samsung a orari fissi; il 12 agosto la funzione e' stata poi implementata dentro s24optimizer (vedi 'routine_protezione_notturna.implementato_nell_app_12_agosto')"
+    },
+    "bug_app_corretto_12_agosto": {
+      "dove": "data/Optimizations.kt — batt_protect e le varianti 85/90/95",
+      "cosa_faceva": "scriveva 'battery_protection_default_value 3' + threshold e verificava solo il threshold: nessuna delle due chiavi arriva al caricabatterie, quindi l'app dichiarava 'applicata' mentre il telefono continuava a caricare fino al 100%",
+      "correzione": "apply = 'settings put global battery_protection_threshold <n>; settings put global protect_battery 1', revert = 'protect_battery 0', verifica su protect_battery E threshold",
+      "altre_correzioni": [
+        "BatteryTelemetry.Health: documentata la mappatura 0/1-2/3 e aggiunto protectCapped (solo Massima e' un tetto reale)",
+        "BatteryTelemetry: commento su mFullCapacityEnable aggiornato col significato ora noto (nodo sysfs batt_full_capacity, armato solo quando SOC <= soglia)",
+        "DiagnosticsScreen 'Limite ricarica': in Base non mostra piu' la soglia memorizzata come se fosse un tetto in vigore",
+        "Diagnostics: batt_held_at_full ora scatta solo in Base; nuovo conflitto batt_cap_not_enforced se in Massima la batteria sale sopra il tetto assorbendo corrente"
+      ]
+    }
+  },
+  "finestra_misurazione": {
+    "inizio": "2026-08-11 20:55:12",
+    "fine": "2026-08-12 10:05:25 (collegamento carica)",
+    "durata_su_batteria": "13h 10m 13s",
+    "livello": "100% -> 55%",
+    "schermo_acceso": "2h 53m 30s (22,0%), 69 accensioni",
+    "schermo_spento": "10h 16m 43s (78,0%)",
+    "screen_doze": "19m 0s",
+    "power_save_mode_attivo_pct": 72.2,
+    "refresh_rate": "low 2h 11m 59s / high 41m 31s",
+    "luminosita": "dim 76,0% / medium 14,1% / light 7,3% / dark 1,9% / bright 0,7% (tutto auto)",
+    "doze_full_idling": "8h 55m 51s (67,8%, 15x, piu' lungo 3h 04m 57s)",
+    "doze_light_idling": "37m 34s (4,8%, 9x)",
+    "connectivity_changes": 422,
+    "total_partial_wakelock": "1h 16m 41s",
+    "total_full_wakelock": "1h 25m 50s",
+    "wifi_multicast_wakelock": "8h 38m 24s (system 7h 35m + GMS 1h 03m — discovery mDNS/Cast)"
+  },
+  "drain_misurato": {
+    "totale_mah": 1769,
+    "schermo_spento_mah": 608,
+    "schermo_spento_mah_ora": 59.2,
+    "schermo_spento_pct_ora": 1.52,
+    "schermo_acceso_mah": 1161,
+    "schermo_acceso_mah_ora": 401,
+    "schermo_acceso_pct_ora": 10.3,
+    "screen_doze_mah": 54.6,
+    "deep_doze_mah": 561,
+    "target_normale_schermo_spento_mah_ora": "30-50",
+    "confronto": {
+      "13_luglio_mah_ora": 118,
+      "11_agosto_mah_ora": 107,
+      "12_agosto_mah_ora": 59.2,
+      "delta_vs_11_agosto_pct": -45
+    },
+    "verdetto": "miglioramento reale e sostanziale (-45% a schermo spento), ma ancora ~20% sopra il limite alto del target"
+  },
+  "consumo_globale_mah": {
+    "cpu": 760,
+    "mobile_radio": 443,
+    "screen": 277,
+    "audio": 146,
+    "wakelock": 49.0,
+    "video": 34.1,
+    "bluetooth": 27.4,
+    "wifi": 14.1,
+    "sensors": 9.95,
+    "ambient_display": 7.01,
+    "camera": 5.17,
+    "gnss": 1.91,
+    "computed_drain": 1680,
+    "actual_drain": 1680,
+    "ripartizione_schermo_spento": {
+      "mobile_radio": 320,
+      "cpu": 269,
+      "audio": 96.7,
+      "wakelock": 43.7,
+      "bluetooth": 14.3
+    }
+  },
+  "top_consumatori": [
+    { "uid": "u0a510", "app": "com.instagram.android", "mah": 690, "pct_drain": 41, "nota": "#1 assoluto. mobile_radio=335 (bg 261, schermo spento 247). 106,36 MB scaricati / 9,16 MB inviati. Radio attiva 48m 10s = 30,3% di tutta l'attivita' radio. bg 3h 47m, cached 2h 41m." },
+    { "uid": "1000",   "app": "system", "mah": 248, "nota": "cpu 204, wakelock 16.3 (21m 11s), multicast wakelock 7h 35m" },
+    { "uid": "u0a423", "app": "com.whatsapp", "mah": 203, "nota": "audio=135 di cui 122 in stato CACHED (5h 18m 32s) e 96,2 a schermo spento. Vedi anomalie." },
+    { "uid": "0",      "app": "kernel/root", "mah": 143 },
+    { "uid": "u0a279", "app": "com.google.android.gms", "mah": 54.3, "nota": "fgs 12h 21m continuo, mobile_radio 27.2" },
+    { "uid": "u0a497", "app": "com.huawei.health", "mah": 38.3, "nota": "era stata tolta dalla whitelist Doze l'11 agosto, si e' RE-INSERITA" },
+    { "uid": "u0a163", "app": "com.sec.android.app.launcher", "mah": 34.3, "nota": "quasi tutto screen=28.2, normale" },
+    { "uid": "u0a400", "app": "com.bumble.app", "mah": 29.2, "nota": "bg 6h 27m, mobile_radio 7.11" },
+    { "uid": "u0a354", "app": "workmanager/systemjob", "mah": 28.4 },
+    { "uid": "u0a588", "app": "com.s24optimizer", "mah": 12.8 }
+  ],
+  "anomalie_confermate": [
+    {
+      "id": "whatsapp-audiotrack-bloccata",
+      "gravita": "alta",
+      "descrizione": "AudioTrack tenuta attiva per 5h 21m 53s consecutivi mentre il processo era in stato 'cached', a schermo spento.",
+      "prova": [
+        "08-11 21:48:29.194  096  +audio +state=10423:\"audio\"",
+        "08-12 03:10:22.093  076  -audio -state=10423:\"audio\""
+      ],
+      "costo_mah": 96.2,
+      "quota_scarica_notturna_pct": 16,
+      "nota_storica": "A luglio e all'11 agosto questa ipotesi era stata SCARTATA perche' il timer audio risultava fermo su due campioni a 151s di distanza. Quella finestra era di soli 31 minuti e non conteneva un episodio. La coppia +audio/-audio del 12 agosto e' prova diretta.",
+      "secondo_episodio": "09:31:45 -> 10:00:47 (29m, livello 59->55) — potrebbe essere uso reale mattutino o un secondo blocco",
+      "mitigazione": "nessuna via adb senza rompere le chiamate VoIP (vincolo utente: com.whatsapp resta in whitelist Doze). Da monitorare."
+    },
+    {
+      "id": "instagram-prefetch-background",
+      "gravita": "alta",
+      "descrizione": "Prefetch continuo in background: 106,36 MB scaricati, 48m 10s di radio attiva, 247 mAh di radio a schermo spento.",
+      "worker_responsabili": [
+        "ClipsTabBackgroundPrefetchWorker",
+        "PendingMediaWorker",
+        "IgBgFetchSchedulerService",
+        "MediaScannerJobService (19s 459ms di wakelock)"
+      ],
+      "costo_mah": 247,
+      "quota_scarica_notturna_pct": 41
+    }
+  ],
+  "quota_due_cause": "Instagram (247 mAh) + WhatsApp audio (96,2 mAh) = 343 dei 608 mAh a schermo spento = 56%",
+  "radio": {
+    "mobile_active_time": "2h 38m 49s",
+    "mobile_active_5g_time": "0 ms",
+    "preferred_network_mode": "26,26 (invariato nel setting, ma il modem non ha MAI agganciato NR)",
+    "cellular_sleep_pct": 75.3,
+    "cellular_rx_time": "3h 05m 35s (23,5%)",
+    "lte_signal_strength_time": {
+      "great": "1h 34m 39s (59,6%)",
+      "good": "30m 44s (19,4%)",
+      "moderate": "12m 11s (7,7%)",
+      "poor": "57s (0,6%)"
+    },
+    "confronto_11_agosto": "l'11 agosto il telefono era a bordo cella (RSRP -110 dBm sostenuto, RSRQ -17, SINR 0). Stanotte il segnale e' stato 'great/good' per il 79% del tempo — il PA non ha dovuto trasmettere in alta potenza.",
+    "verdetto": "il problema radio dell'11 agosto era posizionale, non strutturale. Il 5G non e' piu' un fattore."
+  },
+  "impostazioni_verificate_12_agosto": {
+    "adaptive_battery_management_enabled": 0,
+    "low_power": 0,
+    "nota_low_power": "Battery Saver ora SPENTO. Nella finestra misurata era attivo il 72,2% del tempo, quindi il dato di 59 mAh/h e' parzialmente aiutato dal power save.",
+    "doze_whitelist_utente_prima_dei_fix": [
+      "com.huawei.health", "com.whatsapp", "com.samsung.android.simagent",
+      "com.s24optimizer", "com.samsung.android.app.find",
+      "app.revanced.manager.flutter", "com.samsung.android.samsungpositioning",
+      "com.samsung.android.ipsgeofence", "app.revanced.android.gms",
+      "com.azure.authenticator"
+    ]
+  },
+  "modifiche_applicate_12_agosto": {
+    "applicate_via_adb": [
+      "am set-standby-bucket com.instagram.android restricted",
+      "cmd netpolicy add restrict-background-blacklist 10510   # blocca dati mobili in background a Instagram",
+      "cmd appops set com.instagram.android RUN_ANY_IN_BACKGROUND deny",
+      "cmd deviceidle whitelist -com.huawei.health"
+    ],
+    "verifica_post_applicazione": {
+      "restrict_background_blacklist": "10510 presente",
+      "RUN_ANY_IN_BACKGROUND": "deny",
+      "huawei_health_in_whitelist": false,
+      "standby_bucket_instagram": "riporta ancora 5 (EXEMPTED) perche' il telefono e' in carica e l'app e' stata usata di recente; il bucket 'restricted' viene applicato una volta scollegato e a app inattiva"
+    },
+    "effetto_collaterale_da_sorvegliare": "RUN_ANY_IN_BACKGROUND=deny puo' ritardare o sopprimere le notifiche push di Instagram. Se e' un problema: cmd appops set com.instagram.android RUN_ANY_IN_BACKGROUND allow",
+    "reversibili_con": [
+      "cmd appops set com.instagram.android RUN_ANY_IN_BACKGROUND allow",
+      "cmd netpolicy remove restrict-background-blacklist 10510",
+      "am set-standby-bucket com.instagram.android active",
+      "cmd deviceidle whitelist +com.huawei.health"
+    ]
+  },
+  "da_fare_da_UI": [
+    "FATTO il 12 agosto: Programma Ricarica attivo 00:00->07:00 @ 80% (sostituisce le 2 Routine Samsung, vedi 'routine_protezione_notturna')",
+    "Attivare Opzioni sviluppatore > Debug wireless, poi in Shizuku 'Avvia tramite debug wireless' + 'Avvio all'accensione': e' l'unico modo perche' Shizuku sopravviva a un riavvio (il watchdog copre solo i crash a telefono acceso)",
+    "Dopo ogni riavvio del telefono, finche' il punto sopra non e' fatto: riavviare Shizuku a mano e rilanciare il watchdog (vedi 'routine_protezione_notturna.watchdog_shizuku_installato_12_agosto')",
+    "Valutare se riaccendere Battery Saver in modo permanente, oppure misurare una finestra intera senza per avere un dato non mascherato."
+  ],
+  "routine_protezione_notturna": {
+    "obiettivo_utente": "cap 80% durante la notte, ricarica al 100% 1 ora prima della sveglia (sveglia 08:00)",
+    "perche_non_il_toggle_nativo": "richiede il consenso a Samsung Rubin e l'orario non e' configurabile",
+    "routine_1": {
+      "nome": "Notte 80%",
+      "se": "Ora del giorno = 00:00, tutti i giorni",
+      "allora": "Protezione batteria = Massima, livello 80%",
+      "equivalente_adb": "settings put global protect_battery 1; settings put global battery_protection_threshold 80"
+    },
+    "routine_2": {
+      "nome": "Sveglia 100%",
+      "se": "Ora del giorno = 07:00, tutti i giorni",
+      "allora": "Protezione batteria = Base",
+      "equivalente_adb": "settings put global protect_battery 3"
+    },
+    "pacchetti_disponibili": ["com.samsung.android.app.routines", "com.samsung.android.app.routineplus"],
+    "azione_nativa": "com.samsung.android.lool/com.samsung.android.sm.routine.v3.actions.ui.RoutineProtectionBatteryActivity",
+    "nota": "le Routine non sono creabili via adb (database privato dell'app): vanno create dalla UI",
+    "implementato_nell_app_12_agosto": {
+      "dove": "s24optimizer > Home > Programma Ricarica",
+      "perche": "evita di dipendere dalle Routine Samsung e dal consenso a Rubin: i due orari sono espliciti e modificabili",
+      "come_funziona": "un solo allarme AlarmManager RTC_WAKEUP riarmato a ogni scatto sul confine successivo; a ogni risveglio ricalcola la fascia dall'orologio ed esegue i comandi via Shizuku",
+      "config_persistita_in": ["s24opt_charge_sched_enabled", "s24opt_charge_sched_night", "s24opt_charge_sched_day", "s24opt_charge_sched_cap"],
+      "default": "notte 00:00, giorno 07:00, tetto 80%",
+      "robustezza": "riarmato al boot da BootReceiver e a ogni avvio processo da SelfMaintenance; se SCHEDULE_EXACT_ALARM non e' concesso se lo auto-assegna con 'cmd appops set com.s24optimizer SCHEDULE_EXACT_ALARM allow', altrimenti ripiega su allarme inesatto",
+      "sorgente_di_verita": "rilegge protect_battery dal device prima di agire, non il proprio record: una modifica fatta a mano da One UI viene riallineata",
+      "spegnimento": "disattivando il programma, se il tetto era attivo viene rilasciato subito (protect_battery 3), per non lasciare il telefono a rifiutare la ricarica",
+      "avvertenza_dichiarata_in_UI": "Massima ferma la ricarica, non scarica: se all'ora del tetto il telefono e' gia' sopra la soglia ci resta"
+    },
+    "file_toccati": [
+      "android-app/app/src/main/java/com/s24optimizer/data/ChargeSchedule.kt (nuovo)",
+      "android-app/app/src/main/java/com/s24optimizer/service/ChargeScheduleReceiver.kt (nuovo)",
+      "android-app/app/src/main/java/com/s24optimizer/ui/screens/ChargeScheduleCard.kt (nuovo)",
+      "HomeScreen.kt, BootReceiver.kt, SelfMaintenance.kt, AndroidManifest.xml, Diagnostics.kt"
+    ],
+    "hardening_del_receiver_12_agosto": {
+      "sintomo": "l'allarme scattava e si riarmava correttamente, ma protect_battery non cambiava e shared_prefs/charge_schedule_state.xml non veniva mai creato",
+      "causa_1": "applyPhase() usciva subito su '!exec.permissionsGranted'. Se e' l'allarme stesso ad avviare il processo, il binder Shizuku arriva qualche istante dopo: al momento del confine il flag e' false anche con Shizuku perfettamente funzionante",
+      "fix_1": "awaitShizuku(): attesa a slice da 500ms fino a 12s su un CountDownLatch alimentato da AdbExecutor.onReady, ricontrollando anche permissionsGranted direttamente (un listener registrato durante un flush puo' essere scartato)",
+      "causa_2": "onReceive() ritornava subito dopo aver delegato al thread io, dichiarando il processo inattivo mentre il lavoro era ancora in corso",
+      "fix_2": "goAsync(): il broadcast resta aperto finche' la transizione non e' conclusa",
+      "verifica_live": "confine di test alle 12:12 del 12 agosto: 'Boundary reached' alle 12:12:00.023, 'Phase applied: day, full charge' alle 12:12:00.118, protect_battery 1 -> 3, riarmato per 2026-08-13 00:00"
+    },
+    "causa_reale_dei_primi_due_test_falliti": {
+      "scoperta": "il server privilegiato di Shizuku NON era in esecuzione: solo l'app manager (moe.shizuku.privileged.api) era viva, nessun processo 'shizuku_server' sotto uid shell",
+      "conseguenza": "tutte le funzioni dell'app che passano dal bridge shell erano morte in silenzio, non solo il programma di ricarica",
+      "come_verificarlo": "adb shell ps -A -o USER,PID,NAME | grep -i shizuku  --> deve comparire 'shell <pid> shizuku_server'",
+      "come_riavviarlo": "adb shell '/data/app/~~<hash>/moe.shizuku.privileged.api-<hash>/lib/arm64/libshizuku.so --apk=/data/app/~~<hash>/moe.shizuku.privileged.api-<hash>/base.apk' (i percorsi si ottengono con 'pm path moe.shizuku.privileged.api')",
+      "non_riparte_da_solo": "adb_wifi_enabled=0 (debug wireless spento) e il watchdog in /data/local/tmp/watchdog.log risulta 'Terminated' e punta a un percorso apk di un'installazione precedente, quindi non funzionerebbe comunque",
+      "implicazione": "dopo ogni riavvio del telefono Shizuku va riavviato a mano, altrimenti il programma di ricarica non scatta"
+    },
+    "watchdog_shizuku_installato_12_agosto": {
+      "file": "/data/local/tmp/shizuku_watchdog.sh (log in /data/local/tmp/shizuku_watchdog.log)",
+      "cosa_fa": "ogni 60s controlla 'pidof shizuku_server' e, se manca, riavvia il server risolvendo il percorso apk al momento con 'pm path' invece di tenerlo fisso: era proprio il percorso fisso a rendere inutile il watchdog precedente dopo un aggiornamento di Shizuku",
+      "avvio": "adb shell 'nohup setsid sh /data/local/tmp/shizuku_watchdog.sh >/dev/null 2>&1 </dev/null &'",
+      "verifica_live_12_agosto": "ucciso shizuku_server (pid 20227) alle 12:52:00; watchdog lo ha rifatto partire alle 12:52:54 con pid 11890 e lo ha registrato nel log",
+      "copre": "la morte del server a telefono acceso, che e' il guasto realmente osservato",
+      "NON_copre": "il riavvio del telefono: un processo uid shell non sopravvive al boot",
+      "cosa_manca_per_il_boot": "debug wireless + 'Avvio all'accensione' dentro l'app Shizuku. Non e' automatizzabile via adb: 'settings put global adb_wifi_enabled 1' viene accettato ma adbd non apre nessuna porta TLS (service.adb.tls.port resta vuoto), va attivato dallo switch in Opzioni sviluppatore e poi accoppiato dentro Shizuku. Flag rimesso a 0 per non lasciare uno stato incoerente"
+    },
+    "spostamento_del_tetto_alle_19_00": {
+      "perche": "il log 11-12 agosto mostra che la carica avviene la sera (19:13-20:55) e poi il telefono resta staccato tutta la notte: un tetto alle 00:00 non incontrerebbe mai una ricarica in corso e non farebbe nulla",
+      "conseguenza_accettata_dall_utente": "la carica serale si ferma all'80% invece che al 100%, quindi la giornata parte da meno riserva; il rilascio delle 07:00 riporta al 100% solo se il telefono e' effettivamente attaccato a quell'ora",
+      "config_finale": "night=1140 (19:00), day=420 (07:00), cap=80"
+    },
+    "stato_lasciato_il_12_agosto": "programma ATTIVO: enabled=1, night=1140 (19:00), day=420 (07:00), cap=80. protect_battery=3 (Base, fascia diurna corretta alle 12:54), threshold=80. Allarme RTC_WAKEUP esatto armato per 2026-08-12 19:00:00 con exactAllowReason=allow-listed. Shizuku server pid 11890, watchdog pid 11451"
+  },
+  "prossima_verifica": {
+    "cosa_guardare": [
+      "scarica a schermo spento: obiettivo <50 mAh/h (ora 59,2)",
+      "Instagram mobile_radio a schermo spento: obiettivo ~0 (ora 247 mAh)",
+      "presenza di una nuova coppia +audio/-audio lunga su uid 10423 (WhatsApp)",
+      "che com.huawei.health non sia rientrata in whitelist"
+    ],
+    "nota": "non serve 'dumpsys batterystats --reset': la sezione 'Statistics since last charge' riparte da sola al prossimo scollegamento dalla carica"
+  }
+}

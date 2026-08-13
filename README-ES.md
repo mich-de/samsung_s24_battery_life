@@ -1,0 +1,200 @@
+# S24 Battery Optimizer
+
+🌐 **[English](README.md) | Español | [Italiano](README-IT.md) | [Português](README-PT.md)**
+
+> **Restaura la duración de la batería de tu Galaxy S24** — deshabilita el bloatware, detiene los errores de drenaje conocidos y optimiza la configuración del sistema, **sin necesidad de root**.
+
+<p align="center">
+  <img src="current_android_screenshot.png" alt="S24 Battery Optimizer en Acción" width="300" />
+</p>
+
+---
+
+## 📋 Compatibilidad
+
+| Modelo | One UI / Android |
+|--------|------------------|
+| SM-S921B (S24 base) | One UI 7 / Android 16 (probado en Exynos, no probado en Snapdragon) |
+| SM-S926B (S24+) | One UI 7 / Android 16 (no probado) |
+| SM-S928B (S24 Ultra) | One UI 7 / Android 16 (no probado) |
+| Series S23, S22, S21 | One UI 5+ / Android 13+ (no probado) |
+
+---
+
+## 🔧 Qué hace
+
+### Bloatware deshabilitado (24 paquetes)
+
+| Aplicación | Paquete | Razón |
+|------------|---------|-------|
+| **Bixby Voice** | `bixby.agent` | Asistente siempre en escucha |
+| **Bixby Wakeup** | `bixby.wakeup` | Palabra clave "Hi Bixby" siempre activa |
+| **Bixby Vision** | `bixbyvision.framework` | Reconocimiento de IA en cámara |
+| **Vision Intelligence** | `visionintelligence` | Análisis de escenas por IA |
+| **Game Tools** | `game.gametools` | Panel de superposición de juegos |
+| **Game Optimizing** | `game.gos` | Limitación de CPU/GPU en segundo plano |
+| **Smart Suggestions** | `smartsuggestions` | Sugerencias contextuales |
+| **Aware Service** | `aware.service` | Detección de actividad física |
+| **BBC Agent** | `bbc.bbcagent` | Actualizaciones push de bloatware |
+| **Reminder** | `app.reminder` | Recordatorios de Samsung |
+| **Routines** | `app.routines` | Automatizaciones de Bixby |
+| **Routine Plus** | `app.routineplus` | Bloqueo Doze (drenaje confirmado) |
+| **Live Effect** | `liveeffectservice` | Efectos para videollamadas |
+| **OneConnect** | `oneconnect` | SmartThings Find (escaneo constante) |
+| **STPlatform** | `service.stplatform` | Plataforma segura Knox en segundo plano |
+| **Forest** | `forest` | Bienestar digital |
+| **Buds Manager** | `accessory.budsunitemgr` | Plugin de Galaxy Buds (si no se usan) |
+| **Rubin App** | `rubin.app` | Servicio de personalización (causa bucle en Play Services) |
+| **Facebook** | `facebook.katana` | Gran consumidor de batería |
+| **Messenger** | `facebook.orca` | Wakelocks y notificaciones constantes |
+| **Edge** | `microsoft.emmx` | Navegador de Microsoft redundante |
+| **Excel** | `office.excel` | Sincronización de Office en segundo plano |
+| **Word** | `office.word` | Sincronización de Office en segundo plano |
+| **Remote Desktop** | `rdc.androidx` | Cliente RDP redundante |
+
+### 🔄 Restablecimiento de Knox Matrix (5 paquetes)
+
+Restablece los servicios de Knox afectados por el **bucle de atestación de abril de 2026** (causa de uso continuo de CPU). `kpecore`, `attestation`, `pushmanager`, `containercore`, `analytics.uploader`.
+
+### ⚙️ Ajustes del sistema (23)
+
+| Categoría | Ajuste | Valor |
+|-----------|--------|-------|
+| **Batería** | Adaptive Battery | ON |
+| | App Auto Restriction | ON |
+| | Battery Saver | ON |
+| | Enhanced CPU Resp. | OFF |
+| | Enhanced Processing | OFF |
+| **Radio** | BLE Scan Always | OFF |
+| | Nearby Scanning | OFF |
+| | WiFi Power Save | ON |
+| | WiFi Wakeup | OFF |
+| | MCF Quick Share | OFF |
+| **Pantalla** | AOD / Always On | OFF |
+| | Screen Timeout | 30s |
+| | Lift to Wake | OFF |
+| | Smart Stay | OFF |
+| | Doze | ON |
+| **Rendimiento** | Animaciones | 0.5x |
+| | RAM Plus | 2 GB |
+| **Protección** | Carga máxima | 80% |
+
+### 🚫 Restricción de segundo plano (3 aplicaciones)
+
+`appops set RUN_ANY_IN_BACKGROUND deny` en:
+- **Instagram** — wakelocks continuos y sincronización
+- **WhatsApp** — 499 mAh en 8 horas de prueba (16% del total)
+- **Tandem** (editar nombre de paquete si es necesario)
+
+---
+
+## 📊 Resultados esperados
+
+### Prueba de descarga — Antes de la optimización
+
+```
+Duración:       8h 42m (80% → 19% = 61% usado)
+Capacidad:      3,114 mAh consumidos
+Promedio:       358 mA/h
+Vida estimada:  ~10.9h (uso mixto)
+
+Principales consumidores (mAh):
+  CPU                    1,252 (40%)
+  Pantalla                542 (17%)
+  Radio 5G                440 (14%)
+  WhatsApp                499 (16%)
+  Sistema                 386 (12%)
+  Instagram               314 (10%)
+  Google Play Services    288 (9%)
+  Kernel                  186 (6%)
+```
+
+### Después de la optimización (datos en recopilación)
+
+Reportes de la comunidad indican:
+- Reducción del **15-25%** en el drenaje en espera (standby).
+- **+2-4 horas** extra en uso mixto.
+- WhatsApp e Instagram ya no consumen en segundo plano.
+
+---
+
+## ⚡ Comandos ADB manuales (lo que la app no puede hacer)
+
+La app hace todo mediante Shizuku. Estos pasos manuales solo se necesitan una vez para la instalación:
+
+### Iniciar Shizuku (necesario para la app)
+
+```powershell
+# Via ADB (teléfono conectado a PC con USB Debugging):
+.\adb.exe shell sh /data/local/tmp/shizuku.dex
+```
+
+### Habilitar Wireless Debugging (alternativa a USB)
+
+```powershell
+# Pair con la app Shizuku:
+.\adb.exe shell settings put global development_settings_enabled 1
+```
+
+Todo lo demás — deshabilitar paquetes, cambiar ajustes, restringir apps en segundo plano — se hace dentro de la app.
+---
+
+## 📂 Estructura de archivos
+
+```
+s24-battery-optimizer/
+├── releases/                   ← Directorio con la app Android
+│   └── s24-battery-optimizer.apk ← Aplicación compañera para Android (Kotlin)
+├── android-app/                ← Código fuente de la aplicación Android
+│   └── ...                     (Usa Shizuku para comandos ADB locales)
+├── README.md                   ← Documentación en inglés (Predeterminada)
+└── README-IT.md                ← Documentación en italiano
+```
+
+---
+
+## 📱 Aplicación Android (Shizuku)
+
+El proyecto incluye una aplicación nativa para Android en Kotlin ubicada en [android-app](file:///C:/Users/mdeangelis/Downloads/s24app/android-app). Esta aplicación te permite:
+- Monitorear y gestionar el estado de optimización directamente desde tu teléfono.
+- Ejecutar comandos de shell de ADB locales sin conectar tu dispositivo a una PC, aprovechando la API de la aplicación **Shizuku**.
+
+### Cómo configurar Shizuku (Android 16 / One UI 7)
+
+Para ejecutar la aplicación complementaria de Android, debes configurar la última versión de Shizuku:
+
+1. **Descargar Shizuku**: 
+   Descarga e instala la última versión (**v13.6.0** o más reciente) directamente desde las [Releases de GitHub de Shizuku](https://github.com/RikkaApps/Shizuku/releases) para garantizar la compatibilidad con los cambios del framework de Android 16 QPR1.
+2. **Iniciar Shizuku**:
+   - Si inicias mediante PC, utiliza la nueva ruta de ejecución del binario nativo recomendada dentro de la aplicación Shizuku (ej. `adb shell /data/app/.../lib/arm64/libshizuku.so`).
+   - Si inicias mediante **Depuración inalámbrica**, utiliza el botón "Iniciar" en la aplicación Shizuku después del emparejamiento.
+3. **Autorizar la aplicación**:
+   Abre la aplicación Shizuku, ve a **Aplicaciones autorizadas** y habilita el interruptor para **S24 Battery Optimizer**.
+
+---
+
+## ❓ FAQ
+
+**¿Perderé datos?** No. `pm disable-user` solo oculta las aplicaciones. Puedes restaurarlas desde la app.
+
+**¿Funciona Google Pay / Wallet?** Sí, a menos que limpies los datos de GMS.
+
+**¿Funciona Samsung Pay?** La app no toca `spayfw`. Si lo deshabilitas manualmente, Samsung Wallet dejará de funcionar.
+
+**¿Bixby ya no funciona?** Correcto. Si necesitas Bixby, no deshabilites los paquetes de Bixby en la app.
+
+**¿Funciona Hey Google / Gemini?** Sí. El único asistente deshabilitado es Bixby.
+
+---
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Ideas:
+- Añadir modelos (S23, S22, S21, S20, Pixel)
+- Mejorar la interfaz de usuario de la app Android Shizuku
+
+---
+
+## 📜 Licencia
+
+MIT — usa, modifica y comparte de forma libre.

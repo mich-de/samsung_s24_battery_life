@@ -1,0 +1,208 @@
+{
+  "baseline": "11-agosto-2026 (diagnosi post One UI 8.5)",
+  "metodo": "adb 37.0.1 — dumpsys battery/batterystats/thermalservice/telephony.registry, /proc",
+  "dispositivo": {
+    "modello": "SM-S921B",
+    "serial": "<device-serial-redacted>",
+    "soc": "s5e9945 (Exynos 2400)",
+    "android": "16 (SDK 36)",
+    "one_ui": "8.5 (build prop 80500)",
+    "build": "BP4A.251205.006.S921BXXSGDZG1",
+    "patch_sicurezza": "2026-07-05",
+    "primo_uso": "2024-03-27",
+    "eta_settimane": 126
+  },
+  "salute_batteria": {
+    "asoc": 94,
+    "bsoh": 98,
+    "charge_counter_full_uah": 3897000,
+    "capacita_appresa_mah": 3900,
+    "capacita_rated_mah": 3880,
+    "capacita_typical_mah": 4000,
+    "battery_usage_cumulativo": 84619,
+    "full_status_duration": 108194,
+    "temp_max_storica_C": 58.1,
+    "corrente_max_storica_ma": 5230,
+    "verdetto": "cella in ottimo stato — NON e' la causa del drain",
+    "nota_protezione": "mProtectBatteryMode=3 (Massima/80%) ma mFullCapacityEnable=false e livello=100 -> il cap 80% NON e' attivo"
+  },
+  "finestra_misurazione": {
+    "inizio": "2026-08-11 11:39:32",
+    "durata_su_batteria": "31m 09s",
+    "schermo_acceso": "2m 46s (8.9%)",
+    "schermo_spento": "28m 23s (91.1%)",
+    "power_save_mode_attivo_pct": 100,
+    "refresh_rate": "low (60Hz)",
+    "luminosita": "dim 92% / dark 8%",
+    "doze_full_idling": "23m 39s (75.9%, 3x, piu' lungo 18m 21s)",
+    "connectivity_changes": 74,
+    "total_partial_wakelock": "5m 51s"
+  },
+  "drain_misurato": {
+    "schermo_spento_pct_ora": 2.75,
+    "schermo_spento_mah_ora": 107,
+    "schermo_spento_target_normale_mah_ora": "30-50",
+    "schermo_acceso_pct_ora": 15.2,
+    "confronto_13_luglio_mah_ora": 118,
+    "verdetto": "nessun miglioramento rispetto a luglio nonostante Battery Saver sempre ON e Doze funzionante"
+  },
+  "consumo_globale_mah": {
+    "cpu": 58.7,
+    "mobile_radio": 44.1,
+    "audio": 25.4,
+    "wakelock": 2.23,
+    "screen": 1.99,
+    "bluetooth": 1.81,
+    "sensors": 1.04,
+    "wifi": 0.688,
+    "gnss": 0.09,
+    "anomalia": "cpu/screen = 29x — su un telefono sano lo schermo e' il primo consumatore"
+  },
+  "top_consumatori": [
+    { "uid": "u0a423", "app": "com.whatsapp", "mah": 30.5, "nota": "audio 25.4 mAh su 1h06m22s = USO REALE (chiamate/note vocali), NON un leak. Verificato: il timer audio e' fermo a 50m18s052ms su due campioni a 151s di distanza." },
+    { "uid": "1000",   "app": "system",       "mah": 19.7 },
+    { "uid": "u0a279", "app": "com.google.android.gms", "mah": 11.2, "nota": "foreground service 55m 57s continuo" },
+    { "uid": "1073",   "app": "networkstack / tethering / cellbroadcast", "mah": 11.0 },
+    { "uid": "0",      "app": "kernel/root", "mah": 10.4 },
+    { "uid": "u0a510", "app": "com.instagram.android", "mah": 7.87, "nota": "background 28m 53s" },
+    { "uid": "u0a497", "app": "com.huawei.health", "mah": 4.52, "nota": "2 processi, 309 MB RSS, esente da Doze" },
+    { "uid": "u0a434", "app": "app.revanced.android.gms", "mah": 4.15 },
+    { "uid": "u0a290", "app": "com.google.android.googlequicksearchbox", "mah": 2.24, "nota": "fgs 56m 00s" },
+    { "uid": "u0a383", "app": "com.brave.browser", "mah": 2.12, "nota": "cached 1h 00m 56s, 4 processi ~580 MB" },
+    { "uid": "u0a586", "app": "com.mdeangelis.chatassist", "mah": 1.61, "nota": "fgs 26m 34s" },
+    { "uid": "u0a52",  "app": "systemui / routineplus / routines / aodservice", "mah": 1.53, "nota": "fgs 53m 36s" },
+    { "uid": "u0a389", "app": "com.facebook.katana", "mah": 0.988, "nota": "cached 33m 07s — RIATTIVATO dopo luglio" }
+  ],
+  "radio": {
+    "preferred_network_mode": "26,26 (NR/LTE/GSM/WCDMA)",
+    "configurazione": "eSIM only — slot fisico VUOTO",
+    "slot_fisico_0": {
+      "gsm_sim_state": "ABSENT",
+      "stato_servizio": "OUT_OF_SERVICE / NOT_REG_OR_SEARCHING",
+      "nota": "NOT_REG_OR_SEARCHING = non registrato E NON in ricerca. Slot vuoto e inattivo: NON e' una fonte di drain."
+    },
+    "esim_slot_1": {
+      "subId": 5,
+      "isEmbedded": 1,
+      "portIndex": 0,
+      "operatore": "VERY (MCC 222 / MNC 88)",
+      "tecnologia": "LTE banda 3",
+      "stato": "IN_SERVICE / HOME",
+      "dati": "IWLAN (WiFi calling) preferito — mIsIwlanPreferred=true"
+    },
+    "segnale_campionato_8x_su_2min": {
+      "rssi_dbm": -95,
+      "rsrp_dbm": -110,
+      "rsrq_db": -17,
+      "sinr_db": 0,
+      "stabilita": "costante su tutti gli 8 campioni",
+      "nota": "il valore -120 dBm/level 1 del primo dump era un calo momentaneo; il valore sostenuto e' -110 dBm",
+      "valutazione": "RSRP -110 = scarso (bordo cella), RSRQ -17 = scarso, SINR 0 = segnale pari al rumore"
+    },
+    "subscription_inattive_in_db": [
+      "Iliad (isEmbedded=0, simSlotIndex=-1)",
+      "FASTWEB (isEmbedded=0, simSlotIndex=-1)",
+      "I (isEmbedded=0, simSlotIndex=-1)",
+      "SCHEDA (isEmbedded=1, simSlotIndex=-1)"
+    ],
+    "nota_subscription_inattive": "record storici con simSlotIndex=-1: non attivi, nessun consumo",
+    "mobile_radio_active": "21s 450ms (15.2%) 3x @ 1192 mspp",
+    "impatto": "44.1 mAh (#2 consumatore) per mantenere l'attach LTE a bordo cella. Conferma termica: CP 45.7 C, PA 44.1 C."
+  },
+  "termico": {
+    "picchi_recenti_C": { "AP": 55.4, "CP_modem": 45.7, "PA_amplificatore": 44.1, "SKIN": 37.9, "BAT": 32.4 },
+    "attuale_C": { "AP": 28.3, "BAT": 27.6, "SKIN": 29.1 },
+    "thermal_status": 0
+  },
+  "memoria": {
+    "mem_total_kb": 7397292,
+    "mem_available_kb": 2515748,
+    "swap_total_kb": 6291452,
+    "swap_usato_kb": 2873632,
+    "ram_expand_size": 2048,
+    "verdetto": "OK — 2.5 GB disponibili, non c'e' pressione di memoria"
+  },
+  "load_average": {
+    "valori": [15.17, 15.80, 16.39],
+    "spiegazione": "16 thread TrustZone (tz_worker_thread/0-9, tz_iwsock, tzdev_iw_events_thread...) permanentemente in D-state per design",
+    "verdetto": "FALSO POSITIVO — baseline normale su Exynos, CPU realmente al 2.3% (977% idle su 1000%)"
+  },
+  "doze_whitelist_utente": [
+    "com.huawei.health",
+    "com.whatsapp",
+    "com.samsung.android.simagent",
+    "com.samsung.android.app.find",
+    "app.revanced.manager.flutter",
+    "com.samsung.android.samsungpositioning",
+    "com.samsung.android.ipsgeofence",
+    "app.revanced.android.gms",
+    "com.azure.authenticator"
+  ],
+  "impostazioni_correnti": {
+    "adaptive_battery_management_enabled": 1,
+    "app_auto_restriction_enabled": 1,
+    "low_power": 1,
+    "ble_scan_always_enabled": 0,
+    "wifi_wakeup_enabled": 0,
+    "always_on_display_enabled": 0,
+    "aod_mode": 0,
+    "adaptive_sleep": 1,
+    "window_animation_scale": 0.5,
+    "ram_expand_size": 2048
+  },
+  "regressioni_dal_14_luglio": {
+    "pacchetti_riabilitati": [
+      "com.facebook.katana",
+      "com.facebook.orca",
+      "com.google.android.apps.photos"
+    ],
+    "causa_probabile": "aggiornamento a One UI 8.5 (patch passata da 2026-06-05 a 2026-07-05) e/o update Play Store",
+    "pacchetti_disabilitati_totali": "82 su 717"
+  },
+  "conflitti_di_configurazione": [
+    "adaptive_battery_management_enabled=1 ma com.samsung.android.rubin.app DISABILITATO — Adaptive Battery senza motore dati",
+    "ble_scan_always_enabled=0 ma com.huawei.health attiva ed esente da Doze — loop di retry BLE",
+    "com.whatsapp e com.huawei.health in whitelist Doze — sono il consumatore #1 e #7",
+    "low_power=1 permanente — maschera il problema e impedisce misurazioni pulite",
+    "protezione batteria 80% impostata ma non attiva (carica al 100%)"
+  ],
+  "finestra_2_uso_attivo": {
+    "orario": "~14:00-15:20, uso reale del telefono",
+    "nota": "finestra piu' rappresentativa della prima (che aveva solo 2m46s di schermo acceso su 31m)",
+    "globale_mah": { "cpu": 113, "mobile_radio": 33.2, "screen": 27.0, "audio": 19.4 },
+    "rapporto_cpu_screen": "4.2x (non 29x come nella finestra 1 — quel valore era un artefatto della finestra povera di schermo)",
+    "top": [
+      { "uid": "u0a510", "app": "com.instagram.android", "mah": 47.8, "nota": "#1 assoluto. Reels: AudioTrack creato e rilasciato ogni 1-4s in modo continuo." },
+      { "uid": "u0a423", "app": "com.whatsapp", "mah": 27.2 }
+    ]
+  },
+  "causa_principale": "Non e' la batteria (94% ASOC / 98% BSOH, 3900 mAh reali). Le cause reali, in ordine: (1) Instagram/Reels = consumatore #1 assoluto, (2) eSIM VERY attaccata a bordo cella (RSRP -110 dBm sostenuto, RSRQ -17, SINR 0) con 5G abilitato -> PA in trasmissione alta, CP 45.7 C / PA 44.1 C, (3) foreground service permanenti GMS 55m57s / GoogleQuickSearch 56m00s / SystemUI 53m36s su 66m di runtime, (4) conflitti di configurazione introdotti dall'ottimizzazione di luglio, (5) regressioni dell'update a One UI 8.5.",
+  "ipotesi_scartate": [
+    "batteria degradata — smentita da ASOC 94 / BSOH 98 / 3900 mAh appresi",
+    "pressione di memoria — smentita da MemAvailable 2.5 GB",
+    "load average 16 = I/O bloccante — smentita: sono 16 thread TrustZone in D-state by design, CPU reale al 2.3%",
+    "seconda SIM in scansione perpetua — smentita: slot fisico ABSENT, e NOT_REG_OR_SEARCHING significa non registrato E NON in ricerca",
+    "audio leak di WhatsApp — SMENTITA: timer audio identico (50m18s052ms) su due campioni a 151s di distanza. Era uso reale.",
+    "CPU 29x lo schermo — artefatto: finestra di 31m con solo 2m46s di schermo. In uso reale il rapporto e' 4.2x."
+  ],
+  "modifiche_applicate_11_agosto": {
+    "vincolo_utente": "le chiamate WhatsApp devono continuare a funzionare -> com.whatsapp RESTA in whitelist Doze",
+    "applicate_via_adb": [
+      "cmd deviceidle whitelist -com.huawei.health",
+      "pm disable-user --user 0 com.facebook.katana",
+      "pm disable-user --user 0 com.facebook.orca",
+      "pm disable-user --user 0 com.google.android.apps.photos",
+      "settings put global adaptive_battery_management_enabled 0 (Rubin resta disabilitato: risolve il conflitto)",
+      "dumpsys batterystats --reset"
+    ],
+    "da_fare_da_UI": [
+      "Modalita' di rete -> LTE/3G/2G (disattiva ricerca 5G a bordo cella)",
+      "Protezione batteria 80%: impostata ma inattiva (mFullCapacityEnable=false)"
+    ],
+    "reversibili_con": [
+      "cmd deviceidle whitelist +com.huawei.health",
+      "pm enable <pkg>",
+      "settings put global adaptive_battery_management_enabled 1"
+    ]
+  }
+}
