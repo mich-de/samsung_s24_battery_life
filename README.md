@@ -14,9 +14,9 @@
 
 | Model | One UI / Android |
 |-------|------------------|
-| SM-S921B (S24 base) | One UI 8.5 / Android 16 (tested on Exynos) |
-| SM-S926B (S24+) | One UI 8.5 / Android 16 (untested) |
-| SM-S928B (S24 Ultra) | One UI 8.5 / Android 16 (untested) |
+| SM-S921B (S24 base) | One UI 8.5 / Android 16 & One UI 9.0 Beta / Android 17 (tested on Exynos) |
+| SM-S926B (S24+) | One UI 8.5 / Android 16 & One UI 9.0 Beta (untested) |
+| SM-S928B (S24 Ultra) | One UI 8.5 / Android 16 & One UI 9.0 Beta (untested) |
 | S23, S22, S21 series | One UI 5+ / Android 13+ (untested) |
 
 ---
@@ -30,7 +30,7 @@
 | **Bixby** | agent, wakeup, vision, visionintelligence, 13 language packs | Always-listening assistant + AI |
 | **Samsung Apps** | Game Tools, GOS, Smart Suggestions, Aware Service, BBC Agent, Reminder, Routines, Routine Plus, Live Effect, OneConnect, STPlatform, Forest, Buds Manager, Rubin App, My Galaxy, Samsung Health | Bloat + background drain |
 | **Knox** | kpecore, attestation, pushmanager, container, analytics, zt framework | April 2026 attestation loop bug |
-| **App Update Center** | updatecenter, scpm, statsd, lool | Pushes "Experience" app recommendations + telemetry |
+| **App Update Center** | updatecenter, scpm, statsd | Pushes "Experience" app recommendations + telemetry |
 | **Samsung Pay** | spayfw | Payment service (Google Wallet unaffected) |
 | **Google** | Messages, Docs, Chromecast, Feedback, Supervision | Unused services |
 | **Facebook/Meta** | Facebook, Messenger | Social battery drain |
@@ -113,12 +113,20 @@ Latest release: **[v2.3](https://github.com/mich-de/samsung_s24_battery_life/rel
 New bloatware found after the S921BXXSGDZG1 OTA (July 27, 2026) that were pushing "Experience" app install recommendations:
 
 - **App Update Center** — pushes "Experience" app installs after OTA
-- **Device Protection / lool** — background scoring process
+- ~~**Device Protection / lool**~~ — withdrawn on 14 August. `lool` owns the `com.samsung.android.sm.dcapi` provider that system_server calls when Sleep mode changes the power saving mode; disabled, it crashed system_server in a loop until RescueParty rebooted the phone and rolled back the settings this app had written. Do not re-add.
 - **Smart Contextual Platform (scpm)** — usage pattern analytics
 - **Samsung Analytics (statsd)** — telemetry collection
 - **Theme Designer, Share Live, Easy Setup, SmartThings Find, Galaxy App Booster**
 
 New system toggles: **Samsung Error Reports OFF**, **Samsung HQM Telemetry OFF**
+
+### Scheduled Restart
+
+A weekly (or daily) reboot at a time you pick, driven by an alarm and `svc power reboot` — Samsung's own "Auto restart" is off and its UI is disabled from the factory on this device. It only fires while the phone is idle: screen off, charging, above 30%, no call in progress. Any condition not met and it retries every 15 minutes for up to 2 hours, then waits for the next day. A notification gives 60 seconds of warning with **Cancel**.
+
+Reboots done this way are tagged: `getprop ro.boot.bootreason` reads `reboot,s24opt_scheduled`, so they stay distinguishable from a crash-driven `reboot,rescueparty`.
+
+⚠️ **Every reboot kills Shizuku** (its server runs as the shell user and cannot survive a boot), so everything that depends on it — the charge schedule included — stays frozen until Shizuku is started again. Weekly is safer than nightly until Shizuku starts on boot by itself.
 
 ### v1.1 — UI Redesign
 

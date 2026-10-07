@@ -13,6 +13,7 @@ This project contains PowerShell, Shell, and Batch scripts alongside a companion
 - **s24-battery-revert.ps1**: Revert script to restore default settings and re-enable packages.
 - **s24-optimize.bat** / **s24-restore.bat**: Windows Batch scripts for basic automation and recovery.
 - **s24-optimize.sh** / **s24-restore.sh**: Unix Shell scripts (macOS/Linux) equivalent to the batch versions for cross-platform automation.
+- **auto_fota_retry.py**: Automated daemon to monitor Samsung FOTA updates over ADB, automatically handling TCP/HTTP 503 interruptions and resuming partial downloads (HTTP 206) without manual intervention.
 - **Companion App**: Kotlin-based Gradle project utilizing local system services to view or manage status.
 
 ## 3. Implementation Phases
