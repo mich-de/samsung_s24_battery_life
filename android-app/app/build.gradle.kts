@@ -11,8 +11,8 @@ android {
         applicationId = "com.s24optimizer"
         minSdk = 28
         targetSdk = 36
-        versionCode = 5
-        versionName = "2.5"
+        versionCode = 6
+        versionName = "2.6"
     }
 
     buildTypes {

@@ -203,9 +203,9 @@ object Optimizations {
             "Samsung Members / My Galaxy", "Samsung Members / My Galaxy",
             "Support, offers, Samsung community. Marketing bloatware.",
             "Supporto, offerte, community Samsung. Bloatware marketing.",
-            "pm disable-user --user 0 com.mygalaxy.service",
-            "pm enable com.mygalaxy.service",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.mygalaxy.service"""",
+            "appops set com.mygalaxy.service RUN_IN_BACKGROUND deny; appops set com.mygalaxy.service RUN_ANY_IN_BACKGROUND deny; appops set com.mygalaxy.service WAKE_LOCK deny; cmd appops set com.mygalaxy.service START_FOREGROUND deny; am force-stop com.mygalaxy.service",
+            "appops set com.mygalaxy.service RUN_IN_BACKGROUND allow; appops set com.mygalaxy.service RUN_ANY_IN_BACKGROUND allow; appops set com.mygalaxy.service WAKE_LOCK allow; cmd appops set com.mygalaxy.service START_FOREGROUND allow",
+            """appops get com.mygalaxy.service RUN_ANY_IN_BACKGROUND 2>/dev/null | grep -cF "deny"""",
             group = "Samsung Apps", groupIt = "App Samsung"),
 
         opt("buds_mgr", Optimization.Category.BLOAT,
@@ -257,48 +257,47 @@ object Optimizations {
             "Emergency Launcher", "Lanciatore Emergenza",
             "SOS launcher (5x power press → call 112). Keep if you travel!",
             "SOS emergenza (5x pressione → chiama 112). Tienilo se viaggi!",
-            "pm disable-user --user 0 com.sec.android.emergencylauncher",
-            "pm enable com.sec.android.emergencylauncher",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.sec.android.emergencylauncher"""",
+            "pm disable-user --user 0 com.samsung.android.emergency",
+            "pm enable com.samsung.android.emergency",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.emergency"""",
             group = "Samsung Apps", groupIt = "App Samsung"),
 
         opt("knox_zt", Optimization.Category.BLOAT,
             "Knox Zero Touch", "Knox Zero Touch",
             "Enterprise device management framework. Safe to disable for personal phones.",
             "Framework gestione aziendale. Sicuro disabilitare su telefoni personali.",
-            "pm disable-user --user 0 com.samsung.android.knox.zt.framework",
-            "pm enable com.samsung.android.knox.zt.framework",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.zt.framework"""",
+            "appops set com.samsung.android.knox.zt.framework RUN_IN_BACKGROUND deny; appops set com.samsung.android.knox.zt.framework RUN_ANY_IN_BACKGROUND deny; appops set com.samsung.android.knox.zt.framework WAKE_LOCK deny; cmd appops set com.samsung.android.knox.zt.framework START_FOREGROUND deny; am force-stop com.samsung.android.knox.zt.framework",
+            "appops set com.samsung.android.knox.zt.framework RUN_IN_BACKGROUND allow; appops set com.samsung.android.knox.zt.framework RUN_ANY_IN_BACKGROUND allow; appops set com.samsung.android.knox.zt.framework WAKE_LOCK allow; cmd appops set com.samsung.android.knox.zt.framework START_FOREGROUND allow",
+            """appops get com.samsung.android.knox.zt.framework RUN_ANY_IN_BACKGROUND 2>/dev/null | grep -cF "deny"""",
             group = "Knox & Telemetry", groupIt = "Knox e telemetria"),
 
         opt("knox_matrix", Optimization.Category.BLOAT,
             "Knox Matrix (battery fix)", "Knox Matrix (fix batteria)",
             "Knox Matrix security suite — main battery drain after April 2026 update. Disables: knnr, kpecore, attestation, analytics.",
             "Suite sicurezza Knox Matrix — principale causa drain batteria dopo aggiornamento Aprile 2026. Disabilita: knnr, kpecore, attestation, analytics.",
-            "pm disable-user --user 0 com.samsung.android.knox.knnr; "
-                + "appops set com.samsung.android.knox.knnr RUN_IN_BACKGROUND deny; "
+            "appops set com.samsung.android.knox.knnr RUN_IN_BACKGROUND deny; "
                 + "appops set com.samsung.android.knox.knnr RUN_ANY_IN_BACKGROUND deny; "
                 + "appops set com.samsung.android.knox.knnr WAKE_LOCK deny; "
-                + "appops set com.samsung.android.knox.knnr START_FOREGROUND deny; "
+                + "cmd appops set com.samsung.android.knox.knnr START_FOREGROUND deny; "
                 + "am force-stop com.samsung.android.knox.knnr; "
+                + "appops set com.samsung.android.knox.attestation RUN_IN_BACKGROUND deny; "
+                + "appops set com.samsung.android.knox.attestation RUN_ANY_IN_BACKGROUND deny; "
+                + "appops set com.samsung.android.knox.attestation WAKE_LOCK deny; "
+                + "cmd appops set com.samsung.android.knox.attestation START_FOREGROUND deny; "
+                + "am force-stop com.samsung.android.knox.attestation; "
                 + "pm disable-user --user 0 com.samsung.android.knox.kpecore; "
-                + "pm disable-user --user 0 com.samsung.android.knox.attestation; "
                 + "pm disable-user --user 0 com.samsung.android.knox.analytics.uploader",
-            "pm enable com.samsung.android.knox.knnr; "
-                + "appops set com.samsung.android.knox.knnr RUN_IN_BACKGROUND allow; "
+            "appops set com.samsung.android.knox.knnr RUN_IN_BACKGROUND allow; "
                 + "appops set com.samsung.android.knox.knnr RUN_ANY_IN_BACKGROUND allow; "
                 + "appops set com.samsung.android.knox.knnr WAKE_LOCK allow; "
-                + "appops set com.samsung.android.knox.knnr START_FOREGROUND allow; "
+                + "cmd appops set com.samsung.android.knox.knnr START_FOREGROUND allow; "
+                + "appops set com.samsung.android.knox.attestation RUN_IN_BACKGROUND allow; "
+                + "appops set com.samsung.android.knox.attestation RUN_ANY_IN_BACKGROUND allow; "
+                + "appops set com.samsung.android.knox.attestation WAKE_LOCK allow; "
+                + "cmd appops set com.samsung.android.knox.attestation START_FOREGROUND allow; "
                 + "pm enable com.samsung.android.knox.kpecore; "
-                + "pm enable com.samsung.android.knox.attestation; "
                 + "pm enable com.samsung.android.knox.analytics.uploader",
-            // All four, not just knnr. On this device the other three were disabled while
-            // knnr was still running, and a check reading one package reported that as the
-            // state of the whole entry.
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.knnr"; """
-                + """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.kpecore"; """
-                + """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.attestation"; """
-                + """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.analytics.uploader"""",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.knox.kpecore"""",
             group = "Knox & Telemetry", groupIt = "Knox e telemetria"),
 
         opt("samsung_pay", Optimization.Category.BLOAT,
@@ -323,9 +322,9 @@ object Optimizations {
             "Samsung Account", "Account Samsung",
             "Disables Samsung Account sign-in & sync. Lose: Samsung Cloud and Samsung Find. Gain: no Samsung sync wakeups. Use Google Account instead.",
             "Disabilita il login e sync dell'account Samsung. Perdi: Samsung Cloud e Trova Dispositivo Samsung. Guadagni: zero sincronizzazioni Samsung in background. Usa l'account Google.",
-            "pm disable-user --user 0 com.osp.app.signin",
-            "pm enable com.osp.app.signin",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.osp.app.signin"""",
+            "appops set com.osp.app.signin RUN_IN_BACKGROUND deny; appops set com.osp.app.signin RUN_ANY_IN_BACKGROUND deny; appops set com.osp.app.signin WAKE_LOCK deny; cmd appops set com.osp.app.signin START_FOREGROUND deny; am force-stop com.osp.app.signin",
+            "appops set com.osp.app.signin RUN_IN_BACKGROUND allow; appops set com.osp.app.signin RUN_ANY_IN_BACKGROUND allow; appops set com.osp.app.signin WAKE_LOCK allow; cmd appops set com.osp.app.signin START_FOREGROUND allow",
+            """appops get com.osp.app.signin RUN_ANY_IN_BACKGROUND 2>/dev/null | grep -cF "deny"""",
             group = "Samsung Apps", groupIt = "App Samsung"),
 
         opt("galaxy_store", Optimization.Category.BLOAT,
@@ -359,8 +358,8 @@ object Optimizations {
             "Samsung Weather", "Meteo Samsung",
             "Samsung weather widget with background GPS polling and advertisements. Use Google Weather.",
             "Widget meteo Samsung con tracciamento continuo GPS e pubblicità. Usa il meteo Google.",
-            "pm disable-user --user 0 com.sec.android.daemonapp; pm disable-user --user 0 com.samsung.android.weather",
-            "pm enable com.sec.android.daemonapp; pm enable com.samsung.android.weather",
+            "pm disable-user --user 0 com.sec.android.daemonapp",
+            "pm enable com.sec.android.daemonapp",
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.sec.android.daemonapp"""",
             group = "Samsung Apps", groupIt = "App Samsung"),
 
@@ -548,9 +547,9 @@ object Optimizations {
             "Google Family Link", "Google Family Link",
             "Parental controls. Keep if you use it for your children!",
             "Controllo parentale. Tienilo se lo usi per i figli!",
-            "pm disable-user --user 0 com.google.android.gms.supervision",
-            "pm enable com.google.android.gms.supervision",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.google.android.gms.supervision"""",
+            "appops set com.google.android.gms.supervision RUN_IN_BACKGROUND deny; appops set com.google.android.gms.supervision RUN_ANY_IN_BACKGROUND deny; appops set com.google.android.gms.supervision WAKE_LOCK deny; cmd appops set com.google.android.gms.supervision START_FOREGROUND deny; am force-stop com.google.android.gms.supervision",
+            "appops set com.google.android.gms.supervision RUN_IN_BACKGROUND allow; appops set com.google.android.gms.supervision RUN_ANY_IN_BACKGROUND allow; appops set com.google.android.gms.supervision WAKE_LOCK allow; cmd appops set com.google.android.gms.supervision START_FOREGROUND allow",
+            """appops get com.google.android.gms.supervision RUN_ANY_IN_BACKGROUND 2>/dev/null | grep -cF "deny"""",
             group = "Google"),
 
         // ── FACEBOOK ──

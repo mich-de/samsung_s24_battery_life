@@ -30,6 +30,7 @@
 - [x] [BACKEND] Research & audit UFS 4.0 storage performance, F2FS health, FSTRIM, and error logs (zero corruption found).
 - [x] [BACKEND] Execute cleanup and trigger hardware FSTRIM / idle maintenance optimization (freed 27 GB).
 - [x] [BACKEND] Build S24 Optimizer v2.5 APK (added 5G toggle, Zero Samsung Services, resolved Diagnostics conflicts, aligned battery thresholds, and cleaned applied_history).
+- [x] [BACKEND] Audit & fix failing optimization commands in v2.6: Samsung Account (`com.osp.app.signin`), Knox Matrix (`knnr`/`attestation`), Knox Zero Touch, My Galaxy, Family Link, Samsung Weather (removed non-existent package), Emergency Launcher (updated to `com.samsung.android.emergency`).
 - [ ] [BACKEND] Parse captured system properties or UI xml files to verify settings status.
 - [ ] [FRONTEND] Design mockups/UI features for the companion Android App (`android-app`).
 - [ ] [DEVOPS] Test `s24-battery-optimize.ps1` script changes on the device.
