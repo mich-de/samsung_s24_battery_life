@@ -14,6 +14,22 @@
 - [x] [DEVOPS] Track current_android_screenshot.png and embed it at the top of all language README files
 - [x] [DEVOPS] Mark other models (S24+, S24 Ultra, and S23/S22/S21 series) as untested in all language README files
 - [x] [DEVOPS] Document Shizuku v13.6.0+ setup and startup instructions for Android 16/One UI 7 in all language README files
+- [x] [BACKEND] Generate comprehensive pre-patch status report (baseline, battery health, drain, active tweaks) in `S24_Pre_Patch_Report_Agosto_2026.md`
+- [x] [BACKEND] Live audit post-patch state (verify patch level, check bloatware, netpolicy, Shizuku, alarms) & generate `S24_Post_Patch_Report_Agosto_2026.md`
+- [x] [DEVOPS] Download and install SamsungRegionOverride v4.0.0 via ADB on Galaxy S24 (`com.ritelt.regionoverride`).
+- [x] [DEVOPS] Reinforce Shizuku persistence: whitelist from Doze, allow background AppOps, and restart `/data/local/tmp/shizuku_watchdog.sh` (PID 22430).
+- [x] [DEVOPS] Initialize isolated Python venv (`.venv`) for tooling.
+- [x] [DEVOPS] Terminate legacy FOTA loop scripts (PID 3456) sending touches to device.
+- [x] [DEVOPS] Deploy USB Reverse HTTP Proxy (`usb_proxy.py`) via PC Ethernet tunnel (`adb reverse`).
+- [x] [BACKEND] One UI 9.0 Beta 1 (Android 17, Build ZZHL, 3.3 GB) download and flash completed successfully.
+- [x] [BACKEND] Live audit One UI 9 Beta state & generate comprehensive report in `S24_Post_OneUI9_Beta1_Report.md`.
+- [x] [DEVOPS] Reinforce Shizuku server (PID 25500) and watchdog (PID 25484) on Android 17.
+- [x] [BACKEND] NFC & Contactless Banking Compliance Audit: Knox 0x0, Green Verified Boot, Google Wallet HCE active.
+- [x] [BACKEND] Diagnose & fix display standby issue: disabled `stay_on_while_plugged_in` (was 15), verified 30s timeout to Dozing.
+- [x] [BACKEND] Audit & identify junk files, cache bloat, orphan media, and log dumps on Galaxy S24 via ADB.
+- [x] [BACKEND] Research & audit UFS 4.0 storage performance, F2FS health, FSTRIM, and error logs (zero corruption found).
+- [x] [BACKEND] Execute cleanup and trigger hardware FSTRIM / idle maintenance optimization (freed 27 GB).
+- [x] [BACKEND] Build S24 Optimizer v2.5 APK (added 5G toggle, Zero Samsung Services, resolved Diagnostics conflicts, aligned battery thresholds, and cleaned applied_history).
 - [ ] [BACKEND] Parse captured system properties or UI xml files to verify settings status.
 - [ ] [FRONTEND] Design mockups/UI features for the companion Android App (`android-app`).
 - [ ] [DEVOPS] Test `s24-battery-optimize.ps1` script changes on the device.

@@ -310,6 +310,87 @@ object Optimizations {
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.spayfw"""",
             group = "Samsung Apps", groupIt = "App Samsung"),
 
+        opt("samsung_pass", Optimization.Category.BLOAT,
+            "Samsung Pass", "Samsung Pass",
+            "Samsung password manager locked into Samsung Cloud. Safe to disable: use Google Password Manager or Bitwarden.",
+            "Gestore password proprietario di Samsung. Sicuro da disabilitare se usi Google Password Manager o Bitwarden.",
+            "pm disable-user --user 0 com.samsung.android.samsungpass; pm disable-user --user 0 com.samsung.android.samsungpassautofill",
+            "pm enable com.samsung.android.samsungpass; pm enable com.samsung.android.samsungpassautofill",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.samsungpass"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_account", Optimization.Category.BLOAT,
+            "Samsung Account", "Account Samsung",
+            "Disables Samsung Account sign-in & sync. Lose: Samsung Cloud and Samsung Find. Gain: no Samsung sync wakeups. Use Google Account instead.",
+            "Disabilita il login e sync dell'account Samsung. Perdi: Samsung Cloud e Trova Dispositivo Samsung. Guadagni: zero sincronizzazioni Samsung in background. Usa l'account Google.",
+            "pm disable-user --user 0 com.osp.app.signin",
+            "pm enable com.osp.app.signin",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.osp.app.signin"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("galaxy_store", Optimization.Category.BLOAT,
+            "Galaxy Store", "Galaxy Store",
+            "Samsung proprietary app store. Disabling stops background updates, marketing banners and app recommendations. Use Google Play Store.",
+            "Store applicazioni di Samsung. Disabilitandolo blocchi aggiornamenti in background, banner pubblicitari e app suggerite. Usa Google Play Store.",
+            "pm disable-user --user 0 com.sec.android.app.samsungapps",
+            "pm enable com.sec.android.app.samsungapps",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.sec.android.app.samsungapps"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_messages", Optimization.Category.BLOAT,
+            "Samsung Messages", "Messaggi Samsung",
+            "Samsung stock SMS app. Safe to disable: use Google Messages for full RCS and E2E encryption.",
+            "App SMS di serie Samsung. Sicuro da disabilitare: usa Google Messaggi per supporto completo RCS e crittografia.",
+            "pm disable-user --user 0 com.samsung.android.messaging",
+            "pm enable com.samsung.android.messaging",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.messaging"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_calendar", Optimization.Category.BLOAT,
+            "Samsung Calendar", "Calendario Samsung",
+            "Samsung stock Calendar app. Safe to disable: events sync directly to Google Calendar.",
+            "Calendario Samsung predefinito. Sicuro da disabilitare: gli eventi sincronizzano direttamente con Google Calendar.",
+            "pm disable-user --user 0 com.samsung.android.calendar",
+            "pm enable com.samsung.android.calendar",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.calendar"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_weather", Optimization.Category.BLOAT,
+            "Samsung Weather", "Meteo Samsung",
+            "Samsung weather widget with background GPS polling and advertisements. Use Google Weather.",
+            "Widget meteo Samsung con tracciamento continuo GPS e pubblicità. Usa il meteo Google.",
+            "pm disable-user --user 0 com.sec.android.daemonapp; pm disable-user --user 0 com.samsung.android.weather",
+            "pm enable com.sec.android.daemonapp; pm enable com.samsung.android.weather",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.sec.android.daemonapp"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_cloud", Optimization.Category.BLOAT,
+            "Samsung Cloud", "Samsung Cloud",
+            "Samsung proprietary cloud sync and visual cloud core. Use Google One / Google Drive.",
+            "Sincronizzazione cloud proprietaria Samsung e visual cloud core. Usa Google One / Google Drive.",
+            "pm disable-user --user 0 com.samsung.android.scloud; pm disable-user --user 0 com.samsung.android.visual.cloudcore",
+            "pm enable com.samsung.android.scloud; pm enable com.samsung.android.visual.cloudcore",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.scloud"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_continuity", Optimization.Category.BLOAT,
+            "Samsung Multi-Control", "Samsung Multi-Control",
+            "Samsung device continuity framework. Disabling stops background socket listeners.",
+            "Framework di continuita' tra dispositivi Samsung. Disabilitandolo blocchi socket aperti in background.",
+            "pm disable-user --user 0 com.samsung.android.mcfds",
+            "pm enable com.samsung.android.mcfds",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.mcfds"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
+        opt("samsung_notes", Optimization.Category.BLOAT,
+            "Samsung Notes", "Samsung Notes",
+            "Samsung proprietary notes app. Disabling removes closed database lock-in. Use Google Keep / Notion.",
+            "App note proprietaria Samsung. Disabilitandola eviti il lock-in proprietario. Usa Google Keep / Notion.",
+            "pm disable-user --user 0 com.samsung.android.app.notes",
+            "pm enable com.samsung.android.app.notes",
+            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.app.notes"""",
+            group = "Samsung Apps", groupIt = "App Samsung"),
+
         opt("app_update_center", Optimization.Category.BLOAT,
             "App Update Center", "Centro Aggiornamenti",
             "Pushes recommended app installations and updates. Behind 'Esperienza' suggestions after system updates.",
@@ -319,14 +400,22 @@ object Optimizations {
             """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.app.updatecenter"""",
             group = "Samsung Apps", groupIt = "App Samsung"),
 
-        opt("device_protection", Optimization.Category.BLOAT,
-            "Device Protection (Score)", "Protezione Dispositivo",
-            "Background device scoring process. ⚠️ Disabling breaks battery settings page (empty).",
-            "Processo di punteggio dispositivo in background. ⚠️ Disabilitare rompe pagina impostazioni batteria (vuota).",
-            "pm disable-user --user 0 com.samsung.android.lool",
-            "pm enable com.samsung.android.lool",
-            """pm list packages -d 2>/dev/null | grep -cFx "package:com.samsung.android.lool"""",
-            group = "Knox & Telemetry", groupIt = "Knox e telemetria"),
+        // There is deliberately no entry for com.samsung.android.lool (Device Protection /
+        // Device Care) and there must not be one again. `lool` owns the content provider
+        // behind authority com.samsung.android.sm.dcapi, and system_server calls it from
+        // SleepModePolicyController every time Sleep mode switches the power saving mode. With
+        // the package disabled that call throws `IllegalArgumentException: Unknown authority`
+        // and takes system_server down with it. On 14-08 it fired at 02:00 and looped — five
+        // crashes, 02:00:00 / 02:05:12 / 02:07:37 / 02:10:33 / 02:13:37 — until RescueParty
+        // rebooted the phone at 02:14:49 (ro.boot.bootreason = reboot,rescueparty).
+        //
+        // The reboot is the mild half. RescueParty's remedy as it escalates is to roll back
+        // settings written by untrusted packages, and every key this app writes goes in
+        // through com.android.shell — so the entry's real failure mode was undoing the whole
+        // app, nightly, while the phone appeared to be idle in deep doze.
+        //
+        // Disabling `lool` only ever bought a background scoring process. Nothing on that side
+        // of the trade justifies re-adding it.
 
         opt("scpm", Optimization.Category.BLOAT,
             "Smart Contextual Platform", "Piattaforma Contestuale",
@@ -648,6 +737,15 @@ object Optimizations {
             """settings get global low_power | grep -cFx "1"""",
             group = "Battery", groupIt = "Batteria"),
 
+        opt("light_perf_profile", Optimization.Category.SYSTEM,
+            "Light Performance Profile ON", "Profilo Prestazioni Leggero ON",
+            "Ticked: S24 Performance Profile is set to Light. Caps peak SoC frequencies to lower heat and power consumption without sacrificing 120Hz LTPO display smoothness (Community Favorite).",
+            "Spuntato: Il profilo prestazioni dell'S24 è impostato su 'Leggero'. Abbassa le frequenze di picco del SoC riducendo calore e consumi senza intaccare la fluidità a 120Hz LTPO (Scelta consigliata dalla community).",
+            "settings put global sem_low_power_mode 1",
+            "settings put global sem_low_power_mode 0",
+            """settings get global sem_low_power_mode | grep -cFx "1"""",
+            group = "Battery", groupIt = "Batteria"),
+
         opt("cpu_resp", Optimization.Category.SYSTEM,
             "Enhanced CPU Responsiveness OFF", "Risposta CPU Migliorata OFF",
             "Ticked: the CPU is no longer held at a high frequency for touch and gestures. Note: this device already ships with it off, so the tick reflects the factory state rather than a change made here.",
@@ -667,13 +765,30 @@ object Optimizations {
             verified = false,
             group = "Battery", groupIt = "Batteria"),
 
+        // Not a `verified = false` case: the key is real — pkg:android, default:1, and the
+        // Bluetooth stack reads it. What it does not do is stay applied. `package:android`
+        // puts it back to 1 unprompted, twice on this device within days (08-15 06:25 → 0,
+        // 07:00 → 1; 08-19 03:46 → 0, 06:03 → 1). So the tick is truthful at the moment it
+        // is read and clears itself a few hours later, which the description has to say —
+        // otherwise the box looks like it failed to apply.
         opt("ble_scan", Optimization.Category.SYSTEM,
             "BLE Always-Scanning OFF", "Scansione BLE Continua OFF",
-            "Ticked: continuous Bluetooth Low Energy scanning is off. One of the larger standby savings.",
-            "Spuntato: la scansione Bluetooth Low Energy continua è disattivata. Uno dei risparmi maggiori in standby.",
+            "Ticked: continuous Bluetooth Low Energy scanning is off. One of the larger standby savings. Does not stay applied: the system turns it back on by itself after a few hours, so the tick will clear on its own and needs re-applying.",
+            "Spuntato: la scansione Bluetooth Low Energy continua è disattivata. Uno dei risparmi maggiori in standby. Non resta applicata: il sistema la riattiva da solo dopo qualche ora, quindi la spunta si azzera da sé e va riapplicata.",
             "settings put global ble_scan_always_enabled 0",
             "settings put global ble_scan_always_enabled 1",
             """settings get global ble_scan_always_enabled | grep -cFx "0"""",
+            selfHeals = true,
+            group = "Network", groupIt = "Rete"),
+
+        opt("nr_5g_off", Optimization.Category.SYSTEM,
+            "Disable 5G Scanning (LTE/3G/2G Only)", "Disabilita Scansione 5G (Solo LTE/3G/2G)",
+            "Ticked: 5G (NR) radio scanning is disabled, forcing the modem to LTE/3G/2G. Prevents massive RF power amplifier battery drain when in weak signal / cell edge areas.",
+            "Spuntato: la scansione 5G (NR) è disattivata, forzando il modem su LTE/3G/2G. Evita il forte consumo dell'amplificatore RF quando il segnale è debole o a bordo cella.",
+            "cmd phone set-allowed-network-types-for-users -s 0 01001111101111111111; cmd phone set-allowed-network-types-for-users -s 1 01001111101111111111",
+            "cmd phone set-allowed-network-types-for-users -s 0 11001111101111111111; cmd phone set-allowed-network-types-for-users -s 1 11001111101111111111",
+            """cmd phone get-allowed-network-types-for-users -s 0 2>/dev/null | grep -qv "NR" && echo 1 || echo 0""",
+            icon = Icons.Default.NetworkCheck,
             group = "Network", groupIt = "Rete"),
 
         opt("aod", Optimization.Category.SYSTEM,
@@ -719,6 +834,20 @@ object Optimizations {
             "settings put global window_animation_scale 0.5; settings put global transition_animation_scale 0.5; settings put global animator_duration_scale 0.5",
             "settings put global window_animation_scale 1; settings put global transition_animation_scale 1; settings put global animator_duration_scale 1",
             """settings get global window_animation_scale | grep -cFx "0.5"""",
+            group = "Display", groupIt = "Schermo"),
+
+        // The row the system reads lives in `global`, owned by com.samsung.android.lool
+        // with default:0. Writing the same name into `secure` does not fail — it silently
+        // creates a second row carrying no `default:` at all, the com.android.shell
+        // signature of a key nothing reads. Written to `global` the history records
+        // `mode:update oldValue:0 newValue:1`, i.e. the system's own row changing.
+        opt("reduce_transparency", Optimization.Category.SYSTEM,
+            "Reduce Transparency & Blur", "Riduci Trasparenza e Sfocatura",
+            "Ticked: One UI's frosted-glass panels render opaque instead of blurred, so the GPU stops recompositing the wallpaper behind every panel it draws. Targets one of the drains One UI 8.5 introduced with its glass styling.",
+            "Spuntato: i pannelli in vetro smerigliato di One UI sono opachi invece che sfocati, così la GPU smette di ricomporre lo sfondo dietro ogni pannello che disegna. Colpisce uno dei consumi introdotti da One UI 8.5 con lo stile vetro.",
+            "settings put global accessibility_reduce_transparency 1",
+            "settings put global accessibility_reduce_transparency 0",
+            """settings get global accessibility_reduce_transparency | grep -cFx "1"""",
             group = "Display", groupIt = "Schermo"),
 
         // protect_battery is the key that actually decides what happens: 0 = off,
@@ -904,13 +1033,18 @@ object Optimizations {
             """settings get global ram_expand_size | grep -cFx "0"""",
             group = "Battery", groupIt = "Batteria"),
 
+        // Not a Samsung key despite the old title: `dumpsys settings` attributes it to
+        // com.google.android.gms with isValuePreservedInRestore:true. GMS writes it back to
+        // 1 on its own schedule — seen here 07-28 (0→1), then again after the app set it to
+        // 0 on 13-08 — so the tick is real for a while and then quietly stops being true.
         opt("error_reports_off", Optimization.Category.SYSTEM,
-            "Samsung Error Reports OFF", "Segnalazioni Errori OFF",
-            "Ticked: app crash and diagnostic reports are no longer sent to Samsung's servers. No impact on how the phone works.",
-            "Spuntato: i report di crash e diagnostici non vengono più inviati ai server Samsung. Nessun impatto sul funzionamento del telefono.",
+            "Crash Report Prompt OFF", "Richiesta Report Crash OFF",
+            "Ticked: the \"send report\" prompt after an app crash or ANR is suppressed. Unverified: the key belongs to Google Play Services, not Samsung — GMS owns the row and puts it back to 1 by itself, so the tick does not hold.",
+            "Spuntato: la richiesta \"invia report\" dopo un crash o un ANR non compare più. Non verificata: la chiave appartiene a Google Play Services, non a Samsung — GMS è proprietario della riga e la riporta a 1 da solo, quindi la spunta non regge nel tempo.",
             "settings put global send_action_app_error 0",
             "settings put global send_action_app_error 1",
             """settings get global send_action_app_error | grep -cFx "0"""",
+            verified = false,
             group = "Privacy"),
 
         opt("hqm_telemetry_off", Optimization.Category.SYSTEM,
@@ -922,6 +1056,9 @@ object Optimizations {
             """settings get system samsung_eula_agree_hqm | grep -cFx "0"""",
             group = "Privacy"),
 
+        // Re-checked against the device on 2026-08-26: `dumpsys settings` still prints no
+        // row for this name carrying `default:`/`defaultSystemSet:`, so the unverified note
+        // below stands rather than having been fixed by a later firmware.
         opt("nearby_scan_off", Optimization.Category.SYSTEM,
             "Nearby Scan OFF", "Scansione Vicinanza OFF",
             "Ticked: Nearby Device Scanning is off, so the phone stops scanning over Bluetooth for Samsung devices. Significant saving if you do not use Galaxy Buds/Watch daily. Unverified: the key holds the value but no reader for it was found on this device.",
@@ -1183,11 +1320,12 @@ object Optimizations {
         group: String = "", groupIt: String = group,
         verified: Boolean = true,
         local: Optimization.LocalAction? = null,
+        selfHeals: Boolean = false,
     ) = Optimization(id, titleEn, titleIt, descEn, descIt, cat,
         apply.split("; ").filter { it.isNotBlank() },
         revert.split("; ").filter { it.isNotBlank() },
         check.split("; ").filter { it.isNotBlank() },
-        icon, group, groupIt, verified, local)
+        icon, group, groupIt, verified, local, selfHeals)
 
     fun byCategory(): Map<Optimization.Category, List<Optimization>> =
         getAll().groupBy { it.category }

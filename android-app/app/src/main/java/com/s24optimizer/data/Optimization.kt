@@ -63,6 +63,21 @@ data class Optimization(
      * in this process instead.
      */
     val local: LocalAction? = null,
+    /**
+     * True for a change One UI undoes on its own, as opposed to one that stays where it is
+     * put until the user or an OS update moves it.
+     *
+     * These are not [verified] = false: the key is real and the write lands. The difference
+     * is that the device walks it back within hours — `ble_scan_always_enabled` was seen
+     * going 0 → 1 under `package:android` twice in four days — so a tick that was honest
+     * when written is stale by the next read, and the box appears to have failed.
+     *
+     * [com.s24optimizer.service.SelfMaintenance] re-applies these when the process starts,
+     * but only for entries [AppliedHistory] records the user as having asked for. Everything
+     * else stays a manual repair from the Diagnostics screen, so this flag never turns into
+     * a licence to reassert settings nobody chose.
+     */
+    val selfHeals: Boolean = false,
 ) {
     /** Changes the shell cannot make, carried out by the app itself. */
     enum class LocalAction { MASTER_SYNC_OFF }

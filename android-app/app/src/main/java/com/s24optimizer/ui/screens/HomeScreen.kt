@@ -259,6 +259,15 @@ fun HomeScreen(
 
         Spacer(Modifier.height(20.dp))
 
+        // ── Scheduled Restart ──
+        RestartScheduleCard(
+            italian = italian,
+            shizukuStatus = shizukuStatus,
+            onLog = onLog,
+        )
+
+        Spacer(Modifier.height(20.dp))
+
         // ── Reddit Tips Card ──
         Box(
             modifier = Modifier
@@ -467,20 +476,33 @@ internal fun SectionHeader(icon: ImageVector, label: String) {
     }
 }
 
+/**
+ * [compact] trades the roomy padding for a chip that fits seven-across on a phone — the
+ * weekday row of the restart schedule. Same component rather than a second one, so the two
+ * cards cannot drift apart visually.
+ */
 @Composable
-internal fun QuickChip(label: String, selected: Boolean, enabled: Boolean, onClick: () -> Unit) {
+internal fun QuickChip(
+    label: String,
+    selected: Boolean,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+    compact: Boolean = false,
+    onClick: () -> Unit,
+) {
     val bg = if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent
     val border = if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) else OutlineDim.copy(alpha = 0.25f)
 
     Surface(
-        modifier = Modifier.then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier),
+        modifier = modifier.then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier),
         shape = RoundedCornerShape(20.dp),
         color = bg,
         border = androidx.compose.foundation.BorderStroke(if (selected) 1.5.dp else 1.dp, border),
     ) {
         Text(
             text = label,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = if (compact) 6.dp else 16.dp, vertical = 8.dp),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,

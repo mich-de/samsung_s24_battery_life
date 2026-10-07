@@ -19,6 +19,7 @@ import com.s24optimizer.data.BatteryTelemetry
 import com.s24optimizer.data.MasterSync
 import com.s24optimizer.exec.AdbExecutor
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ScreenOffService : Service() {
 
@@ -159,13 +160,35 @@ class ScreenOffService : Service() {
             val exec = AdbExecutor.instance
             val doable = runnable(features, exec)
             if (doable.size < features.size) {
-                // Leave the rest in the dirty record: reconcile() will retry once
-                // Shizuku is back rather than silently abandoning the values.
+                // Leave the rest in the dirty record and ask to be woken when the shell
+                // is usable again. reconcile() alone was not enough: it only runs from
+                // service start and activity resume, so a phone whose owner never
+                // reopened the app kept low_power=1 indefinitely — observed in the field
+                // with the battery full and charging, where nothing else could have set it.
                 Log.w(TAG, "Shizuku unavailable, keeping ${features.size - doable.size} feature(s) pending restore")
+                retryWhenShellReturns(context)
             }
             if (doable.isEmpty()) return
             for (f in doable) MODS[f]?.apply(exec, screenOff = false)
             setDirty(context, dirty(context) - doable)
+        }
+
+        /** One armed retry at a time; a burst of screen transitions must not queue one each. */
+        private val retryArmed = AtomicBoolean(false)
+
+        /**
+         * Re-runs [reconcile] as soon as Shizuku is usable.
+         *
+         * [AdbExecutor.onReady] fires once and drops the listener, so every failed restore
+         * arms a fresh one rather than assuming the first will still be there.
+         */
+        private fun retryWhenShellReturns(context: Context) {
+            if (!retryArmed.compareAndSet(false, true)) return
+            val appCtx = context.applicationContext
+            AdbExecutor.instance.onReady {
+                retryArmed.set(false)
+                reconcile(appCtx)
+            }
         }
 
         /**
@@ -230,7 +253,12 @@ class ScreenOffService : Service() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action ?: return
             val features = getActiveFeatures(context)
-            if (features.isEmpty()) return
+            // A value we already changed has to be put back even after its feature is
+            // switched off: the marker is gone, the device is still holding the
+            // screen-off half. Only the screen-off direction is gated on the feature
+            // still being active.
+            val held = dirty(context)
+            if (features.isEmpty() && held.isEmpty()) return
             // Shell calls are blocking; keep them off the main thread and hold the
             // broadcast open until they finish.
             val pending = goAsync()
@@ -246,7 +274,7 @@ class ScreenOffService : Service() {
                     )
                     when (action) {
                         Intent.ACTION_SCREEN_OFF -> applyScreenOff(appCtx, features)
-                        Intent.ACTION_SCREEN_ON -> applyScreenOn(appCtx, features)
+                        Intent.ACTION_SCREEN_ON -> applyScreenOn(appCtx, held + features)
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Screen transition failed", e)
@@ -290,6 +318,10 @@ class ScreenOffService : Service() {
         Log.i(TAG, "Active features: $features")
         // Undo anything a previous instance left behind before taking over.
         reconcile(this)
+        // reconcile() needs the shell to recognise an orphan, so when it starts up
+        // without one it cannot tell "nothing to undo" from "cannot look". Ask again
+        // the moment Shizuku appears.
+        if (!AdbExecutor.instance.permissionsGranted) retryWhenShellReturns(this)
         if (features.isEmpty()) {
             Log.i(TAG, "No features active, stopping")
             stopSelf()

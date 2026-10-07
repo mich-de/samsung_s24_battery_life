@@ -9,9 +9,7 @@ import android.os.Build
 import android.util.Log
 import com.s24optimizer.data.ChargeSchedule
 import com.s24optimizer.exec.AdbExecutor
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 /**
  * Drives [ChargeSchedule]: one alarm at a time, set for whichever boundary comes next.
@@ -73,35 +71,11 @@ class ChargeScheduleReceiver : BroadcastReceiver() {
                 cancelAlarm(appCtx)
                 return
             }
-            awaitShizuku()
+            // If Shizuku really is down, SelfMaintenance's own onReady stays registered, so
+            // the phase is applied the moment it comes back.
+            AdbExecutor.instance.awaitReady()
             armAlarm(appCtx, config)
             applyPhase(appCtx, config)
-        }
-
-        /**
-         * Blocks briefly for Shizuku's binder.
-         *
-         * The alarm is often the thing that starts the process, and the binder arrives a
-         * moment later — so at the instant the boundary fires `permissionsGranted` is false
-         * even though Shizuku is running perfectly. Reading that as "no shell available" and
-         * returning skipped the transition the alarm existed for, which is exactly what a
-         * live 11:52 test caught: the alarm fired and re-armed, and the cap never went on.
-         */
-        private fun awaitShizuku(timeoutMs: Long = 12_000L) {
-            val exec = AdbExecutor.instance
-            if (exec.permissionsGranted) return
-            val latch = CountDownLatch(1)
-            exec.onReady { latch.countDown() }
-            // Waited in slices, re-checking the flag directly: a listener registered while
-            // the executor is mid-flush can be dropped, and the wait would then run its full
-            // length on a phone where Shizuku was ready all along.
-            val deadline = timeoutMs / 500
-            for (i in 0 until deadline) {
-                if (latch.await(500, TimeUnit.MILLISECONDS) || exec.permissionsGranted) return
-            }
-            // Shizuku really is down. SelfMaintenance's own onReady is still registered, so
-            // the phase is applied the moment it comes back.
-            Log.w(TAG, "Shizuku did not become ready within ${timeoutMs}ms")
         }
 
         /**

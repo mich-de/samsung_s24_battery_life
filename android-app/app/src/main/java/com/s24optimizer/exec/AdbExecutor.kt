@@ -62,6 +62,33 @@ class AdbExecutor private constructor() :
         }
     }
 
+    /**
+     * Blocks the calling thread until Shizuku is usable, or [timeoutMs] elapses.
+     *
+     * An alarm is often the thing that starts the process, and the binder arrives a moment
+     * later — so at the instant a scheduled task fires `permissionsGranted` is false even
+     * though Shizuku is running perfectly. Reading that as "no shell available" and returning
+     * skips the transition the alarm existed for, which is exactly what a live 11:52 test of
+     * the charge schedule caught: the alarm fired and re-armed, and the cap never went on.
+     *
+     * Waited in slices, re-checking the flag directly: a listener registered while the
+     * executor is mid-flush can be dropped, and the wait would then run its full length on a
+     * phone where Shizuku was ready all along.
+     */
+    fun awaitReady(timeoutMs: Long = 12_000L): Boolean {
+        if (permissionsGranted) return true
+        val latch = java.util.concurrent.CountDownLatch(1)
+        onReady { latch.countDown() }
+        val slices = timeoutMs / 500
+        for (i in 0 until slices) {
+            if (latch.await(500, java.util.concurrent.TimeUnit.MILLISECONDS) ||
+                permissionsGranted
+            ) return true
+        }
+        Log.w(TAG, "Shizuku did not become ready within ${timeoutMs}ms")
+        return false
+    }
+
     private fun runListener(block: () -> Unit) {
         try {
             block()

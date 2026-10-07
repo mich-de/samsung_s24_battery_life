@@ -226,8 +226,9 @@ fun ChargeScheduleCard(
     }
 }
 
+/** Shared with [RestartScheduleCard]: same clickable time box, same accent treatment. */
 @Composable
-private fun TimeTile(
+internal fun TimeTile(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     label: String,
     value: String,

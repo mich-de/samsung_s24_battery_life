@@ -68,6 +68,10 @@
             android:name=".service.ChargeScheduleReceiver"
             android:exported="false" />
 
+        <receiver
+            android:name=".service.RestartScheduleReceiver"
+            android:exported="false" />
+
         <service
             android:name=".service.PerAppRefreshRateService"
             android:exported="true"

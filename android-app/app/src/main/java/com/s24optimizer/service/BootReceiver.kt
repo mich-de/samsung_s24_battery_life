@@ -33,6 +33,7 @@ class BootReceiver : BroadcastReceiver() {
         // Alarms do not survive a reboot. Re-arm before Shizuku is in the picture: arming
         // needs no shell, and sync() applies the phase again once Shizuku is up.
         ChargeScheduleReceiver.sync(context)
+        RestartScheduleReceiver.sync(context)
         SelfMaintenance.schedule(context)
     }
 }

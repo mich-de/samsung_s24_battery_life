@@ -2,6 +2,9 @@ package com.s24optimizer.service
 
 import android.content.Context
 import android.util.Log
+import com.s24optimizer.data.AppliedHistory
+import com.s24optimizer.data.OptimizationRunner
+import com.s24optimizer.data.Optimizations
 import com.s24optimizer.exec.AdbExecutor
 
 /**
@@ -27,6 +30,32 @@ object SelfMaintenance {
             ScreenOffService.reconcile(appCtx)
             // Catches up a boundary missed while Shizuku was down, and re-arms the alarm.
             ChargeScheduleReceiver.sync(appCtx)
+            reapplyDrifted(appCtx)
+        }
+    }
+
+    /**
+     * Re-asserts the few settings One UI walks back on its own.
+     *
+     * Scoped twice over, because a maintenance pass that rewrites settings freely is worse
+     * than the drift it fixes: only entries flagged [com.s24optimizer.data.Optimization.selfHeals],
+     * and among those only the ones [AppliedHistory] records the user as having asked for.
+     * Everything else stays a manual repair from the Diagnostics screen.
+     *
+     * The check runs before the write, so a setting still in place costs one read and no
+     * write. An entry whose state cannot be observed counts as still applied rather than
+     * being rewritten blindly on every process start.
+     */
+    private fun reapplyDrifted(context: Context) {
+        val exec = AdbExecutor.instance
+        val watched = Optimizations.getAll()
+            .filter { it.selfHeals && it.id in AppliedHistory.all(context) }
+        if (watched.isEmpty()) return
+        val states = watched.associate { it.id to (OptimizationRunner.isApplied(exec, it) ?: true) }
+        // Goes through the same predicate the Diagnostics screen reads, so "drifted" cannot
+        // come to mean one thing here and another there.
+        for (opt in AppliedHistory.regressions(context, states)) {
+            Log.i(TAG, "re-applying ${opt.id}: ${OptimizationRunner.apply(exec, opt)}")
         }
     }
 
