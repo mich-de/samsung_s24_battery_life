@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">S24 Ottimizzatore</string>
+    <string name="apply_selected">Applica Selezionate</string>
+    <string name="revert_selected">Ripristina Selezionate</string>
+    <string name="select_all">Seleziona Tutte</string>
+    <string name="clear">Deseleziona</string>
+    <string name="done">Fatto!</string>
+    <string name="language">Lingua</string>
+    <string name="shizuku">Permesso Shizuku</string>
+</resources>

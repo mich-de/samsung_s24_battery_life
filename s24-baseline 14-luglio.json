@@ -1,0 +1,120 @@
+{
+  "baseline": "14-luglio-2026 (dopo ottimizzazione)",
+  "dispositivo": {
+    "modello": "SM-S921B",
+    "android": "16",
+    "patch_sicurezza": "2026-06-05",
+    "battery_asoc": 94,
+    "battery_usage_mah": 82089,
+    "full_charge_cycles": 100198,
+    "primo_uso": "2024-03-27"
+  },
+  "batteria_al_momento": {
+    "livello": 58,
+    "stato": "carica (USB)",
+    "temperatura_C": 31.0,
+    "corrente_ma": 1614,
+    "charge_counter": 2268054,
+    "protezione": "Massima (80%)",
+    "soglia": 80
+  },
+  "bloatware_disabilitato": {
+    "samsung_bixby": [
+      "com.samsung.android.bixby.agent",
+      "com.samsung.android.bixby.wakeup",
+      "com.samsung.android.bixbyvision.framework",
+      "com.samsung.android.visionintelligence"
+    ],
+    "samsung_gaming": [
+      "com.samsung.android.game.gametools",
+      "com.samsung.android.game.gos"
+    ],
+    "samsung_services": [
+      "com.samsung.android.smartsuggestions",
+      "com.samsung.android.aware.service",
+      "com.samsung.android.bbc.bbcagent",
+      "com.samsung.android.app.reminder",
+      "com.samsung.android.app.routines",
+      "com.samsung.android.app.routineplus",
+      "com.samsung.android.liveeffectservice",
+      "com.samsung.android.oneconnect",
+      "com.samsung.android.service.stplatform",
+      "com.samsung.android.forest",
+      "com.samsung.accessory.budsunitemgr",
+      "com.samsung.android.rubin.app"
+    ],
+    "google": [
+      "com.google.android.apps.photos",
+      "com.google.android.apps.messaging",
+      "com.google.android.apps.docs.editors.docs",
+      "com.google.android.apps.chromecast.app",
+      "com.google.android.feedback",
+      "com.google.android.gms.supervision"
+    ],
+    "facebook": [
+      "com.facebook.katana",
+      "com.facebook.orca"
+    ],
+    "microsoft": [
+      "com.microsoft.emmx",
+      "com.microsoft.office.excel",
+      "com.microsoft.office.word",
+      "com.microsoft.rdc.androidx"
+    ]
+  },
+  "knox_resettato": [
+    "com.samsung.android.knox.kpecore",
+    "com.samsung.android.knox.attestation",
+    "com.samsung.android.knox.pushmanager",
+    "com.samsung.android.knox.containercore",
+    "com.samsung.android.knox.analytics.uploader"
+  ],
+  "background_denied": [
+    "com.instagram.android",
+    "net.tandem",
+    "com.whatsapp"
+  ],
+  "impostazioni_sistema": {
+    "adaptive_battery_management_enabled": 1,
+    "app_auto_restriction_enabled": 1,
+    "battery_saver_mode": 1,
+    "sem_enhanced_cpu_responsiveness": 0,
+    "enhanced_processing": 0,
+    "ble_scan_always_enabled": 0,
+    "nearby_scanning_enabled": 0,
+    "nearby_scanning_permission_allowed": 0,
+    "wifi_power_save": 1,
+    "wifi_wakeup_enabled": 0,
+    "aod_mode": 0,
+    "always_on_display_enabled": 0,
+    "screen_off_timeout": 30000,
+    "doze_enabled": 1,
+    "lift_to_wake": 0,
+    "intelligent_sleep_mode": 0,
+    "notification_light_pulse": 0,
+    "window_animation_scale": 0.5,
+    "transition_animation_scale": 0.5,
+    "animator_duration_scale": 0.5,
+    "ram_expand_size": 2048,
+    "battery_protection_default_value": 3,
+    "battery_protection_threshold": 80,
+    "mcf_quick_share_visibility": 0
+  },
+  "confronto_con_baseline_13_luglio": {
+    "drain_pre_ottimizzazione_mah": 3114,
+    "durata_test_pre_ottimizzazione": "8h 42m",
+    "media_oraria_pre_ma": 358,
+    "vita_stimata_pre_ore": 10.9,
+    "top_consumatori_pre": {
+      "CPU": 1252,
+      "Schermo": 542,
+      "Radio_5G": 440,
+      "WhatsApp": 499,
+      "Sistema": 386,
+      "Instagram": 314,
+      "GP_Services": 288,
+      "Kernel": 186
+    }
+  },
+  "note": "Batterystats resettato dopo applicazione ottimizzazioni. Riavviare e fare un ciclo completo di scarica per misurare il miglioramento."
+}

@@ -1,0 +1,28 @@
+# Gradle and Android build outputs
+.gradle/
+.idea/
+.kotlin/
+build/
+app/build/
+*.class
+*.apk
+*.aar
+
+# System specific files
+.DS_Store
+Thumbs.db
+
+# Screenshots and logs
+/scratch/
+*~
+*.log
+GEMINI.MD
+
+# Signing material — never publish
+*.keystore
+*.jks
+
+# Local agent session state
+.claude/
+# Machine-specific: says so in its own header, and carries the local SDK path.
+android-app/local.properties
