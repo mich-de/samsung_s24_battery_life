@@ -906,7 +906,7 @@
         </div>
         <div class="telemetry-row">
           <span>LATENCY</span>
-          <span class="telemetry-val mono" id="stat-latency">⚡ READY</span>
+          <span class="telemetry-val mono" id="stat-latency">READY</span>
         </div>
       </div>
     </aside>
@@ -980,7 +980,7 @@
           </div>
           <div class="dock-footer">
             <span>ENDPOINT: /v1/chat/completions · ACCELERATION: GPU OPENCL</span>
-            <span id="ping-telemetry">⚡ 0 ms</span>
+            <span id="ping-telemetry">0 ms</span>
           </div>
         </div>
       </div>
@@ -1332,8 +1332,8 @@
         renderMessages();
 
         const latency = Math.round(performance.now() - startTime);
-        document.getElementById('ping-telemetry').innerText = `⚡ ${latency} ms`;
-        document.getElementById('stat-latency').innerText = `⚡ ${latency} ms`;
+        document.getElementById('ping-telemetry').innerText = `${latency} ms`;
+        document.getElementById('stat-latency').innerText = `${latency} ms`;
       } catch (err) {
         if (err.name === 'AbortError') {
           sess.messages[sess.messages.length - 1].content = accumulated + ' *(Esecuzione interrotta)*';
