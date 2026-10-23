@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HOSTAI. // Technical Minimal LLM Appliance</title>
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" id="theme-color" content="#0e0e0e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e0e0e'/%3E%3Cg fill='%233a3a3a'%3E%3Ccircle cx='9' cy='9' r='3'/%3E%3Ccircle cx='16' cy='9' r='3'/%3E%3Ccircle cx='23' cy='9' r='3'/%3E%3Ccircle cx='9' cy='16' r='3'/%3E%3Ccircle cx='23' cy='16' r='3'/%3E%3Ccircle cx='9' cy='23' r='3'/%3E%3Ccircle cx='16' cy='23' r='3'/%3E%3Ccircle cx='23' cy='23' r='3'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%23ff5a1f'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root, [data-theme="light"] {
+      --bg: #f3f2ef;
+      --surface: #fbfaf8;
+      --surface-card: #ffffff;
+      --line: #d9d6d0;
+      --line-strong: #bdb9b1;
+      --text: #141413;
+      --muted: #5f5b55;
+      --accent: #e5481a;
+      --accent-ink: #b3360f;
+      --on-accent: #ffffff;
+      --dot: #cfcbc4;
+      --band: #ecebe6;
+      --code-bg: #eae8e1;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e0e0e;
+      --surface: #151515;
+      --surface-card: #181818;
+      --line: #262626;
+      --line-strong: #3a3a3a;
+      --text: #ecebe8;
+      --muted: #9a968f;
+      --accent: #ff5a1f;
+      --accent-ink: #ff7a45;
+      --on-accent: #0e0e0e;
+      --dot: #2b2b2b;
+      --band: #131313;
+      --code-bg: #111111;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Geist, system-ui, sans-serif;
+      font-size: 14.5px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color .25s ease, color .25s ease;
+    }
+
+    ::selection { background: var(--accent); color: var(--on-accent); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+
+    .mono {
+      font-family: "Geist Mono", ui-monospace, monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Boot Splash Screen (Technical Minimal Dot Matrix) */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      background-image: radial-gradient(var(--dot) 1.2px, transparent 1.2px);
+      background-size: 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      transition: opacity .4s ease, visibility .4s ease;
+    }
+
+    #splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .sp-mx {
+      width: clamp(280px, 60vw, 420px);
+      max-height: 90px;
+    }
+
+    .sp-mx circle.off { fill: var(--line); }
+    .sp-mx circle.on {
+      fill: var(--text);
+      opacity: 0;
+      animation: dotOn .3s ease forwards;
+      animation-delay: var(--d, 0ms);
+    }
+    .sp-mx circle.on.hot { fill: var(--accent); }
+
+    @keyframes dotOn { to { opacity: 1; } }
+
+    .sp-bar {
+      display: flex;
+      gap: 4px;
+      width: clamp(240px, 45vw, 320px);
+      height: 3px;
+    }
+
+    .sp-bar span {
+      flex: 1;
+      background: var(--line);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: fillBar .4s ease forwards;
+    }
+    .sp-bar span:nth-child(1) { animation-delay: 100ms; background: var(--accent); }
+    .sp-bar span:nth-child(2) { animation-delay: 250ms; }
+    .sp-bar span:nth-child(3) { animation-delay: 400ms; }
+    .sp-bar span:nth-child(4) { animation-delay: 550ms; background: var(--accent); }
+
+    @keyframes fillBar { to { transform: scaleX(1); } }
+
+    .sp-meta {
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sp-meta .led {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent);
+      animation: blink 1s infinite alternate;
+    }
+    @keyframes blink { from { opacity: .3; } to { opacity: 1; box-shadow: 0 0 8px var(--accent); } }
+
+    /* App Layout */
+    #app-container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    /* Sidebar */
+    #sidebar {
+      width: 270px;
+      background: var(--surface);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 40;
+      transition: transform .25s cubic-bezier(.16, 1, .3, 1), margin-left .25s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    #sidebar.collapsed {
+      margin-left: -270px;
+    }
+
+    .sidebar-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-new {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--surface-card);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: "Geist Mono", monospace;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+
+    .btn-new:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: color .15s, border-color .15s;
+    }
+
+    .btn-icon:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+
+    .sidebar-section-title {
+      font-family: "Geist Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .08em;
+      padding: 12px 16px 4px;
+      text-transform: uppercase;
+    }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 8px;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-family: "Geist Mono", monospace;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      border: 1px solid transparent;
+      margin-bottom: 3px;
+      transition: background .15s, color .15s;
+    }
+
+    .history-item:hover {
+      background: var(--surface-card);
+      color: var(--text);
+    }
+
+    .history-item.active {
+      background: var(--surface-card);
+      color: var(--accent);
+      border-color: var(--line);
+    }
+
+    .history-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .history-delete {
+      opacity: 0;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 2px 4px;
+      font-size: 13px;
+    }
+
+    .history-item:hover .history-delete {
+      opacity: 1;
+    }
+
+    .history-delete:hover {
+      color: var(--accent);
+    }
+
+    /* Sidebar Telemetry Card (Teenage Engineering Hardware Monitor) */
+    .telemetry-card {
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+      background: var(--band);
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+    }
+
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+
+    .telemetry-val {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .telemetry-val.accent {
+      color: var(--accent);
+    }
+
+    /* Main Content */
+    #main-chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      background-image: radial-gradient(var(--dot) 1.2px, transparent 1.2px);
+      background-size: 16px 16px;
+      position: relative;
+    }
+
+    /* Sticky Navbar */
+    .top-bar {
+      height: 54px;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 30;
+      gap: 12px;
+    }
+
+    .bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: Doto, "Geist Mono", monospace;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -.02em;
+    }
+
+    .logo-badge .hot { color: var(--accent); }
+
+    .core-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "Geist Mono", monospace;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--surface);
+    }
+
+    .core-status .led {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 5px #10b981;
+    }
+
+    .bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .model-select-wrapper {
+      position: relative;
+    }
+
+    .model-select {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+      padding: 6px 26px 6px 10px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .model-select-wrapper::after {
+      content: "▼";
+      font-size: 8px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--muted);
+    }
+
+    .theme-toggle {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Messages Stream */
+    #messages-viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 20px 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Welcome Hero Card */
+    .hero-box {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 32px 28px;
+      margin: 20px 0 10px;
+    }
+
+    .hero-title {
+      font-family: Doto, "Geist Mono", monospace;
+      font-weight: 900;
+      font-size: clamp(34px, 5.5vw, 56px);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .hero-title .hot { color: var(--accent); }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-bottom: 24px;
+      max-width: 620px;
+    }
+
+    .chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .chip-item {
+      border: 1px solid var(--line);
+      background: var(--surface-card);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+
+    .chip-item:hover {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 8%, var(--surface-card));
+    }
+
+    .chip-tag {
+      color: var(--accent);
+      margin-bottom: 2px;
+      font-weight: 600;
+    }
+
+    /* Message Cards */
+    .msg-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .msg-row.user {
+      align-items: flex-end;
+    }
+
+    .msg-slug {
+      font-family: "Geist Mono", monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 0 4px;
+    }
+
+    .msg-card {
+      max-width: 85%;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .msg-row.user .msg-card {
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      color: var(--text);
+    }
+
+    .msg-row.assistant .msg-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text);
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .msg-card pre {
+      background: var(--code-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      margin: 12px 0;
+      overflow-x: auto;
+      font-family: "Geist Mono", monospace;
+      font-size: 12.5px;
+      position: relative;
+    }
+
+    .msg-card code {
+      font-family: "Geist Mono", monospace;
+      font-size: 12.5px;
+      background: var(--code-bg);
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .msg-card pre code {
+      background: transparent;
+      padding: 0;
+    }
+
+    .btn-copy-code {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-family: "Geist Mono", monospace;
+      font-size: 10px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-copy-code:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 7px;
+      height: 14px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 0.8s infinite;
+    }
+
+    /* Fixed Input Dock */
+    #input-dock {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      padding: 14px 20px 20px;
+      z-index: 30;
+    }
+
+    .dock-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-box {
+      display: flex;
+      align-items: flex-end;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
+      transition: border-color .15s;
+    }
+
+    .input-box:focus-within {
+      border-color: var(--accent);
+    }
+
+    .terminal-caret {
+      font-family: "Geist Mono", monospace;
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: bold;
+      padding: 6px 8px 6px 2px;
+      user-select: none;
+    }
+
+    #user-prompt {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: Geist, system-ui, sans-serif;
+      font-size: 14.5px;
+      line-height: 1.45;
+      resize: none;
+      max-height: 160px;
+      padding: 6px 0;
+    }
+
+    .action-btn {
+      background: var(--accent);
+      color: var(--on-accent);
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 8px;
+      margin-bottom: 2px;
+      transition: opacity .15s;
+    }
+
+    .action-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    .action-btn.stop {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .dock-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: "Geist Mono", monospace;
+      font-size: 10.5px;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      width: min(480px, 92vw);
+      padding: 24px;
+      font-family: Geist, sans-serif;
+    }
+
+    .modal-card h3 {
+      font-family: "Geist Mono", monospace;
+      font-size: 14px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .modal-field {
+      margin-bottom: 14px;
+    }
+
+    .modal-field label {
+      display: block;
+      font-family: "Geist Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .modal-field input, .modal-field textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text);
+      font-family: "Geist Mono", monospace;
+      font-size: 12px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  
+    /* Responsive Mobile & S24 Screen Optimizations */
+    @media (max-width: 768px) {
+      #sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform .25s cubic-bezier(.16, 1, .3, 1);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+      }
+      #sidebar.open {
+        transform: translateX(0);
+      }
+      #sidebar.collapsed {
+        margin-left: 0;
+        transform: translateX(-100%);
+      }
+      .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 35;
+      }
+      .sidebar-backdrop.active {
+        display: block;
+      }
+      .top-bar {
+        padding: 0 10px;
+        height: 50px;
+      }
+      .core-status {
+        display: none; /* Save horizontal space */
+      }
+      .model-select {
+        max-width: 130px;
+        padding: 4px 20px 4px 6px;
+        font-size: 10px;
+      }
+      .theme-toggle #theme-label {
+        display: none; /* Icon only */
+      }
+      .theme-toggle {
+        padding: 4px 8px;
+      }
+      #messages-viewport {
+        padding: 12px 10px calc(110px + env(safe-area-inset-bottom, 16px));
+        gap: 12px;
+      }
+      .hero-box {
+        padding: 18px 14px;
+        margin: 8px 0;
+      }
+      .hero-title {
+        font-size: 26px;
+      }
+      .hero-sub {
+        font-size: 12px;
+        margin-bottom: 14px;
+      }
+      .chips-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .msg-card {
+        max-width: 95%;
+        padding: 10px 14px;
+        font-size: 13.5px;
+      }
+      #input-dock {
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 14px));
+      }
+      .dock-wrap {
+        gap: 4px;
+      }
+      .dock-footer {
+        font-size: 8.5px;
+      }
+      .action-btn {
+        padding: 8px 10px;
+        font-size: 10px;
+      }
+      #user-prompt {
+        font-size: 13.5px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Dot Matrix Boot Splash Screen -->
+  <div id="splash" onclick="dismissSplash()" onkeydown="dismissSplash()">
+    <svg class="sp-mx" viewBox="0 0 380 70" focusable="false" aria-hidden="true">
+      <defs>
+        <pattern id="sp-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="5" cy="5" r="3.6"/>
+        </pattern>
+      </defs>
+      <rect class="off" width="380" height="70" fill="url(#sp-grid)"/>
+      <circle class="on" cx="5" cy="5" r="3.6" style="--d:34ms"/><circle class="on" cx="5" cy="15" r="3.6" style="--d:67ms"/><circle class="on" cx="5" cy="25" r="3.6" style="--d:32ms"/><circle class="on" cx="5" cy="35" r="3.6" style="--d:65ms"/><circle class="on" cx="5" cy="45" r="3.6" style="--d:6ms"/><circle class="on" cx="5" cy="55" r="3.6" style="--d:103ms"/><circle class="on" cx="5" cy="65" r="3.6" style="--d:100ms"/><circle class="on" cx="15" cy="35" r="3.6" style="--d:149ms"/><circle class="on" cx="25" cy="35" r="3.6" style="--d:73ms"/><circle class="on" cx="35" cy="35" r="3.6" style="--d:181ms"/><circle class="on" cx="45" cy="5" r="3.6" style="--d:106ms"/><circle class="on" cx="45" cy="15" r="3.6" style="--d:203ms"/><circle class="on" cx="45" cy="25" r="3.6" style="--d:136ms"/><circle class="on" cx="45" cy="35" r="3.6" style="--d:169ms"/><circle class="on" cx="45" cy="45" r="3.6" style="--d:198ms"/><circle class="on" cx="45" cy="55" r="3.6" style="--d:71ms"/><circle class="on" cx="45" cy="65" r="3.6" style="--d:68ms"/><circle class="on" cx="65" cy="15" r="3.6" style="--d:239ms"/><circle class="on" cx="65" cy="25" r="3.6" style="--d:176ms"/><circle class="on" cx="65" cy="35" r="3.6" style="--d:177ms"/><circle class="on" cx="65" cy="45" r="3.6" style="--d:138ms"/><circle class="on" cx="65" cy="55" r="3.6" style="--d:107ms"/><circle class="on" cx="75" cy="5" r="3.6" style="--d:160ms"/><circle class="on" cx="75" cy="65" r="3.6" style="--d:154ms"/><circle class="on" cx="85" cy="5" r="3.6" style="--d:146ms"/><circle class="on" cx="85" cy="65" r="3.6" style="--d:148ms"/><circle class="on" cx="95" cy="5" r="3.6" style="--d:228ms"/><circle class="on" cx="95" cy="65" r="3.6" style="--d:194ms"/><circle class="on" cx="105" cy="15" r="3.6" style="--d:151ms"/><circle class="on" cx="105" cy="25" r="3.6" style="--d:280ms"/><circle class="on" cx="105" cy="35" r="3.6" style="--d:249ms"/><circle class="on" cx="105" cy="45" r="3.6" style="--d:154ms"/><circle class="on" cx="105" cy="55" r="3.6" style="--d:155ms"/><circle class="on" cx="125" cy="15" r="3.6" style="--d:283ms"/><circle class="on" cx="125" cy="25" r="3.6" style="--d:216ms"/><circle class="on" cx="125" cy="65" r="3.6" style="--d:180ms"/><circle class="on" cx="135" cy="5" r="3.6" style="--d:300ms"/><circle class="on" cx="135" cy="35" r="3.6" style="--d:333ms"/><circle class="on" cx="135" cy="65" r="3.6" style="--d:274ms"/><circle class="on" cx="145" cy="5" r="3.6" style="--d:222ms"/><circle class="on" cx="145" cy="35" r="3.6" style="--d:257ms"/><circle class="on" cx="145" cy="65" r="3.6" style="--d:316ms"/><circle class="on" cx="155" cy="5" r="3.6" style="--d:272ms"/><circle class="on" cx="155" cy="35" r="3.6" style="--d:301ms"/><circle class="on" cx="155" cy="65" r="3.6" style="--d:234ms"/><circle class="on" cx="165" cy="5" r="3.6" style="--d:386ms"/><circle class="on" cx="165" cy="45" r="3.6" style="--d:262ms"/><circle class="on" cx="165" cy="55" r="3.6" style="--d:263ms"/><circle class="on" cx="185" cy="5" r="3.6" style="--d:326ms"/><circle class="on" cx="195" cy="5" r="3.6" style="--d:344ms"/><circle class="on" cx="205" cy="5" r="3.6" style="--d:330ms"/><circle class="on" cx="205" cy="15" r="3.6" style="--d:331ms"/><circle class="on" cx="205" cy="25" r="3.6" style="--d:328ms"/><circle class="on" cx="205" cy="35" r="3.6" style="--d:457ms"/><circle class="on" cx="205" cy="45" r="3.6" style="--d:454ms"/><circle class="on" cx="205" cy="55" r="3.6" style="--d:391ms"/><circle class="on" cx="205" cy="65" r="3.6" style="--d:420ms"/><circle class="on" cx="215" cy="5" r="3.6" style="--d:380ms"/><circle class="on" cx="225" cy="5" r="3.6" style="--d:430ms"/><circle class="on" cx="245" cy="15" r="3.6" style="--d:435ms"/><circle class="on" cx="245" cy="25" r="3.6" style="--d:432ms"/><circle class="on" cx="245" cy="35" r="3.6" style="--d:433ms"/><circle class="on" cx="245" cy="45" r="3.6" style="--d:470ms"/><circle class="on" cx="245" cy="55" r="3.6" style="--d:503ms"/><circle class="on" cx="245" cy="65" r="3.6" style="--d:404ms"/><circle class="on" cx="255" cy="5" r="3.6" style="--d:420ms"/><circle class="on" cx="255" cy="35" r="3.6" style="--d:421ms"/><circle class="on" cx="265" cy="5" r="3.6" style="--d:534ms"/><circle class="on" cx="265" cy="35" r="3.6" style="--d:537ms"/><circle class="on" cx="275" cy="5" r="3.6" style="--d:552ms"/><circle class="on" cx="275" cy="35" r="3.6" style="--d:549ms"/><circle class="on" cx="285" cy="15" r="3.6" style="--d:571ms"/><circle class="on" cx="285" cy="25" r="3.6" style="--d:504ms"/><circle class="on" cx="285" cy="35" r="3.6" style="--d:537ms"/><circle class="on" cx="285" cy="45" r="3.6" style="--d:534ms"/><circle class="on" cx="285" cy="55" r="3.6" style="--d:503ms"/><circle class="on" cx="285" cy="65" r="3.6" style="--d:500ms"/><circle class="on" cx="315" cy="5" r="3.6" style="--d:496ms"/><circle class="on" cx="315" cy="65" r="3.6" style="--d:554ms"/><circle class="on" cx="325" cy="5" r="3.6" style="--d:578ms"/><circle class="on" cx="325" cy="15" r="3.6" style="--d:547ms"/><circle class="on" cx="325" cy="25" r="3.6" style="--d:576ms"/><circle class="on" cx="325" cy="35" r="3.6" style="--d:609ms"/><circle class="on" cx="325" cy="45" r="3.6" style="--d:582ms"/><circle class="on" cx="325" cy="55" r="3.6" style="--d:583ms"/><circle class="on" cx="325" cy="65" r="3.6" style="--d:516ms"/><circle class="on" cx="335" cy="5" r="3.6" style="--d:596ms"/><circle class="on" cx="335" cy="65" r="3.6" style="--d:626ms"/><circle class="on hot" cx="365" cy="55" r="3.6" style="--d:647ms"/><circle class="on hot" cx="365" cy="65" r="3.6" style="--d:612ms"/><circle class="on hot" cx="375" cy="55" r="3.6" style="--d:703ms"/><circle class="on hot" cx="375" cy="65" r="3.6" style="--d:610ms"/>
+    </svg>
+    <div class="sp-bar"><span></span><span></span><span></span><span></span></div>
+    <div class="sp-meta">
+      <div class="led"></div>
+      <span>SYSTEM BOOT // S24 APPLIANCE READY</span>
+    </div>
+  </div>
+
+  <div id="app-container">
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
+    
+    <!-- Collapsible Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <button class="btn-new" onclick="createNewSession()">
+          <span>+</span> NEW PROMPT [CMD+K]
+        </button>
+        <button class="btn-icon" onclick="openSettingsModal()" title="Impostazioni">⚙</button>
+      </div>
+
+      <div class="sidebar-section-title">01 // SESSION ARCHIVE</div>
+      <div class="history-list" id="history-container">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Industrial Hardware Monitor Card -->
+      <div class="telemetry-card">
+        <div class="telemetry-row">
+          <span>APPLIANCE</span>
+          <span class="telemetry-val">GALAXY S24</span>
+        </div>
+        <div class="telemetry-row">
+          <span>SOC // SILICON</span>
+          <span class="telemetry-val">EXYNOS 2400</span>
+        </div>
+        <div class="telemetry-row">
+          <span>GPU ACCEL</span>
+          <span class="telemetry-val accent">XCLIPSE 940 (OPENCL)</span>
+        </div>
+        <div class="telemetry-row">
+          <span>LATENCY</span>
+          <span class="telemetry-val mono" id="stat-latency">⚡ READY</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Workspace -->
+    <main id="main-chat">
+      
+      <!-- Top Sticky Navigation Bar -->
+      <header class="top-bar">
+        <div class="bar-left">
+          <button class="btn-icon" onclick="toggleSidebar()" title="Toggle Sidebar">☰</button>
+          <div class="logo-badge">HOSTAI<span class="hot">.</span></div>
+          <div class="core-status">
+            <div class="led"></div>
+            <span>EXYNOS CORE // LIVE</span>
+          </div>
+        </div>
+
+        <div class="bar-right">
+          <div class="model-select-wrapper">
+            <select class="model-select" id="model-dropdown" onchange="switchModel(this.value)">
+              <option value="gemma-4-E2B-it.litertlm">01 // GEMMA 4 E2B</option>
+              <option value="tiny_garden.litertlm">02 // TINY GARDEN</option>
+            </select>
+          </div>
+          <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+            <span id="theme-icon">◐</span>
+            <span id="theme-label">DARK</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Messages Viewport -->
+      <div id="messages-viewport">
+        <!-- Hero Box when no messages -->
+        <div class="hero-box" id="hero-banner">
+          <h1 class="hero-title">HOSTAI<span class="hot">.</span></h1>
+          <p class="hero-sub">High-precision on-device LLM appliance executed on Samsung Galaxy S24 hardware. AMD Xclipse 940 OpenCL acceleration with zero external dependencies and zero cloud telemetry.</p>
+          
+          <div class="chips-grid">
+            <div class="chip-item" onclick="sendSuggestion('Spiegami l architettura hardware di Exynos 2400 e la GPU AMD Xclipse 940.')">
+              <div class="chip-tag">01 // HARDWARE</div>
+              <div>Architettura Exynos 2400 &amp; Xclipse 940</div>
+            </div>
+            <div class="chip-item" onclick="sendSuggestion('Come funziona il runtime LiteRT-LM con accelerazione OpenCL su Android?')">
+              <div class="chip-tag">02 // RUNTIME</div>
+              <div>LiteRT-LM &amp; OpenCL su Android</div>
+            </div>
+            <div class="chip-item" onclick="sendSuggestion('Mostrami uno script Bash per monitorare frequenze CPU e temperatura su Linux.')">
+              <div class="chip-tag">03 // DEVOPS</div>
+              <div>Script Bash monitoraggio termico S24</div>
+            </div>
+            <div class="chip-item" onclick="sendSuggestion('Scrivi una funzione Python per fare query SSE streaming verso /v1/chat/completions.')">
+              <div class="chip-tag">04 // CODE</div>
+              <div>Client streaming OpenAI in Python</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="messages-list"></div>
+      </div>
+
+      <!-- Fixed Command Terminal Input Dock -->
+      <div id="input-dock">
+        <div class="dock-wrap">
+          <div class="input-box">
+            <div class="terminal-caret">&gt;</div>
+            <textarea id="user-prompt" placeholder="Message HostAI local model..." rows="1" onkeydown="handleKeyDown(event)" oninput="autoResize(this)"></textarea>
+            <button class="action-btn" id="btn-submit" onclick="handleSubmit()">SEND</button>
+            <button class="action-btn stop" id="btn-stop" style="display:none;" onclick="handleStop()">HALT</button>
+          </div>
+          <div class="dock-footer">
+            <span>ENDPOINT: /v1/chat/completions · ACCELERATION: GPU OPENCL</span>
+            <span id="ping-telemetry">⚡ 0 ms</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settings-modal" onclick="closeSettingsOnOverlay(event)">
+    <div class="modal-card">
+      <h3>// CONFIGURATION // HOSTAI CORE</h3>
+      <div class="modal-field">
+        <label>API Endpoint</label>
+        <input type="text" id="cfg-endpoint" value="/v1/chat/completions">
+      </div>
+      <div class="modal-field">
+        <label>Temperature (0.0 - 1.0)</label>
+        <input type="number" step="0.1" id="cfg-temp" value="0.7">
+      </div>
+      <div class="modal-field">
+        <label>System Instructions</label>
+        <textarea id="cfg-system" rows="3" placeholder="Sei HostAI, un assistente AI avanzato che gira localmente su Galaxy S24..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-new" onclick="closeSettingsModal()">CHIUDI</button>
+        <button class="action-btn" onclick="saveSettingsModal()">SALVA</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State management
+    const state = {
+      sessions: [],
+      currentSessionId: null,
+      settings: {
+        endpoint: '/v1/chat/completions',
+        model: 'gemma-4-E2B-it.litertlm',
+        temperature: 0.7,
+        systemPrompt: 'Sei HostAI, un assistente AI locale ad alte prestazioni in esecuzione diretta su Samsung Galaxy S24 (Exynos 2400 / AMD Xclipse 940). Rispondi in modo conciso, tecnico e preciso.'
+      },
+      isGenerating: false,
+      abortController: null
+    };
+
+    // Splash Dismissal
+    function dismissSplash() {
+      const splash = document.getElementById('splash');
+      if (splash) {
+        splash.classList.add('hidden');
+        sessionStorage.setItem('splash-seen', '1');
+      }
+    }
+
+    setTimeout(dismissSplash, 1800);
+
+    // Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSettings();
+      loadSessions();
+      initTheme();
+      fetchModels();
+    });
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('hostai_theme') || 'dark';
+      applyTheme(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('hostai_theme', theme);
+      document.getElementById('theme-color').content = theme === 'dark' ? '#0e0e0e' : '#f3f2ef';
+      document.getElementById('theme-label').innerText = theme.toUpperCase();
+      document.getElementById('theme-icon').innerText = theme === 'dark' ? '◐' : '○';
+    }
+
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const bd = document.getElementById('sidebar-backdrop');
+      if (window.innerWidth <= 768) {
+        sb.classList.toggle('open');
+        if (bd) bd.classList.toggle('active', sb.classList.contains('open'));
+      } else {
+        sb.classList.toggle('collapsed');
+      }
+    }
+
+    // Sessions & Storage
+    function loadSessions() {
+      try {
+        const raw = localStorage.getItem('hostai_sessions');
+        state.sessions = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        state.sessions = [];
+      }
+
+      if (state.sessions.length === 0) {
+        createNewSession();
+      } else {
+        state.currentSessionId = state.sessions[0].id;
+        renderHistory();
+        renderMessages();
+      }
+    }
+
+    function saveSessions() {
+      localStorage.setItem('hostai_sessions', JSON.stringify(state.sessions));
+      renderHistory();
+    }
+
+    function createNewSession() {
+      const id = 'sess_' + Date.now();
+      const newSess = {
+        id: id,
+        title: 'Sessione ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        messages: [],
+        timestamp: Date.now()
+      };
+      state.sessions.unshift(newSess);
+      state.currentSessionId = id;
+      saveSessions();
+      renderMessages();
+      document.getElementById('user-prompt').focus();
+    }
+
+    function deleteSession(e, id) {
+      e.stopPropagation();
+      state.sessions = state.sessions.filter(s => s.id !== id);
+      if (state.sessions.length === 0) {
+        createNewSession();
+      } else if (state.currentSessionId === id) {
+        state.currentSessionId = state.sessions[0].id;
+      }
+      saveSessions();
+      renderMessages();
+    }
+
+    function switchSession(id) {
+      if (state.isGenerating) return;
+      state.currentSessionId = id;
+      renderHistory();
+      renderMessages();
+    }
+
+    function getCurrentSession() {
+      return state.sessions.find(s => s.id === state.currentSessionId) || state.sessions[0];
+    }
+
+    // UI Rendering
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      container.innerHTML = '';
+      state.sessions.forEach(sess => {
+        const item = document.createElement('div');
+        item.className = 'history-item' + (sess.id === state.currentSessionId ? ' active' : '');
+        item.onclick = () => switchSession(sess.id);
+
+        const title = document.createElement('span');
+        title.className = 'history-title';
+        title.innerText = sess.title;
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'history-delete';
+        delBtn.innerHTML = '✕';
+        delBtn.title = 'Elimina';
+        delBtn.onclick = (e) => deleteSession(e, sess.id);
+
+        item.appendChild(title);
+        item.appendChild(delBtn);
+        container.appendChild(item);
+      });
+    }
+
+    function renderMessages() {
+      const sess = getCurrentSession();
+      const hero = document.getElementById('hero-banner');
+      const list = document.getElementById('messages-list');
+      list.innerHTML = '';
+
+      if (!sess || sess.messages.length === 0) {
+        hero.style.display = 'block';
+        return;
+      }
+
+      hero.style.display = 'none';
+
+      sess.messages.forEach(msg => {
+        const row = document.createElement('div');
+        row.className = 'msg-row ' + msg.role;
+
+        const slug = document.createElement('div');
+        slug.className = 'msg-slug';
+        slug.innerText = msg.role === 'user' ? '> OPERATOR // PROMPT' : '> HOSTAI.EXYNOS // RESPONSE';
+
+        const card = document.createElement('div');
+        card.className = 'msg-card';
+        card.innerHTML = parseMarkdown(msg.content);
+
+        row.appendChild(slug);
+        row.appendChild(card);
+        list.appendChild(row);
+      });
+
+      scrollChatToBottom();
+    }
+
+    function scrollChatToBottom() {
+      const vp = document.getElementById('messages-viewport');
+      vp.scrollTop = vp.scrollHeight;
+    }
+
+    // Markdown Parser
+    function parseMarkdown(md) {
+      if (!md) return '';
+      let escaped = md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      
+      // Code blocks ```code```
+      escaped = escaped.replace(/```([a-zA-Z0-9_\-\.]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+        return `<pre><button class="btn-copy-code" onclick="copySnippet(this)">COPY</button><code>${code.trim()}</code></pre>`;
+      });
+
+      // Inline code
+      escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+      // Bold
+      escaped = escaped.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+      // Italic
+      escaped = escaped.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+      // Linebreaks
+      escaped = escaped.replace(/\n/g, '<br>');
+
+      return escaped;
+    }
+
+    function copySnippet(btn) {
+      const pre = btn.closest('pre');
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'COPIED!';
+        setTimeout(() => { btn.innerText = orig; }, 1500);
+      });
+    }
+
+    // Prompt Execution & Streaming
+    async function handleSubmit() {
+      if (state.isGenerating) return;
+      const input = document.getElementById('user-prompt');
+      const prompt = input.value.trim();
+      if (!prompt) return;
+
+      const sess = getCurrentSession();
+      sess.messages.push({ role: 'user', content: prompt });
+      if (sess.messages.length === 1) {
+        sess.title = prompt.slice(0, 26) + (prompt.length > 26 ? '...' : '');
+      }
+
+      input.value = '';
+      autoResize(input);
+      renderMessages();
+
+      // Add empty assistant placeholder
+      sess.messages.push({ role: 'assistant', content: '' });
+      renderMessages();
+
+      const list = document.getElementById('messages-list');
+      const assistantRows = list.querySelectorAll('.msg-row.assistant');
+      const currentAssistantRow = assistantRows[assistantRows.length - 1];
+      const card = currentAssistantRow.querySelector('.msg-card');
+
+      setGenerating(true);
+      state.abortController = new AbortController();
+      let accumulated = '';
+      const startTime = performance.now();
+
+      try {
+        const apiMessages = [];
+        if (state.settings.systemPrompt) {
+          apiMessages.push({ role: 'system', content: state.settings.systemPrompt });
+        }
+        sess.messages.slice(0, -1).forEach(m => {
+          apiMessages.push({ role: m.role, content: m.content });
+        });
+
+        const res = await fetch(state.settings.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: state.settings.model,
+            messages: apiMessages,
+            temperature: parseFloat(state.settings.temperature),
+            stream: true
+          }),
+          signal: state.abortController.signal
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+
+          for (const line of lines) {
+            const clean = line.trim();
+            if (clean.startsWith('data:')) {
+              const data = clean.substring(5).trim();
+              if (data === '[DONE]') continue;
+              try {
+                const json = JSON.parse(data);
+                const delta = json.choices?.[0]?.delta?.content || '';
+                accumulated += delta;
+                card.innerHTML = parseMarkdown(accumulated) + '<span class="typing-cursor"></span>';
+                scrollChatToBottom();
+              } catch (e) {
+                accumulated += data;
+                card.innerHTML = parseMarkdown(accumulated) + '<span class="typing-cursor"></span>';
+              }
+            } else if (clean && !clean.startsWith(':')) {
+              try {
+                const json = JSON.parse(clean);
+                const delta = json.choices?.[0]?.delta?.content || json.choices?.[0]?.message?.content || '';
+                if (delta) {
+                  accumulated += delta;
+                  card.innerHTML = parseMarkdown(accumulated) + '<span class="typing-cursor"></span>';
+                  scrollChatToBottom();
+                }
+              } catch (e) {}
+            }
+          }
+        }
+
+        sess.messages[sess.messages.length - 1].content = accumulated;
+        saveSessions();
+        renderMessages();
+
+        const latency = Math.round(performance.now() - startTime);
+        document.getElementById('ping-telemetry').innerText = `⚡ ${latency} ms`;
+        document.getElementById('stat-latency').innerText = `⚡ ${latency} ms`;
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          sess.messages[sess.messages.length - 1].content = accumulated + ' *(Esecuzione interrotta)*';
+        } else {
+          sess.messages[sess.messages.length - 1].content = `⚠️ Errore di connessione: ${err.message}`;
+        }
+        saveSessions();
+        renderMessages();
+      } finally {
+        setGenerating(false);
+      }
+    }
+
+    function handleStop() {
+      if (state.abortController) state.abortController.abort();
+    }
+
+    function setGenerating(isGen) {
+      state.isGenerating = isGen;
+      document.getElementById('btn-submit').style.display = isGen ? 'none' : 'inline-flex';
+      document.getElementById('btn-stop').style.display = isGen ? 'inline-flex' : 'none';
+      document.getElementById('btn-submit').disabled = isGen;
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSubmit();
+      }
+    }
+
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+    }
+
+    function sendSuggestion(text) {
+      document.getElementById('user-prompt').value = text;
+      handleSubmit();
+    }
+
+    // Models & Settings
+    async function fetchModels() {
+      try {
+        const res = await fetch('/v1/models');
+        if (res.ok) {
+          const data = await res.json();
+          const select = document.getElementById('model-dropdown');
+          if (data && data.data && data.data.length > 0) {
+            select.innerHTML = '';
+            data.data.forEach((m, idx) => {
+              const opt = document.createElement('option');
+              opt.value = m.id;
+              opt.innerText = `[ 0${idx + 1} ] // ${m.id.toUpperCase()}`;
+              if (m.id === state.settings.model) opt.selected = true;
+              select.appendChild(opt);
+            });
+          }
+        }
+      } catch (e) {}
+    }
+
+    function switchModel(modelId) {
+      state.settings.model = modelId;
+      saveSettings();
+    }
+
+    function openSettingsModal() {
+      document.getElementById('cfg-endpoint').value = state.settings.endpoint;
+      document.getElementById('cfg-temp').value = state.settings.temperature;
+      document.getElementById('cfg-system').value = state.settings.systemPrompt;
+      document.getElementById('settings-modal').classList.add('open');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.remove('open');
+    }
+
+    function closeSettingsOnOverlay(e) {
+      if (e.target.id === 'settings-modal') closeSettingsModal();
+    }
+
+    function saveSettingsModal() {
+      state.settings.endpoint = document.getElementById('cfg-endpoint').value;
+      state.settings.temperature = parseFloat(document.getElementById('cfg-temp').value) || 0.7;
+      state.settings.systemPrompt = document.getElementById('cfg-system').value;
+      saveSettings();
+      closeSettingsModal();
+    }
+
+    function saveSettings() {
+      localStorage.setItem('hostai_settings', JSON.stringify(state.settings));
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem('hostai_settings');
+        if (raw) Object.assign(state.settings, JSON.parse(raw));
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>
