@@ -4,8 +4,31 @@
         <item name="android:colorBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/accent_sub</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="alertDialogTheme">@style/Theme.TechnicalMinimal.Dialog</item>
+        <item name="materialAlertDialogTheme">@style/Theme.TechnicalMinimal.Dialog</item>
+    </style>
+
+    <style name="Theme.TechnicalMinimal.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:background">@color/surface</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.TechnicalMinimal.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.TechnicalMinimal.Button.Muted</item>
+    </style>
+
+    <style name="Widget.TechnicalMinimal.Button" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.TechnicalMinimal.Button.Muted" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/on_surface_variant</item>
+        <item name="android:fontFamily">monospace</item>
     </style>
 </resources>

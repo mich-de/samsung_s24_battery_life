@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#151515"
+        android:strokeColor="#2E2E2E"
+        android:strokeWidth="1.5"
+        android:pathData="M 24 3 A 21 21 0 1 0 24 45 A 21 21 0 1 0 24 3 Z" />
+    <!-- Industrial Sliders -->
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M 16 18 L 32 18 M 16 24 L 32 24 M 16 30 L 32 30" />
+    <!-- Sliders Knobs -->
+    <path
+        android:fillColor="#ECEBE8"
+        android:pathData="M 20 16 A 2 2 0 1 0 20 20 A 2 2 0 1 0 20 16 Z" />
+    <path
+        android:fillColor="#FF5A1F"
+        android:pathData="M 28 22 A 2 2 0 1 0 28 26 A 2 2 0 1 0 28 22 Z" />
+    <path
+        android:fillColor="#ECEBE8"
+        android:pathData="M 22 28 A 2 2 0 1 0 22 32 A 2 2 0 1 0 22 28 Z" />
+</vector>

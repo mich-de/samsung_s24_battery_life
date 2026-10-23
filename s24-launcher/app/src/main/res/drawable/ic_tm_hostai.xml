@@ -1,0 +1,29 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Circular container -->
+    <path
+        android:fillColor="#151515"
+        android:strokeColor="#2E2E2E"
+        android:strokeWidth="1.5"
+        android:pathData="M 24 3 A 21 21 0 1 0 24 45 A 21 21 0 1 0 24 3 Z" />
+    <!-- Chip square -->
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 17 17 L 31 17 L 31 31 L 17 31 Z" />
+    <!-- Pins -->
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M 21 13 L 21 17 M 27 13 L 27 17 M 21 31 L 21 35 M 27 31 L 27 35 M 13 21 L 17 21 M 13 27 L 17 27 M 31 21 L 35 21 M 31 27 L 35 27" />
+    <!-- Center Orange Core Dot -->
+    <path
+        android:fillColor="#FF5A1F"
+        android:pathData="M 24 22 A 2 2 0 1 0 24 26 A 2 2 0 1 0 24 22 Z" />
+</vector>

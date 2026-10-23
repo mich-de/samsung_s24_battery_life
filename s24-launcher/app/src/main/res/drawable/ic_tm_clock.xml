@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#151515"
+        android:strokeColor="#2E2E2E"
+        android:strokeWidth="1.5"
+        android:pathData="M 24 3 A 21 21 0 1 0 24 45 A 21 21 0 1 0 24 3 Z" />
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.5"
+        android:pathData="M 24 15 A 9 9 0 1 0 24 33 A 9 9 0 1 0 24 15 Z" />
+    <!-- Clock Hands -->
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M 24 24 L 24 19 M 24 24 L 28 24" />
+    <!-- Orange Center Dot -->
+    <path
+        android:fillColor="#FF5A1F"
+        android:pathData="M 24 22.5 A 1.5 1.5 0 1 0 24 25.5 A 1.5 1.5 0 1 0 24 22.5 Z" />
+</vector>

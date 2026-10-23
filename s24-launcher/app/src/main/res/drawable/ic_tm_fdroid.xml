@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#151515"
+        android:strokeColor="#2E2E2E"
+        android:strokeWidth="1.5"
+        android:pathData="M 24 3 A 21 21 0 1 0 24 45 A 21 21 0 1 0 24 3 Z" />
+    <!-- Android/F-droid Robot Frame -->
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 17 21 L 31 21 C 31 16 17 16 17 21 Z" />
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M 19 15 L 17 12 M 29 15 L 31 12" />
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 17 23 L 31 23 L 31 31 L 17 31 Z" />
+    <path
+        android:fillColor="#FF5A1F"
+        android:pathData="M 20 18 A 0.8 0.8 0 1 0 20 19.6 A 0.8 0.8 0 1 0 20 18 Z" />
+    <path
+        android:fillColor="#FF5A1F"
+        android:pathData="M 28 18 A 0.8 0.8 0 1 0 28 19.6 A 0.8 0.8 0 1 0 28 18 Z" />
+</vector>

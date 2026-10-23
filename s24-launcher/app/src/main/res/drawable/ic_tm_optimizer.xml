@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#151515"
+        android:strokeColor="#2E2E2E"
+        android:strokeWidth="1.5"
+        android:pathData="M 24 3 A 21 21 0 1 0 24 45 A 21 21 0 1 0 24 3 Z" />
+    <!-- Battery Cell Outline -->
+    <path
+        android:strokeColor="#ECEBE8"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 18 17 L 30 17 C 31.1 17 32 17.9 32 19 L 32 31 C 32 32.1 31.1 33 30 33 L 18 33 C 16.9 33 16 32.1 16 31 L 16 19 C 16 17.9 16.9 17 18 17 Z" />
+    <path
+        android:fillColor="#ECEBE8"
+        android:pathData="M 22 14.5 L 26 14.5 L 26 17 L 22 17 Z" />
+    <!-- Lightning Pulse -->
+    <path
+        android:fillColor="#FF5A1F"
+        android:pathData="M 24.5 19 L 20.5 25 L 24 25 L 23.5 31 L 27.5 25 L 24 25 Z" />
+</vector>

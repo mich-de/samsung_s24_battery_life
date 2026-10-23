@@ -9,7 +9,7 @@
     android:paddingTop="36dp"
     android:paddingBottom="12dp">
 
-    <!-- Top Time & Appliance Header -->
+    <!-- Top Time & Industrial Appliance Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,49 +23,66 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextClock
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:format24Hour="HH:mm"
-                android:format12Hour="hh:mm a"
-                android:textColor="@color/on_surface"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-light" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Blinking / Steady Status LED -->
+                <View
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:background="@drawable/bg_tab_active"
+                    android:layout_marginEnd="8dp" />
+
+                <TextClock
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:format24Hour="HH:mm"
+                    android:format12Hour="hh:mm a"
+                    android:textColor="@color/on_surface"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
 
             <TextClock
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:format24Hour="EEEE, d MMMM"
-                android:format12Hour="EEEE, MMMM d"
-                android:textColor="@color/cyan_gpu"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:format24Hour="EEEE // dd.MM.yyyy"
+                android:format12Hour="EEEE // MM.dd.yyyy"
+                android:textColor="@color/accent"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:layout_marginStart="15dp" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/badgePrime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OPENNOVA S24"
-            android:textSize="9sp"
+            android:text="01 // S24 APPLIANCE"
+            android:textSize="10sp"
             android:textStyle="bold"
-            android:textColor="#38BDF8"
-            android:background="#1E293B"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:fontFamily="monospace"
+            android:textColor="@color/accent"
+            android:background="@drawable/bg_chip_tm"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
             android:clickable="true"
             android:focusable="true" />
     </LinearLayout>
 
-    <!-- Hero Card: HostAI Edge AI Engine -->
+    <!-- Hero Card: HostAI Edge AI Engine (Teenage Engineering Hardware Card) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardHostAI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="12dp"
         app:cardBackgroundColor="@color/surface"
-        app:strokeColor="@color/card_border"
+        app:strokeColor="@color/line"
         app:strokeWidth="1dp"
         app:cardElevation="0dp"
         android:layout_marginBottom="12dp"
@@ -88,31 +105,34 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="HostAI Studio"
-                    android:textSize="16sp"
+                    android:text="HOSTAI STUDIO"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:fontFamily="monospace"
                     android:textColor="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OPENCL GPU"
+                    android:text="OPENCL GPU // ONLINE"
                     android:textSize="9sp"
                     android:textStyle="bold"
-                    android:textColor="@color/cyan_gpu"
-                    android:background="#15233D"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp" />
+                    android:fontFamily="monospace"
+                    android:textColor="@color/accent"
+                    android:background="@drawable/bg_chip_tm"
+                    android:paddingHorizontal="7dp"
+                    android:paddingVertical="3dp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Exynos 2400 · AMD Xclipse 940 · 4.4 GB Free RAM"
-                android:textSize="11sp"
+                android:text="EXYNOS 2400 · AMD XCLIPSE 940 · 4.4 GB FREE RAM"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
                 android:textColor="@color/on_surface_variant"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,47 +144,51 @@
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:layout_weight="1"
-                    android:text="Launch Studio"
+                    android:text="[ LAUNCH CORE ]"
                     android:textSize="11sp"
                     android:textStyle="bold"
-                    app:cornerRadius="10dp"
+                    android:fontFamily="monospace"
+                    app:cornerRadius="8dp"
                     app:backgroundTint="@color/primary"
-                    android:layout_marginEnd="4dp" />
+                    android:textColor="#0E0E0E"
+                    android:layout_marginEnd="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnWebChat"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:layout_weight="1"
-                    android:text="Web Chat (/chat)"
+                    android:text="[ WEB CHAT /chat ]"
                     android:textSize="11sp"
                     android:textStyle="bold"
-                    app:cornerRadius="10dp"
+                    android:fontFamily="monospace"
+                    app:cornerRadius="8dp"
                     app:backgroundTint="@color/surface_card"
-                    android:textColor="@color/cyan_gpu"
-                    app:strokeColor="@color/card_border"
+                    android:textColor="@color/accent"
+                    app:strokeColor="@color/line"
                     app:strokeWidth="1dp"
-                    android:layout_marginStart="4dp" />
+                    android:layout_marginStart="5dp" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Quick Search Bar -->
+    <!-- Quick Search Bar (Command Terminal Style) -->
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/bg_search"
-        android:hint="Search installed apps..."
-        android:textColorHint="@color/on_surface_variant"
+        android:hint="> SEARCH SYSTEM APPS..."
+        android:textColorHint="@color/on_surface_sub"
         android:textColor="@color/on_surface"
         android:textSize="12sp"
+        android:fontFamily="monospace"
         android:paddingHorizontal="14dp"
         android:inputType="text"
         android:maxLines="1"
         android:layout_marginBottom="8dp" />
 
-    <!-- Nova Prime Drawer Category Tabs -->
+    <!-- Drawer Category Tabs (Technical Minimal Monospace Pills) -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -180,11 +204,12 @@
                 android:id="@+id/tabAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All"
+                android:text="[ ALL ]"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:background="#2563EB"
+                android:fontFamily="monospace"
+                android:textColor="#0E0E0E"
+                android:background="@drawable/bg_tab_active"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="5dp"
                 android:layout_marginEnd="6dp" />
@@ -193,10 +218,11 @@
                 android:id="@+id/tabAI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AI &amp; Tools"
+                android:text="[ 01 // AI &amp; TOOLS ]"
                 android:textSize="11sp"
-                android:textColor="#94A3B8"
-                android:background="#1E293B"
+                android:fontFamily="monospace"
+                android:textColor="@color/on_surface_variant"
+                android:background="@drawable/bg_tab_inactive"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="5dp"
                 android:layout_marginEnd="6dp" />
@@ -205,10 +231,11 @@
                 android:id="@+id/tabStores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stores &amp; Net"
+                android:text="[ 02 // NET &amp; STORES ]"
                 android:textSize="11sp"
-                android:textColor="#94A3B8"
-                android:background="#1E293B"
+                android:fontFamily="monospace"
+                android:textColor="@color/on_surface_variant"
+                android:background="@drawable/bg_tab_inactive"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="5dp"
                 android:layout_marginEnd="6dp" />
@@ -217,10 +244,11 @@
                 android:id="@+id/tabSystem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="System"
+                android:text="[ 03 // SYSTEM ]"
                 android:textSize="11sp"
-                android:textColor="#94A3B8"
-                android:background="#1E293B"
+                android:fontFamily="monospace"
+                android:textColor="@color/on_surface_variant"
+                android:background="@drawable/bg_tab_inactive"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="5dp"
                 android:layout_marginEnd="6dp" />
@@ -229,16 +257,17 @@
                 android:id="@+id/tabSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⚙️ Impostazioni"
+                android:text="[ // CONFIG ]"
                 android:textSize="11sp"
-                android:textColor="#38BDF8"
-                android:background="#0F243A"
+                android:fontFamily="monospace"
+                android:textColor="@color/accent"
+                android:background="@drawable/bg_chip_tm"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="5dp" />
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Fast App Grid (Dynamic Grid Columns) -->
+    <!-- Fast App Grid -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/appsRecyclerView"
         android:layout_width="match_parent"

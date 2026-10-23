@@ -316,11 +316,11 @@ class MainActivity : AppCompatActivity() {
     private fun updateCategoryTabStyles() {
         fun styleTab(tv: TextView, isSelected: Boolean) {
             if (isSelected) {
-                tv.setTextColor(Color.WHITE)
-                tv.setBackgroundColor(Color.parseColor("#2563EB"))
+                tv.setTextColor(Color.parseColor("#0E0E0E"))
+                tv.setBackgroundResource(R.drawable.bg_tab_active)
             } else {
-                tv.setTextColor(Color.parseColor("#94A3B8"))
-                tv.setBackgroundColor(Color.parseColor("#1E293B"))
+                tv.setTextColor(Color.parseColor("#9A968F"))
+                tv.setBackgroundResource(R.drawable.bg_tab_inactive)
             }
         }
 
@@ -412,8 +412,9 @@ class MainActivity : AppCompatActivity() {
             if (pkgName == packageName) continue
 
             val label = info.loadLabel(pm).toString()
-            val icon = info.loadIcon(pm)
-            appList.add(AppInfo(label, pkgName, icon))
+            val rawIcon = info.loadIcon(pm)
+            val styledIcon = TechnicalMinimalIconEngine.getStyledIcon(this, pkgName, rawIcon)
+            appList.add(AppInfo(label, pkgName, styledIcon))
         }
 
         appList.sortBy { it.label.lowercase() }
@@ -423,15 +424,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAppOptionsDialog(app: AppInfo) {
         val options = arrayOf(
-            "Info applicazione",
-            "📁 Aggiungi a Cartella",
-            "Nascondi da Drawer",
-            "Disinstalla",
-            "Condividi link",
-            "Apri nello Store"
+            "[ 01 ] // INFO APPLICAZIONE",
+            "[ 02 ] // AGGIUNGI A CARTELLA",
+            "[ 03 ] // NASCONDI DA DRAWER",
+            "[ 04 ] // DISINSTALLA",
+            "[ 05 ] // CONDIVIDI LINK",
+            "[ 06 ] // APRI NELLO STORE"
         )
         AlertDialog.Builder(this)
-            .setTitle(app.label)
+            .setTitle("// APP CONFIG: ${app.label.uppercase()}")
             .setIcon(app.icon)
             .setItems(options) { _, which ->
                 when (which) {
@@ -644,13 +645,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSettingsDialog() {
         val options = arrayOf(
-            "Griglia Icone Desktop (3, 4, 5 Colonne)",
-            "Gestione App Nascoste (${getHiddenPackages().size} nascoste)",
-            "Info OpenNova S24"
+            "[ 01 ] // GRIGLIA ICONE (3 / 4 / 5 COLONNE)",
+            "[ 02 ] // GESTIONE APP NASCOSTE (${getHiddenPackages().size} INACTIVE)",
+            "[ 03 ] // INFO & TELEMETRIA APPLIANCE"
         )
 
         AlertDialog.Builder(this)
-            .setTitle("⚙️ Impostazioni OpenNova S24")
+            .setTitle("// LAUNCHER CONFIGURATION")
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> showGridSelectorDialog()
@@ -662,7 +663,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showGridSelectorDialog() {
-        val choices = arrayOf("3 Colonne (Grandi)", "4 Colonne (Standard)", "5 Colonne (Compatto)")
+        val choices = arrayOf("[ 01 ] // 3 COLONNE (LARGE)", "[ 02 ] // 4 COLONNE (STANDARD)", "[ 03 ] // 5 COLONNE (COMPACT)")
         val currentCols = getGridColumns()
         val checkedItem = when (currentCols) {
             3 -> 0
@@ -671,7 +672,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         AlertDialog.Builder(this)
-            .setTitle("Seleziona Colonne Griglia")
+            .setTitle("// SELEZIONA COLONNE GRIGLIA")
             .setSingleChoiceItems(choices, checkedItem) { dialog, which ->
                 val newCols = when (which) {
                     0 -> 3
@@ -693,28 +694,28 @@ class MainActivity : AppCompatActivity() {
 
         val hiddenNames = hidden.map { pkg ->
             try {
-                packageManager.getApplicationLabel(packageManager.getApplicationInfo(pkg, 0)).toString()
+                packageManager.getApplicationLabel(packageManager.getApplicationInfo(pkg, 0)).toString().uppercase()
             } catch (e: Exception) {
                 pkg
             }
         }.toTypedArray()
 
         AlertDialog.Builder(this)
-            .setTitle("Tocca un'app per renderla visibile")
+            .setTitle("// APP NASCOSTE // TOCCA PER RIPRISTINARE")
             .setItems(hiddenNames) { _, index ->
                 val pkgToUnhide = hidden[index]
                 unhidePackage(pkgToUnhide)
                 Toast.makeText(this, "${hiddenNames[index]} ripristinata", Toast.LENGTH_SHORT).show()
             }
-            .setPositiveButton("Chiudi", null)
+            .setPositiveButton("CHIUDI", null)
             .show()
     }
 
     private fun showInfoDialog() {
         AlertDialog.Builder(this)
-            .setTitle("OpenNova S24 Edition")
-            .setMessage("Launcher Nativo Open Source\n\n• Cartelle personalizzate (crea, rinomina, organizza)\n• Disinstallazione smart (app utente e sistema)\n• Zero telemetria & Zero RAM leak (~120 MB)\n• Gestures native (Swipe Down, Double Tap)\n• Nascondi App & Drawer Groups\n• Griglia flessibile a 3/4/5 colonne\n• HostAI Studio & Web Chat integrati\n• Ottimizzato per Galaxy S24 One UI 9 Exynos 2400")
-            .setPositiveButton("OK", null)
+            .setTitle("// OPENNOVA S24 // TECHNICAL MINIMAL")
+            .setMessage("Appliance Launcher • Teenage Engineering / Nothing Style\n\n• Industrial Dot-Matrix & Monochrome Icon Engine\n• Hairline 1px Grid Architecture & Pure OLED Black\n• Cartelle personalizzate con indicatore dot-matrix\n• Disinstallazione smart (app utente e sistema)\n• Zero telemetria & Zero background services\n• Gestures native (Swipe Down, Double Tap per HostAI)\n• HostAI Studio & Web Chat integrati\n• Ottimizzato per Galaxy S24 One UI 9 Exynos 2400")
+            .setPositiveButton("CONFERMA", null)
             .show()
     }
 

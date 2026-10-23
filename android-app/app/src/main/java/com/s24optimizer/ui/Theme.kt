@@ -16,22 +16,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// ── Color Palette ──
-val ElectricBlue = Color(0xFF00D4FF)
-val NeonCyan = Color(0xFF00E5A0)
-val DeepPurple = Color(0xFF7C4DFF)
-val WarmAmber = Color(0xFFFFB74D)
-val CoralAccent = Color(0xFFFF6B6B)
-val SurfaceDark = Color(0xFF0A0E14)
-val SurfaceCard = Color(0xFF131920)
-val SurfaceElevated = Color(0xFF1A2230)
-val OutlineDim = Color(0xFF2A3545)
-val TextPrimary = Color(0xFFE6EDF3)
-val TextSecondary = Color(0xFF8B949E)
+// ── Color Palette (Technical Minimal / Teenage Engineering Style) ──
+val ElectricBlue = Color(0xFFFF5A1F)
+val NeonCyan = Color(0xFFFF7A45)
+val DeepPurple = Color(0xFFB3360F)
+val WarmAmber = Color(0xFFFF5A1F)
+val CoralAccent = Color(0xFFE5481A)
+val SurfaceDark = Color(0xFF0E0E0E)
+val SurfaceCard = Color(0xFF151515)
+val SurfaceElevated = Color(0xFF1C1C1C)
+val OutlineDim = Color(0xFF262626)
+val TextPrimary = Color(0xFFECEBE8)
+val TextSecondary = Color(0xFF9A968F)
 
 // ── Gradients ──
-val GlowBlue = Color(0xFF00D4FF).copy(alpha = 0.15f)
-val GlowCyan = Color(0xFF00E5A0).copy(alpha = 0.10f)
+val GlowBlue = Color(0xFFFF5A1F).copy(alpha = 0.15f)
+val GlowCyan = Color(0xFFFF7A45).copy(alpha = 0.10f)
 
 private val DarkColors = darkColorScheme(
     primary = ElectricBlue,
