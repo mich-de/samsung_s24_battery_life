@@ -408,7 +408,7 @@
     }
 
     .model-select-wrapper::after {
-      content: "▼";
+      content: "";
       font-size: 8px;
       position: absolute;
       right: 10px;
@@ -882,7 +882,7 @@
         <button class="btn-new" onclick="createNewSession()">
           <span>+</span> NEW PROMPT [CMD+K]
         </button>
-        <button class="btn-icon" onclick="openSettingsModal()" title="Impostazioni">⚙</button>
+        <button class="btn-icon" onclick="openSettingsModal()" title="Impostazioni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
       </div>
 
       <div class="sidebar-section-title">01 // SESSION ARCHIVE</div>
@@ -917,7 +917,7 @@
       <!-- Top Sticky Navigation Bar -->
       <header class="top-bar">
         <div class="bar-left">
-          <button class="btn-icon" onclick="toggleSidebar()" title="Toggle Sidebar">☰</button>
+          <button class="btn-icon" onclick="toggleSidebar()" title="Toggle Sidebar"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg></button>
           <div class="logo-badge">HOSTAI<span class="hot">.</span></div>
           <div class="core-status">
             <div class="led"></div>
@@ -933,7 +933,7 @@
             </select>
           </div>
           <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
-            <span id="theme-icon">◐</span>
+            <span id="theme-icon"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></span>
             <span id="theme-label">DARK</span>
           </button>
         </div>
@@ -1063,7 +1063,7 @@
       localStorage.setItem('hostai_theme', theme);
       document.getElementById('theme-color').content = theme === 'dark' ? '#0e0e0e' : '#f3f2ef';
       document.getElementById('theme-label').innerText = theme.toUpperCase();
-      document.getElementById('theme-icon').innerText = theme === 'dark' ? '◐' : '○';
+      // SVG icon stays constant
     }
 
     function toggleSidebar() {
@@ -1153,7 +1153,7 @@
 
         const delBtn = document.createElement('button');
         delBtn.className = 'history-delete';
-        delBtn.innerHTML = '✕';
+        delBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>';
         delBtn.title = 'Elimina';
         delBtn.onclick = (e) => deleteSession(e, sess.id);
 
