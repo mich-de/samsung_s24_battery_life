@@ -57,6 +57,18 @@ class MainActivity : AppCompatActivity() {
         setupCategoryTabs()
         setupSettingsBadge()
         loadApps()
+        checkIntentAction(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        checkIntentAction(intent)
+    }
+
+    private fun checkIntentAction(intent: Intent) {
+        if (intent.getStringExtra("action") == "set_wallpaper") {
+            applyTechnicalMinimalWallpaper()
+        }
     }
 
     private fun registerPackageReceiver() {
@@ -647,7 +659,8 @@ class MainActivity : AppCompatActivity() {
         val options = arrayOf(
             "[ 01 ] // GRIGLIA ICONE (3 / 4 / 5 COLONNE)",
             "[ 02 ] // GESTIONE APP NASCOSTE (${getHiddenPackages().size} INACTIVE)",
-            "[ 03 ] // INFO & TELEMETRIA APPLIANCE"
+            "[ 03 ] // INFO & TELEMETRIA APPLIANCE",
+            "[ 04 ] // APPLICA SFONDO TECHNICAL MINIMAL"
         )
 
         AlertDialog.Builder(this)
@@ -657,9 +670,28 @@ class MainActivity : AppCompatActivity() {
                     0 -> showGridSelectorDialog()
                     1 -> showHiddenAppsManagerDialog()
                     2 -> showInfoDialog()
+                    3 -> applyTechnicalMinimalWallpaper()
                 }
             }
             .show()
+    }
+
+    private fun applyTechnicalMinimalWallpaper() {
+        try {
+            val file = java.io.File("/sdcard/Pictures/s24_technical_minimal_wallpaper.png")
+            if (file.exists()) {
+                val bitmap = android.graphics.BitmapFactory.decodeFile(file.absolutePath)
+                if (bitmap != null) {
+                    val wm = android.app.WallpaperManager.getInstance(this)
+                    wm.setBitmap(bitmap)
+                    Toast.makeText(this, "Sfondo Technical Minimal applicato!", Toast.LENGTH_SHORT).show()
+                    return
+                }
+            }
+            Toast.makeText(this, "File sfondo non trovato in /sdcard/Pictures/", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Errore sfondo: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun showGridSelectorDialog() {
