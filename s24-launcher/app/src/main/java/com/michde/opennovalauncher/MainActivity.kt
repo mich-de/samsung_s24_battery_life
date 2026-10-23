@@ -66,8 +66,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIntentAction(intent: Intent) {
-        if (intent.getStringExtra("action") == "set_wallpaper") {
-            applyTechnicalMinimalWallpaper()
+        when (intent.getStringExtra("action")) {
+            "set_wallpaper" -> applyTechnicalMinimalWallpaper()
+            "set_lockscreen" -> applyTechnicalMinimalLockscreen()
+            "set_all_wallpapers" -> {
+                applyTechnicalMinimalWallpaper()
+                applyTechnicalMinimalLockscreen()
+            }
         }
     }
 
@@ -660,7 +665,9 @@ class MainActivity : AppCompatActivity() {
             "[ 01 ] // GRIGLIA ICONE (3 / 4 / 5 COLONNE)",
             "[ 02 ] // GESTIONE APP NASCOSTE (${getHiddenPackages().size} INACTIVE)",
             "[ 03 ] // INFO & TELEMETRIA APPLIANCE",
-            "[ 04 ] // APPLICA SFONDO TECHNICAL MINIMAL"
+            "[ 04 ] // APPLICA SFONDO HOMESCREEN",
+            "[ 05 ] // APPLICA SFONDO LOCKSCREEN (HOSTAI)",
+            "[ 06 ] // APPLICA ENTRAMBI GLI SFONDI"
         )
 
         AlertDialog.Builder(this)
@@ -671,6 +678,11 @@ class MainActivity : AppCompatActivity() {
                     1 -> showHiddenAppsManagerDialog()
                     2 -> showInfoDialog()
                     3 -> applyTechnicalMinimalWallpaper()
+                    4 -> applyTechnicalMinimalLockscreen()
+                    5 -> {
+                        applyTechnicalMinimalWallpaper()
+                        applyTechnicalMinimalLockscreen()
+                    }
                 }
             }
             .show()
@@ -683,14 +695,41 @@ class MainActivity : AppCompatActivity() {
                 val bitmap = android.graphics.BitmapFactory.decodeFile(file.absolutePath)
                 if (bitmap != null) {
                     val wm = android.app.WallpaperManager.getInstance(this)
-                    wm.setBitmap(bitmap)
-                    Toast.makeText(this, "Sfondo Technical Minimal applicato!", Toast.LENGTH_SHORT).show()
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        wm.setBitmap(bitmap, null, true, android.app.WallpaperManager.FLAG_SYSTEM)
+                    } else {
+                        wm.setBitmap(bitmap)
+                    }
+                    Toast.makeText(this, "Sfondo Homescreen applicato!", Toast.LENGTH_SHORT).show()
                     return
                 }
             }
             Toast.makeText(this, "File sfondo non trovato in /sdcard/Pictures/", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "Errore sfondo: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun applyTechnicalMinimalLockscreen() {
+        try {
+            val file = java.io.File("/sdcard/Pictures/s24_technical_minimal_lockscreen.png")
+            if (file.exists()) {
+                val bitmap = android.graphics.BitmapFactory.decodeFile(file.absolutePath)
+                if (bitmap != null) {
+                    val wm = android.app.WallpaperManager.getInstance(this)
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        wm.setBitmap(bitmap, null, true, android.app.WallpaperManager.FLAG_LOCK)
+                        Toast.makeText(this, "Lockscreen HostAI Technical Minimal applicata!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        wm.setBitmap(bitmap)
+                        Toast.makeText(this, "Sfondo applicato!", Toast.LENGTH_SHORT).show()
+                    }
+                    return
+                }
+            }
+            Toast.makeText(this, "File lockscreen non trovato in /sdcard/Pictures/", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Errore lockscreen: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
