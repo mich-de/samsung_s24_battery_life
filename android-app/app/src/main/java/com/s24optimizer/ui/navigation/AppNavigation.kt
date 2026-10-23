@@ -29,6 +29,9 @@ import com.s24optimizer.exec.AdbExecutor
 import com.s24optimizer.ui.*
 import com.s24optimizer.ui.screens.*
 
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.outlined.Memory
+
 enum class Screen(
     val route: String,
     val labelEn: String,
@@ -39,6 +42,7 @@ enum class Screen(
     HOME("home", "Home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
     DIAGNOSTICS("diagnostics", "Diag", "Diag", Icons.Filled.MonitorHeart, Icons.Outlined.MonitorHeart),
     OPTIMIZE("optimize", "Optimize", "Ottimizza", Icons.Filled.Tune, Icons.Outlined.Tune),
+    HOSTAI("hostai", "HostAI", "HostAI", Icons.Filled.Memory, Icons.Outlined.Memory),
     APPS("apps", "Apps", "App", Icons.Filled.Apps, Icons.Outlined.Apps),
     LOGS("logs", "Logs", "Log", Icons.Filled.Terminal, Icons.Outlined.Terminal),
 }
@@ -144,6 +148,13 @@ fun AppNavigation(
                     onAppliedStatesChanged = onAppliedStatesChanged,
                     isRunning = isRunning,
                     onRunningChanged = onRunningChanged,
+                    onLog = onLog,
+                )
+            }
+            composable(Screen.HOSTAI.route) {
+                HostAiScreen(
+                    italian = italian,
+                    executor = executor,
                     onLog = onLog,
                 )
             }

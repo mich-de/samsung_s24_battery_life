@@ -81,36 +81,20 @@ val AppTypography = Typography(
     labelSmall = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Normal, fontSize = 11.sp, letterSpacing = 0.5.sp),
 )
 
-// ── Shapes ──
+// ── Shapes (Technical Minimal Sharp 6dp / 10dp) ──
 val AppShapes = Shapes(
-    extraSmall = RoundedCornerShape(6.dp),
-    small = RoundedCornerShape(10.dp),
-    medium = RoundedCornerShape(16.dp),
-    large = RoundedCornerShape(20.dp),
-    extraLarge = RoundedCornerShape(28.dp),
+    extraSmall = RoundedCornerShape(4.dp),
+    small = RoundedCornerShape(6.dp),
+    medium = RoundedCornerShape(10.dp),
+    large = RoundedCornerShape(12.dp),
+    extraLarge = RoundedCornerShape(16.dp),
 )
 
 @Composable
 fun S24Theme(content: @Composable () -> Unit) {
-    val colorScheme = if (Build.VERSION.SDK_INT >= 31) {
-        // Dynamic Color: use wallpaper-derived dark palette for a native feel
-        val dynamicColors = dynamicDarkColorScheme(LocalContext.current)
-        dynamicColors.copy(
-            background = SurfaceDark,
-            surface = SurfaceCard,
-            surfaceVariant = SurfaceElevated,
-            surfaceContainerHigh = SurfaceElevated,
-            surfaceContainerLow = SurfaceCard,
-            surfaceContainer = SurfaceCard,
-            outline = OutlineDim,
-            outlineVariant = OutlineDim.copy(alpha = 0.5f),
-        )
-    } else {
-        DarkColors
-    }
-
+    // Pure Technical Minimal dark scheme (#0E0E0E, #151515, #FF5A1F)
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = DarkColors,
         typography = AppTypography,
         shapes = AppShapes,
         content = content,
