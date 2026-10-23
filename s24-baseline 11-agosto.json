@@ -69,7 +69,7 @@
     { "uid": "u0a434", "app": "app.revanced.android.gms", "mah": 4.15 },
     { "uid": "u0a290", "app": "com.google.android.googlequicksearchbox", "mah": 2.24, "nota": "fgs 56m 00s" },
     { "uid": "u0a383", "app": "com.brave.browser", "mah": 2.12, "nota": "cached 1h 00m 56s, 4 processi ~580 MB" },
-    { "uid": "u0a586", "app": "com.michde.chatassist", "mah": 1.61, "nota": "fgs 26m 34s" },
+    { "uid": "u0a586", "app": "com.mdeangelis.chatassist", "mah": 1.61, "nota": "fgs 26m 34s" },
     { "uid": "u0a52",  "app": "systemui / routineplus / routines / aodservice", "mah": 1.53, "nota": "fgs 53m 36s" },
     { "uid": "u0a389", "app": "com.facebook.katana", "mah": 0.988, "nota": "cached 33m 07s — RIATTIVATO dopo luglio" }
   ],

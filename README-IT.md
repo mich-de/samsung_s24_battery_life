@@ -1,12 +1,56 @@
-# S24 Battery Optimizer
+# S24 Edge AI & Battery Appliance
 
 🌐 **[English](README.md) | [Español](README-ES.md) | Italiano | [Português](README-PT.md)**
 
-> **Ripristina l'autonomia del tuo Galaxy S24** — disabilita bloatware, ferma i drain noti e ottimizza le impostazioni di sistema, **senza root**.
+> **Trasforma il tuo Samsung Galaxy S24 in una Appliance Edge LLM AI dedicata e una Workstation Ottimizzata** — server LLM locale conforme a OpenAI, accelerazione hardware GPU AMD Xclipse 940 (Exynos 2400), Web UI stile ChatGPT, launcher leggero personalizzato e rimozione totale del bloatware **senza permessi di root**.
 
 <p align="center">
-  <img src="current_android_screenshot.png" alt="S24 Battery Optimizer in Azione" width="300" />
+  <img src="https://github.com/mich-de/samsung_s24_battery_life/blob/main/hostai_s24_live.png" alt="HostAI S24 Edge AI Studio" width="450" />
 </p>
+
+---
+
+## 🚀 Trasformazione 1-Click: Galaxy S24 Edge AI Appliance
+
+Converti lo smartphone in un server LLM locale e offline in pochi secondi:
+
+| Sistema Operativo | Script di Setup Rapido (Crea Appliance) | Script di Ripristino (Torna a Stock) |
+|---|---|---|
+| **Windows (CMD)** | `create_hostai_phone.bat` | `restore_hostai_phone.bat` |
+| **Windows (PowerShell)** | `.\create_hostai_phone.ps1` | `.\restore_hostai_phone.ps1` |
+| **macOS / Linux** | `bash create_hostai_phone.sh` | `bash restore_hostai_phone.sh` |
+
+Guida tecnica dettagliata passo dopo passo: **[S24 Edge LLM Appliance Replication Guide](S24_Edge_LLM_Appliance_Replication_Guide.md)**.
+
+### 🌟 Caratteristiche Chiave dell'Appliance AI
+
+1. **HostAI S24 Edition (`releases/hostai-s24-exynos.apk`)**:
+   - **API OpenAI Locale**: Endpoint completi `/v1/chat/completions` e `/v1/models` in ascolto su porta `8080`.
+   - **Accelerazione Hardware**: Ottimizzato per SoC Samsung Exynos 2400 con GPU AMD Xclipse 940 via OpenCL.
+   - **Modelli On-Device**: Preconfigurato per Google Gemma 4 E2B Instruct (2.6 GB), TinyGarden 270M (288 MB) ed EmbeddingGemma.
+   - **Zero Fuga Dati**: Elaborazione neurale 100% offline, nessun dato lascia mai il dispositivo.
+
+2. **Web UI Integrata stile ChatGPT (`http://localhost:8080/chat`)**:
+   - **Temi Obsidian Dark & Clean Light** con switch istantaneo a 1 tocco.
+   - **Zero Dipendenze CDN Esterne**: 100% self-contained in puro HTML/JS/CSS, si carica in <5ms senza problemi di pagina bianca.
+   - **Streaming Live SSE**: Generazione token in tempo reale con animazione di digitazione e tasto Stop generazione.
+   - **Markdown Ricco & Codice**: Blocchi di codice formattati con evidenziazione sintattica e tasto "Copia codice".
+   - **Storico Sessioni**: Sidebar multi-chat con persistenza in `localStorage`.
+
+3. **OpenNovaLauncher S24 Edition (`releases/opennovalauncher-s24.apk`)**:
+   - Home launcher minimale su misura per l'ecosistema AI.
+   - Scheda di stato HostAI Studio integrata e scorciatoia rapida Web Chat.
+   - Gestione nativa cartelle, griglia dinamica a 3/4/5 colonne, gestione app nascoste, zero telemetria.
+   - Compensazione degli insets della barra di navigazione a 3 pulsanti.
+
+4. **Architettura De-Googled e Massima Privacy**:
+   - **Dicio Voice Assistant (`releases/dicio.apk`)**: Assistente vocale offline integrato con HostAI LLM.
+   - **MicroG-RE (`releases/microg-morphe-re.apk`)**: Servizi Google open source a zero telemetria di fondo.
+   - **App Store**: F-Droid (`releases/f-droid.apk`) e Aurora Store (`releases/aurora-store.apk`) in modalita' anonima.
+   - **Gabbia AppOps per Gemini**: Sandbox blindata per `googlequicksearchbox` (0 MB di RAM consumata a riposo).
+   - **Compattazione RAM**: 19 pacchetti Knox e servizi di telemetria neutralizzati, liberando **>4.5 GB di RAM fisica** (oltre il 60% di memoria libera) per i pesi del modello.
+
+---
 
 ## 📋 Compatibilità
 
@@ -289,7 +333,7 @@ s24-battery-optimizer/
 
 ## 📱 Android App (Shizuku)
 
-Il progetto include anche un'applicazione nativa Android in Kotlin situata nella directory [android-app](android-app). Questa applicazione consente di:
+Il progetto include anche un'applicazione nativa Android in Kotlin situata nella directory [android-app](file:///C:/Users/mdeangelis/Downloads/s24app/android-app). Questa applicazione consente di:
 - Gestire e monitorare lo stato di ottimizzazione direttamente dal dispositivo.
 - Eseguire i comandi ADB locali senza necessità di connettere il telefono a un PC, sfruttando l'API fornita dall'applicazione **Shizuku**.
 

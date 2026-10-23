@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="36dp"
+    android:paddingBottom="12dp">
+
+    <!-- Top Time & Appliance Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextClock
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:format24Hour="HH:mm"
+                android:format12Hour="hh:mm a"
+                android:textColor="@color/on_surface"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light" />
+
+            <TextClock
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:format24Hour="EEEE, d MMMM"
+                android:format12Hour="EEEE, MMMM d"
+                android:textColor="@color/cyan_gpu"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/badgePrime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OPENNOVA S24"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#38BDF8"
+            android:background="#1E293B"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Hero Card: HostAI Edge AI Engine -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardHostAI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/surface"
+        app:strokeColor="@color/card_border"
+        app:strokeWidth="1dp"
+        app:cardElevation="0dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="HostAI Studio"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/on_surface" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OPENCL GPU"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/cyan_gpu"
+                    android:background="#15233D"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exynos 2400 · AMD Xclipse 940 · 4.4 GB Free RAM"
+                android:textSize="11sp"
+                android:textColor="@color/on_surface_variant"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLaunchHostAI"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="Launch Studio"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/primary"
+                    android:layout_marginEnd="4dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnWebChat"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="Web Chat (/chat)"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/surface_card"
+                    android:textColor="@color/cyan_gpu"
+                    app:strokeColor="@color/card_border"
+                    app:strokeWidth="1dp"
+                    android:layout_marginStart="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Quick Search Bar -->
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_search"
+        android:hint="Search installed apps..."
+        android:textColorHint="@color/on_surface_variant"
+        android:textColor="@color/on_surface"
+        android:textSize="12sp"
+        android:paddingHorizontal="14dp"
+        android:inputType="text"
+        android:maxLines="1"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Nova Prime Drawer Category Tabs -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tabAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#2563EB"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tabAI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AI &amp; Tools"
+                android:textSize="11sp"
+                android:textColor="#94A3B8"
+                android:background="#1E293B"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tabStores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stores &amp; Net"
+                android:textSize="11sp"
+                android:textColor="#94A3B8"
+                android:background="#1E293B"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tabSystem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System"
+                android:textSize="11sp"
+                android:textColor="#94A3B8"
+                android:background="#1E293B"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tabSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚙️ Impostazioni"
+                android:textSize="11sp"
+                android:textColor="#38BDF8"
+                android:background="#0F243A"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Fast App Grid (Dynamic Grid Columns) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/appsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="96dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

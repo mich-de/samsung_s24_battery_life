@@ -155,7 +155,7 @@ s24-battery-optimizer/
 
 ## 📱 Aplicativo Android (Shizuku)
 
-O projeto inclui um aplicativo nativo para Android em Kotlin localizado em [android-app](android-app). Este aplicativo permite:
+O projeto inclui um aplicativo nativo para Android em Kotlin localizado em [android-app](file:///C:/Users/mdeangelis/Downloads/s24app/android-app). Este aplicativo permite:
 - Monitorar e gerenciar o status de otimização diretamente do seu telefone.
 - Executar comandos de shell do ADB locais sem conectar seu dispositivo a um PC, aproveitando a API do aplicativo **Shizuku**.
 

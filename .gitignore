@@ -1,21 +1,39 @@
 # Gradle and Android build outputs
-.gradle/
-.idea/
-.kotlin/
-build/
-app/build/
+**/.gradle/
+**/.idea/
+**/.kotlin/
+**/build/
+**/app/build/
 *.class
-*.apk
 *.aar
+
+# APKs: ignore general build outputs, allow releases/
+*.apk
+!releases/*.apk
+*.idsig
 
 # System specific files
 .DS_Store
 Thumbs.db
+*.tmp
+*.log
+*~
+
+# Python Virtual Environments
+.venv/
+__pycache__/
+
+# Large Firmware Images & Raw Dumps (Local only)
+backup/
+oneui9/
+Frija/
+tools/
+
+# Private user recordings
+registrazioni/
 
 # Screenshots and logs
 /scratch/
-*~
-*.log
 GEMINI.MD
 
 # Signing material — never publish
@@ -24,5 +42,5 @@ GEMINI.MD
 
 # Local agent session state
 .claude/
-# Machine-specific: says so in its own header, and carries the local SDK path.
 android-app/local.properties
+s24-launcher/local.properties

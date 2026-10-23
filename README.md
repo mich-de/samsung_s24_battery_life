@@ -1,12 +1,54 @@
-# S24 Battery Optimizer
+# S24 Edge AI & Battery Appliance
 
 🌐 **English | [Español](README-ES.md) | [Italiano](README-IT.md) | [Português](README-PT.md)**
 
-> **Restore your Galaxy S24 battery life** — disable bloatware, stop known drain bugs, and optimize system settings, **no root required**.
+> **Transform your Samsung Galaxy S24 into a dedicated Edge LLM AI Appliance and Battery-Optimized Workstation** — local on-device OpenAI-compatible LLM server, Exynos 2400 AMD Xclipse 940 GPU acceleration, custom ChatGPT-like Web UI, lightweight launcher, and complete bloatware purge with **no root required**.
 
 <p align="center">
-  <img src="https://github.com/mich-de/samsung_s24_battery_life/blob/main/current_android_screenshot.png" alt="S24 Battery Optimizer v2.3" width="300" />
+  <img src="https://github.com/mich-de/samsung_s24_battery_life/blob/main/hostai_s24_live.png" alt="HostAI S24 Edge AI Studio" width="450" />
 </p>
+
+---
+
+## 🚀 1-Click Transformation: Galaxy S24 Edge AI Appliance
+
+Transform your device in seconds into a local offline LLM server:
+
+| OS | Quick Setup (Transform to AI Appliance) | Rollback (Restore Stock) |
+|---|---|---|
+| **Windows (CMD)** | `create_hostai_phone.bat` | `restore_hostai_phone.bat` |
+| **Windows (PowerShell)** | `.\create_hostai_phone.ps1` | `.\restore_hostai_phone.ps1` |
+| **macOS / Linux** | `bash create_hostai_phone.sh` | `bash restore_hostai_phone.sh` |
+
+Full step-by-step documentation available in the **[S24 Edge LLM Appliance Replication Guide](S24_Edge_LLM_Appliance_Replication_Guide.md)**.
+
+### 🌟 Key AI Appliance Features
+
+1. **HostAI S24 Edition (`releases/hostai-s24-exynos.apk`)**:
+   - **Local OpenAI API**: Full `/v1/chat/completions` and `/v1/models` endpoints running on port `8080`.
+   - **Hardware Acceleration**: Optimized for Samsung Exynos 2400 with AMD Xclipse 940 GPU via OpenCL.
+   - **On-Device Models**: Preconfigured for Google Gemma 4 E2B Instruct (2.6 GB), TinyGarden 270M (288 MB), and EmbeddingGemma.
+   - **Zero Cloud Leakage**: 100% offline edge neural processing — zero personal data leaves the device.
+
+2. **Built-in ChatGPT-like Web UI (`http://localhost:8080/chat`)**:
+   - **Obsidian Dark & Clean Light themes** with 1-tap instant switch.
+   - **Zero CDN Dependencies**: 100% self-contained vanilla HTML/JS/CSS, loads in <5ms with zero blank page issues.
+   - **Live SSE Streaming**: Real-time token streaming with typing animation and Stop Generation button.
+   - **Rich Markdown & Code**: Syntax-highlighted code blocks with 1-click "Copy" button.
+   - **Session History**: Multi-chat sidebar with persistence in `localStorage`.
+
+3. **OpenNovaLauncher S24 Edition (`releases/opennovalauncher-s24.apk`)**:
+   - Dedicated minimal home launcher tailored for AI workflows.
+   - Integrated HostAI Studio card & 1-tap Web Chat shortcut.
+   - Native folder management, dynamic 3/4/5 column grid, hide apps manager, zero telemetry.
+   - 3-button navigation bar insets compensated for smooth scrolling.
+
+4. **De-Googled & Sealed Privacy Architecture**:
+   - **Dicio Voice Assistant (`releases/dicio.apk`)**: Offline voice AI assistant bridge to HostAI LLM.
+   - **MicroG-RE (`releases/microg-morphe-re.apk`)**: Open-source GMS replacement with zero background telemetry.
+   - **App Stores**: F-Droid (`releases/f-droid.apk`) and Aurora Store (`releases/aurora-store.apk`) in anonymous mode.
+   - **AppOps Cage for Gemini**: Sealed sandbox for `googlequicksearchbox` (0 MB idle RAM consumption).
+   - **RAM Squeeze**: Neutralized 19 Knox/telemetry packages, freeing **>4.5 GB physical RAM** (over 60% memory free) for model weights and large context buffers.
 
 ---
 
@@ -206,8 +248,16 @@ That's it. Everything else — disabling packages, changing settings, restrictin
 
 ```
 s24-battery-optimizer/
+├── create_hostai_phone.bat     ← 1-click: turn S24 into dedicated Edge LLM appliance
+├── create_hostai_phone.ps1     ← PowerShell version
+├── create_hostai_phone.sh      ← Linux / macOS version
+├── restore_hostai_phone.bat    ← Full rollback / safety net: restores all stock Samsung & Knox apps
+├── restore_hostai_phone.ps1    ← PowerShell rollback version
+├── restore_hostai_phone.sh     ← Linux / macOS rollback version
 ├── releases/                   ← Executable files
-│   └── s24-battery-optimizer.apk
+│   ├── s24-battery-optimizer.apk
+│   └── hostai-s24-exynos.apk   ← Edge LLM server (Exynos 2400 / AMD Xclipse 940)
+├── S24_Edge_LLM_Appliance_Replication_Guide.md ← Edge LLM appliance replication runbook
 ├── android-app/                ← Android app source (Kotlin + Compose)
 │   └── ...
 ├── README.md                   ← English (default)

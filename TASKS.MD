@@ -31,6 +31,39 @@
 - [x] [BACKEND] Execute cleanup and trigger hardware FSTRIM / idle maintenance optimization (freed 27 GB).
 - [x] [BACKEND] Build S24 Optimizer v2.5 APK (added 5G toggle, Zero Samsung Services, resolved Diagnostics conflicts, aligned battery thresholds, and cleaned applied_history).
 - [x] [BACKEND] Audit & fix failing optimization commands in v2.6: Samsung Account (`com.osp.app.signin`), Knox Matrix (`knnr`/`attestation`), Knox Zero Touch, My Galaxy, Family Link, Samsung Weather (removed non-existent package), Emergency Launcher (updated to `com.samsung.android.emergency`).
+- [x] [BACKEND] Purge ~240 non-vital third-party user apps, converting Galaxy S24 into dedicated Edge LLM appliance.
+- [x] [BACKEND] Recompile and optimize HostAI from source for Galaxy S24 (Exynos 2400 / AMD Xclipse 940 GPU OpenCL, arm64-v8a ABI, MANAGE_EXTERNAL_STORAGE, auto-scan `/storage/emulated/0/Download/models`).
+- [x] [DEVOPS] Deploy custom HostAI APK, configure permissions, and test local HTTP API endpoint (`/v1/chat/completions`).
+- [x] [BACKEND] Purge legacy Download clutter, wipe trash storage, and execute hardware UFS 4.0 fstrim (200 GB available).
+- [x] [DEVOPS] Deploy background auto-sync daemon (`edge_model_sync.sh`, PID 17950) mirroring Edge Gallery models to HostAI.
+- [x] [FRONTEND] Implement Obsidian Dark UI redesign with real-time telemetry chips (GPU, RAM, Temp), glowing hero card, and 1-tap model switcher carousel.
+- [x] [FRONTEND] Optimize layout for full height & edge-to-edge (fillViewport, window insets status/nav bar, flexible spacer).
+- [x] [FRONTEND] HostAI UI overhaul: 100% English, zero-scroll single-screen layout (fits all 780dp S24 height), top Exit button, clean ASCII telemetry (GPU Xclipse 940, RAM, Battery Temp in Celsius).
+- [x] [BACKEND] HostAI dynamic per-model auto-tuning: automatically sets context length (2048 for Gemma 4, 1024 for TinyGarden/MobileActions, 512 for EmbeddingGemma) and GPU OpenCL backend.
+- [x] [BACKEND] HostAI LiteRT OpenAI chat compatibility: tested and verified live on device via `/v1/chat/completions` with both TinyGarden and Gemma 4 E2B.
+- [x] [DEVOPS] Release packaging: exported debug build to `releases/hostai-s24-exynos.apk` and installed on live device.
+- [x] [BACKEND] Complete Knox purge & RAM squeeze: neutralized all 19 Knox/MDM packages, eliminated background Google/Samsung AI bloat, freed RAM to 4.55 GB free (61.5% free memory).
+- [x] [BACKEND] Remove Samsung Gallery bloat (`com.sec.android.gallery3d`, photo remaster, motion photo).
+- [x] [BACKEND] Eliminate AICore entirely (`com.google.android.aicore`, `com.samsung.android.aicore`, `overlay.aicoreconfig`).
+- [x] [BACKEND] Configure Gemini with zero-background-footprint (AppOps background execution & wake-lock denial on `googlequicksearchbox`).
+- [x] [BACKEND] Purge Creative Studio & Video Editor (`vepreload`, `sketchbook`, `photoretouching`, `newtrim`, `storyservice`, `mediasearch`), backed up raw APKs to `backup/system_apps/`, and generated instant restore scripts `restore_purged_apps.bat` / `.ps1`.
+- [x] [DEVOPS] Fresh installation of HostAI Studio with full `-g` runtime permissions and storage access granted.
+- [x] [DEVOPS] Create universal automated scripts: `create_hostai_phone` (.bat/.ps1/.sh) to turn any S24 into an appliance, and `restore_hostai_phone` (.bat/.ps1/.sh) as complete rollback safety net against bootloops.
+- [x] [FRONTEND] Overhaul HostAI Studio with UI/UX PRO MAX: Obsidian Glass cards, 3-column hardware monitor, direct Web Chat (`/chat`) launch button, latency ping, and edge-to-edge layout.
+- [x] [FRONTEND] Build & deploy custom tailored S24 Launcher (`OpenNovaLauncher` v1.0, `com.michde.opennovalauncher`): dedicated HostAI Studio card, Web Chat shortcut, 4-column fast app grid, zero background services, set as default home activity on S24.
+- [x] [FRONTEND] Port Nova features from `re/single` to `OpenNovaLauncher` (Nova long-press context menu for apps, double-tap to launch HostAI, swipe-down gesture to expand notifications, `EXPAND_STATUS_BAR`).
+- [x] [DEVOPS] Mod Nova 8.9.4 from `mich-de/novalauncher` (`re/nova.apk`): patched Prime check in `mx/h1.smali`, bypassed `NovaPaywallActivity`, disabled `FirebaseInitProvider`, zipaligned & signed `releases/nova8-prime-mod-s24.apk`, and verified live on device.
+- [x] [DEVOPS] Deploy de-Googled store & microG stack: installed Morphe MicroG-RE (`app.revanced.android.gms` v7.2.2), F-Droid (`org.fdroid.fdroid` v2.0.2), Aurora Store (`com.aurora.store` v4.8.4), and disabled Google Play Store (`com.android.vending`).
+- [x] [BACKEND] Unsuspend `googlequicksearchbox` & `bard` under sealed AppOps cage (`RUN_IN_BACKGROUND deny`, `RUN_ANY_IN_BACKGROUND deny`, `WAKE_LOCK deny`, `START_FOREGROUND deny`): native Gemini app fully functional with 0 MB idle RAM footprint.
+- [x] [DEVOPS] Deploy Dicio Voice Assistant (`org.stypox.dicio` v4.2, 38 MB): downloaded, installed with runtime permissions, and set as default Android Digital Assistant role holder (`android.app.role.ASSISTANT`). Ready for offline Vosk STT + HostAI local LLM bridge.
+- [x] [FRONTEND] OpenNovaLauncher Prime Edition (`com.michde.opennovalauncher` v2.0): set as default S24 Home, unlocked Prime drawer tabs (All, AI & Tools, Stores & Net, System), hide/unhide apps manager, dynamic 3/4/5 column grid selector, double-tap and swipe-down Nova gestures, zero telemetry.
+- [x] [FRONTEND] OpenNovaLauncher Native Folders & Smart Uninstaller: implemented custom folder creation/grouping/renaming (`ic_folder.xml`, JSON persistence), fixed Android 14+ uninstaller intents with system app detection dialog, removed all "Prime" / "Premium" terminology making all features native. Recompiled and deployed `releases/opennovalauncher-s24.apk`.
+- [x] [BACKEND] Purge Download folder on S24: emptied `/sdcard/Download/` freeing 3.6 GB (Gemma 4 & LiteRT models), rescanned MediaStore, internal storage now 202 GB available (10% used).
+- [x] [DEVOPS] Pull device recordings: extracted 8 audio files (72 MB) from `/storage/emulated/0/Recordings` into `D:\s24app\registrazioni`, added to `.gitignore` for privacy.
+- [x] [FRONTEND] Replace HostAI Web Chat with custom ChatGPT-like UI: zero external CDNs, Obsidian Dark / Clean Light, localStorage sessions history, real-time SSE streaming, syntax highlighted code blocks with copy, and dynamic `/v1/models` selector. Recompiled & deployed `releases/hostai-s24-exynos.apk`.
+- [x] [BACKEND] Restore real LLM models to HostAI: restored `gemma-4-E2B-it.litertlm` (2.4 GB) and `tiny_garden.litertlm` (276 MB) into `/storage/emulated/0/Download/models`, restarted server with Gemma 4, verified live streaming generation (0% mock).
+- [x] [FRONTEND] Fix Launcher Uninstallation: replaced blocking system checks and conflicting extras with `Uri.fromParts("package", ...)` + `Intent.ACTION_DELETE` / `ACTION_UNINSTALL_PACKAGE`, added folder app uninstall/remove actions, and added real-time `BroadcastReceiver` for package removals. Recompiled and deployed `releases/opennovalauncher-s24.apk`.
+- [ ] [BACKEND] Parse captured system properties or UI xml files to verify settings status.
 - [ ] [BACKEND] Parse captured system properties or UI xml files to verify settings status.
 - [ ] [FRONTEND] Design mockups/UI features for the companion Android App (`android-app`).
 - [ ] [DEVOPS] Test `s24-battery-optimize.ps1` script changes on the device.
