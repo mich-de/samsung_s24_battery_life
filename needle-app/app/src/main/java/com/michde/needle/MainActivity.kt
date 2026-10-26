@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var router: NeedleRouter
+    private lateinit var ttsManager: TtsManager
 
     private val speechLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         router = NeedleRouter(this)
+        ttsManager = TtsManager(this)
 
         binding.btnRoute.setOnClickListener {
             val query = binding.etPrompt.text.toString()
@@ -97,6 +99,15 @@ class MainActivity : AppCompatActivity() {
                 sb.append("DETAIL: ${result.details}\n")
                 sb.append("STATUS: ${result.feedback}\n")
                 binding.tvConsole.text = sb.toString()
+                ttsManager.speak(result.feedback)
+
+                if (result.directAction != null) {
+                    val success = result.directAction.invoke()
+                    if (!success) {
+                        sb.append("ERR: Esecuzione azione hardware fallita\n")
+                        binding.tvConsole.text = sb.toString()
+                    }
+                }
 
                 if (result.intent != null) {
                     try {
@@ -119,9 +130,15 @@ class MainActivity : AppCompatActivity() {
                         sb.append("─── HOSTAI INFERENCE REPLY ───\n")
                         sb.append("$reply\n")
                         binding.tvConsole.text = sb.toString()
+                        ttsManager.speak(reply)
                     }
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ttsManager.shutdown()
     }
 }
