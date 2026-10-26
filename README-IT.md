@@ -43,7 +43,13 @@ Guida tecnica dettagliata passo dopo passo: **[S24 Edge LLM Appliance Replicatio
    - Gestione nativa cartelle, griglia dinamica a 3/4/5 colonne, gestione app nascoste, zero telemetria.
    - Compensazione degli insets della barra di navigazione a 3 pulsanti.
 
-4. **Architettura De-Googled e Massima Privacy**:
+4. **Needle Router S24 Edition (`releases/needle-router-v1.2.apk`)**:
+   - Router di intenti a linguaggio naturale e assistente locale a latenza zero per Galaxy S24.
+   - Controllo hardware completo: Torcia, Fotocamera, Sveglie, Orologio, Wi-Fi, Bluetooth, Impostazioni, avvio app.
+   - Integrazione automatica con il server OpenAI locale HostAI per query complesse.
+   - **TTS Neurale Offline**: Binding nativo con Kaldi Sherpa-ONNX (`com.k2fsa.sherpa.onnx.tts.engine`) e voce italiana VITS Piper integrata per feedback vocale 100% offline.
+
+5. **Architettura De-Googled e Massima Privacy**:
    - **Dicio Voice Assistant (`releases/dicio.apk`)**: Assistente vocale offline integrato con HostAI LLM.
    - **MicroG-RE (`releases/microg-morphe-re.apk`)**: Servizi Google open source a zero telemetria di fondo.
    - **App Store**: F-Droid (`releases/f-droid.apk`) e Aurora Store (`releases/aurora-store.apk`) in modalita' anonima.

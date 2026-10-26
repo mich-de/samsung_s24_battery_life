@@ -43,7 +43,13 @@ Full step-by-step documentation available in the **[S24 Edge LLM Appliance Repli
    - Native folder management, dynamic 3/4/5 column grid, hide apps manager, zero telemetry.
    - 3-button navigation bar insets compensated for smooth scrolling.
 
-4. **De-Googled & Sealed Privacy Architecture**:
+4. **Needle Router S24 Edition (`releases/needle-router-v1.2.apk`)**:
+   - Zero-latency natural language intent router and local offline assistant for Samsung Galaxy S24.
+   - Hardware control: Camera, Flashlight/Torch, Alarms, Clock, Wi-Fi, Bluetooth, Settings, App launch.
+   - Integrates with local HostAI OpenAI server for complex queries.
+   - **Offline Neural TTS**: Native binding to Kaldi Sherpa-ONNX (`com.k2fsa.sherpa.onnx.tts.engine`) with pre-packaged Italian VITS Piper voice for zero-cloud spoken feedback.
+
+5. **De-Googled & Sealed Privacy Architecture**:
    - **Dicio Voice Assistant (`releases/dicio.apk`)**: Offline voice AI assistant bridge to HostAI LLM.
    - **MicroG-RE (`releases/microg-morphe-re.apk`)**: Open-source GMS replacement with zero background telemetry.
    - **App Stores**: F-Droid (`releases/f-droid.apk`) and Aurora Store (`releases/aurora-store.apk`) in anonymous mode.
