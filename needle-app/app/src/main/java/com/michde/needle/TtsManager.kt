@@ -15,12 +15,17 @@ class TtsManager(private val context: Context) : TextToSpeech.OnInitListener {
     private var isInitialized = false
 
     init {
-        // Priorità al motore Kokoro (VoxSherpa), fallback a Samsung SMT
+        // Priorità motore Sherpa-ONNX TTS (offline Piper/Kokoro), poi VoxSherpa, fallback Samsung SMT
+        val sherpaEngine = "com.k2fsa.sherpa.onnx.tts.engine"
         val voxSherpaEngine = "com.CodeBySonu.VoxSherpa"
         tts = try {
-            TextToSpeech(context, this, voxSherpaEngine)
+            TextToSpeech(context, this, sherpaEngine)
         } catch (e: Exception) {
-            TextToSpeech(context, this, "com.samsung.SMT")
+            try {
+                TextToSpeech(context, this, voxSherpaEngine)
+            } catch (e2: Exception) {
+                TextToSpeech(context, this, "com.samsung.SMT")
+            }
         }
     }
 
