@@ -130,6 +130,51 @@ class NeedleRouter(private val context: Context) {
 
     private fun findAppIntent(appName: String): Intent? {
         val pm = context.packageManager
+
+        // Hardware Shortcuts
+        when (appName) {
+            "camera", "fotocamera" -> {
+                val camIntent = Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                if (camIntent.resolveActivity(pm) != null) return camIntent
+                return pm.getLaunchIntentForPackage("com.sec.android.app.camera")
+            }
+            "galleria", "gallery", "foto", "photos" -> {
+                return pm.getLaunchIntentForPackage("com.sec.android.gallery3d")
+                    ?: Intent(Intent.ACTION_VIEW).apply {
+                        type = "image/*"
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+            }
+            "orologio", "clock", "sveglia" -> {
+                return pm.getLaunchIntentForPackage("com.sec.android.app.clockpackage")
+            }
+            "browser", "internet", "web" -> {
+                return pm.getLaunchIntentForPackage("com.brave.browser")
+                    ?: Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com")).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+            }
+            "impostazioni", "settings" -> {
+                return Intent(android.provider.Settings.ACTION_SETTINGS).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+            }
+        }
+
+        // Query Launcher Intents directly across all installed packages
+        val launcherIntent = Intent(Intent.ACTION_MAIN, null).apply {
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }
+        val resolveInfos = pm.queryIntentActivities(launcherIntent, 0)
+        for (info in resolveInfos) {
+            val label = info.loadLabel(pm).toString().lowercase()
+            val pkg = info.activityInfo.packageName.lowercase()
+            if (label == appName || label.contains(appName) || pkg.contains(appName)) {
+                return pm.getLaunchIntentForPackage(info.activityInfo.packageName)?.apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+            }
+        }
+
+        // Fallback installed apps list
         val packages = pm.getInstalledApplications(0)
         for (app in packages) {
             val label = pm.getApplicationLabel(app).toString().lowercase()
