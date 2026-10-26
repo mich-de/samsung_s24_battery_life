@@ -1,7 +1,11 @@
 package com.michde.needle
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import java.util.Locale
 
@@ -11,28 +15,42 @@ class TtsManager(private val context: Context) : TextToSpeech.OnInitListener {
     private var isInitialized = false
 
     init {
-        // Tenta prima il motore Kokoro VoxSherpa se installato, altrimenti default di sistema
+        // Priorità al motore Kokoro (VoxSherpa), fallback a Samsung SMT
         val voxSherpaEngine = "com.CodeBySonu.VoxSherpa"
         tts = try {
             TextToSpeech(context, this, voxSherpaEngine)
         } catch (e: Exception) {
-            TextToSpeech(context, this)
+            TextToSpeech(context, this, "com.samsung.SMT")
         }
     }
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
-            val result = tts?.setLanguage(Locale.ITALIAN)
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                tts?.language = Locale.ENGLISH
-            }
-            tts?.setSpeechRate(1.05f)
+            val audioAttributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build()
+            tts?.setAudioAttributes(audioAttributes)
+
+            tts?.language = Locale.ITALIAN
+            tts?.setSpeechRate(1.0f)
             tts?.setPitch(1.0f)
             isInitialized = true
-            Log.i("TtsManager", "TTS initialized successfully with engine: ${tts?.defaultEngine}")
+
+            tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                override fun onStart(utteranceId: String?) {
+                    Log.i("TtsManager", "Kokoro TTS Playback STARTED: $utteranceId")
+                }
+                override fun onDone(utteranceId: String?) {
+                    Log.i("TtsManager", "Kokoro TTS Playback FINISHED: $utteranceId")
+                }
+                override fun onError(utteranceId: String?) {
+                    Log.e("TtsManager", "Kokoro TTS Playback ERROR: $utteranceId")
+                }
+            })
+            Log.i("TtsManager", "TTS Engine Active: ${tts?.defaultEngine}")
         } else {
-            // Fallback al motore generico di sistema
-            Log.w("TtsManager", "Failed to init preferred TTS engine, falling back to default...")
+            Log.e("TtsManager", "TTS Init failed, retrying system fallback...")
             tts = TextToSpeech(context) { s ->
                 if (s == TextToSpeech.SUCCESS) {
                     tts?.language = Locale.ITALIAN
@@ -47,7 +65,13 @@ class TtsManager(private val context: Context) : TextToSpeech.OnInitListener {
             Log.w("TtsManager", "TTS not initialized yet")
             return
         }
-        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "NeedleTtsConfirmation")
+
+        val params = Bundle().apply {
+            putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC)
+            putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 1.0f)
+        }
+        val res = tts?.speak(text, TextToSpeech.QUEUE_FLUSH, params, "NeedleKokoro_${System.currentTimeMillis()}")
+        Log.i("TtsManager", "speak called: code=$res text='$text'")
     }
 
     fun shutdown() {

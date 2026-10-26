@@ -44,3 +44,8 @@ GEMINI.MD
 .claude/
 android-app/local.properties
 s24-launcher/local.properties
+
+# Debug screenshots and models
+*.png
+kokoro-*
+

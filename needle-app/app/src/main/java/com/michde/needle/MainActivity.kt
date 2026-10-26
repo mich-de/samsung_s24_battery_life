@@ -41,12 +41,14 @@ class MainActivity : AppCompatActivity() {
         ttsManager = TtsManager(this)
 
         binding.btnRoute.setOnClickListener {
+            hideKeyboard()
             val query = binding.etPrompt.text.toString()
             if (query.isNotBlank()) executeRoute(query)
         }
 
         binding.etPrompt.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
                 val query = binding.etPrompt.text.toString()
                 if (query.isNotBlank()) executeRoute(query)
                 true
@@ -135,6 +137,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        currentFocus?.let { imm.hideSoftInputFromWindow(it.windowToken, 0) }
     }
 
     override fun onDestroy() {
